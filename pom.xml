@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one or more
 contributor license agreements. See the NOTICE file distributed with
@@ -16,19 +15,73 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
-  <modelVersion>4.0.0</modelVersion>
-
-    <!-- ====================================================================== -->
-    <!-- P R O J E C T D E S C R I P T I O N -->
-    <!-- ====================================================================== -->
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+    <modelVersion>4.0.0</modelVersion>
     <groupId>org.duguo.xdir</groupId>
     <artifactId>xdir-parent</artifactId>
     <version>0.9.0-SNAPSHOT</version>
-    
     <packaging>pom</packaging>
-    <name>XDir Platform</name>
+    <name>XDir Platform (Parent)</name>
+    <!-- TODO: add project description tag -->
+
+
+    <!-- ======================================= -->
+    <!-- SUB MODULES                             -->
+    <!-- ======================================= -->
+    <modules>
+        <module>spi</module>
+        <module>core</module>
+    </modules>
+
+    <!-- ======================================= -->
+    <!-- GLOBAL PROPERTIES                       -->
+    <!-- ======================================= -->
+    <properties>
+        <lib.servlet.api.version>3.0.1</lib.servlet.api.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- ======================================= -->
+    <!-- BUILD CONFIGURATIONS                    -->
+    <!-- ======================================= -->
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.3.5</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <instructions>
+                            <Bundle-DocURL>http://xdir.duguo.org/</Bundle-DocURL>
+                            <Bundle-Vendor>XDir Platform</Bundle-Vendor>
+                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        </instructions>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- ======================================= -->
+    <!-- REPOSITORIES CONFIGURATIONS             -->
+    <!--   Move out repository definition to     -->
+    <!--   settings.xml in release branch        -->
+    <!-- ======================================= -->
+    <repositories>
+        <repository>
+            <id>xdir-repository</id>
+            <name>mrduguo's Maven Release Repository</name>
+            <url>http://mrduguo.github.com/maven/repos/release</url>
+        </repository>
+        <repository>
+            <id>zodiac-repository</id>
+            <name>Zodiac Release Repository</name>
+            <url>http://zodiac.springsource.com/maven/bundles/release</url>
+        </repository>
+    </repositories>
 
 </project>
