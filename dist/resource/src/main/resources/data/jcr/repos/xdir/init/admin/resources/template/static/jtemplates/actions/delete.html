@@ -1,0 +1,98 @@
+<form class="action_form_form">
+<table id="action_form">
+    <input class="xdirinput" name="action" value="dodelete" type="hidden"/>
+    <input class="xdirinput" name="pathName" value="{pagePath.substring(pagePath.lastIndexOf('/')+1)}" type="hidden"/>
+    <input class="xdirinput" name="childrenonly" value="true" type="hidden"/>
+    <tr>
+        <td colspan="3" style="border-bottom:1px gray solid;">
+		&gt; {$.xdir.utils.breakLongLine(pagePath,70)}<br/>
+            <span class="error"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Are you sure to delete <b>{pagePath.substring(pagePath.lastIndexOf('/')+1)}</b>?
+        </td>
+    </tr>
+    {#if $.xdir.jcr.children}
+        <tr>
+            <td>
+                <b>Children</b><br/>                
+                {#foreach $.xdir.jcr.children as row}
+                    {#if $T.row.path.indexOf("jcr:")<0}
+                        {$.xdir.jcr.getNameFromNode($T.row)}({$T.row.childcount})<br/>
+                    {#/if}
+                {#/for}
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:right; border-top:1px gray solid;">
+                <button id="action_delete_all_button">delete all</button>
+                <button id="action_submit_button">delete only childrends</button>
+                <button id="action_cancel_button">cancel</button>
+            </td>
+        </tr>
+     {#else}
+        <tr>
+            <td style="text-align:right; border-top:1px gray solid;">
+                <button id="action_delete_all_button">delete</button>
+                <button id="action_cancel_button">cancel</button>
+            </td>
+        </tr>
+      {#/if}
+</table>
+<div id="action_form_success" style="display:none;">
+    deleted!<br/>
+    <button id="action_close_button">close</button>
+</div>
+</form>
+<script>
+    bindActionFormButtons(function(){#ldelim}    
+        $(".action_form_form").validate({#ldelim}
+          rules: {#ldelim}
+            pathName: {#ldelim}
+              required: true
+            {#rdelim}
+          {#rdelim},submitHandler: function(form) {#ldelim}
+           	    
+           {#rdelim}
+        {#rdelim});
+        return $(".action_form_form").valid();
+    {#rdelim},function(){#ldelim}
+	            refreshNodeView();
+	            $("#action_dialog").dialog("close");
+    {#rdelim});
+
+
+    $("#action_delete_all_button").click(function(){#ldelim}    
+	        $(".action_form_form").validate({#ldelim}
+	          rules: {#ldelim}
+	            pathName: {#ldelim}
+	              required: true
+	            {#rdelim}
+	          {#rdelim},submitHandler: function(form) {#ldelim}
+	           	    
+	           {#rdelim}
+	        {#rdelim});
+	        $(".action_form_form").valid();	        
+            $("#action_form_success .isChildrenDelete").html("'s childrend");
+            $("#action_form input.xdirinput[name='childrenonly']").attr("value","false");
+            performAction(function(){#ldelim}
+	            if($("#action_form input.xdirinput[name='childrenonly']").attr("value")=="false"){#ldelim}
+	                loadXdirNode("{pagePath.substring(0,pagePath.lastIndexOf('/'))}");
+	            {#rdelim}else{#ldelim}
+	                refreshNodeView();
+	            {#rdelim}
+	            $("#action_dialog").dialog("close");
+            {#rdelim},"{pagePath.substring(0,pagePath.lastIndexOf('/'))}");
+    {#rdelim});
+    
+    $("#action_close_button").click(function(){#ldelim}
+            if($("#action_form input.xdirinput[name='childrenonly']").attr("value")=="false"){#ldelim}
+                loadXdirNode("{pagePath.substring(0,pagePath.lastIndexOf('/'))}");
+            {#rdelim}else{#ldelim}
+                refreshNodeView();
+            {#rdelim}
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+</script>

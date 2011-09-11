@@ -1,0 +1,2 @@
+_url=${xdir.web.base.secureurl}/admin/platform/osgi/services/index$[format]
+_application_jcr_base_path=/admin/platform/osgi/services

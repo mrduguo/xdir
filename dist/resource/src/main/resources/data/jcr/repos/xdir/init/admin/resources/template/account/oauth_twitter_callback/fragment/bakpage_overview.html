@@ -1,0 +1,117 @@
+<@page_overview_title/>
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+
+import oauth.signpost.OAuth;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.OAuthProvider;
+import oauth.signpost.basic.DefaultOAuthConsumer;
+import oauth.signpost.basic.DefaultOAuthProvider;
+import org.xdir.platform.api.security.Role;
+import org.xdir.platform.http.json.JsonUtil;
+import javax.xml.parsers.DocumentBuilderFactory
+
+System.setProperty("debug","true")
+
+    	OAuthConsumer consumer = new DefaultOAuthConsumer("gA6JjWFSWeQeFfWscSRydQ","uFkNEDHyVxhU3MKJRxE2KWPgJwn4y0JxGE0rSMpF5dY");
+
+        OAuthProvider provider = new DefaultOAuthProvider(
+                "http://twitter.com/oauth/request_token",
+                "http://twitter.com/oauth/access_token",
+                "http://twitter.com/oauth/authorize");
+                
+        //provider.retrieveAccessToken(consumer, );
+        session=model.request.getSession(false)
+        if(session==null){
+        	return "session expired";
+        }
+        String oauth_token=model.getStringParameter("oauth_token");
+        String tokenSecret=session.getAttribute("authToken")
+        consumer.setTokenWithSecret(oauth_token, tokenSecret);
+        provider.setOAuth10a(true)
+        provider.retrieveAccessToken(consumer, model.getStringParameter("oauth_verifier"));
+        
+        
+        URL url = new URL("http://twitter.com/account/verify_credentials.xml");
+        HttpURLConnection request = (HttpURLConnection) url.openConnection();
+
+        // sign the request
+        consumer.sign(request);
+
+        // send the request
+        request.connect();
+
+        // response status should be 200 OK
+        int statusCode = request.getResponseCode();
+        System.out.println("status:"+statusCode);
+        
+        
+def builder     = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+
+def records      = new XmlParser().parse(request.getInputStream())
+
+
+//http://apiwiki.twitter.com/Twitter-REST-API-Method:-account verify_credentials
+
+        def userName=records.screen_name.text();
+        def userDisplayName=records.name.text();
+        def userLocation=records.location.text();
+        def userIcon=records.profile_image_url.text();
+        def userDescription=records.description.text();
+        def userUrl=records.url.text();
+        def userTimeZone=records.utc_offset.text();
+        
+        def result="";
+        result="$result<div>"+userDisplayName+"</div>"
+        result="$result<div><img src=\""+userIcon+"\"/></div>"
+        result="$result<div>"+userName+"</div>"
+        result="$result<div>"+userLocation+"</div>"
+        result="$result<div>"+userDescription+"</div>"
+        result="$result<div>"+userUrl+"</div>"
+        result="$result<div>"+userTimeZone+"</div>"
+        
+        def loginName="twitter:"+userName;
+        loginNode=model.app.loadLogin(loginName);
+        if(loginNode!=null){
+            session.setAttribute("loginName",loginName);
+        	user=model.app.security.login(model)
+        	result="$result<div>logged in</div>"
+        }else{
+        	def userId=userName;
+        	userNode=model.app.loadUser(userId);
+        	if(userNode!=null){
+        		userId=userId+"_"+System.currentTimeMillis();
+        	}
+        	def userAttributes =new HashMap();
+        	
+        	userAttributes.put("_title",userDisplayName);
+        	userAttributes.put("_source", "twitter");
+        	userAttributes.put("_role", Role.USER+"");
+        	
+        	
+        	userAttributes.put("logins/twitter_"+userName+"/_user_name", loginName);
+        	userAttributes.put("logins/twitter_"+userName+"/_type", "login");
+        	userAttributes.put("profile/_icon", userIcon);
+        	userAttributes.put("profile/110_location", userLocation);
+        	userAttributes.put("profile/180_url", userUrl);
+        	userAttributes.put("profile/110_location", userLocation);
+        	userAttributes.put("profile/_time_zone", userTimeZone);
+        	userAttributes.put("profile/_overview", userDescription);
+        	userAttributes.put("logins/twitter_"+userName+"/_icon", userIcon);
+        	
+        	userNode=model.app.createUser(userId,userAttributes);
+        	if(userNode!=null){
+        		result="$result<div>user created <a href=\"../../index"+model.format+"\">OK</a></div>"
+            	session.setAttribute("loginName",loginName);
+        		user=model.app.security.login(model)
+        	}else{
+        		result="$result<div>user create failed</div>"
+        	}
+        }
+        System.out.println("consumer.getToken():"+consumer.getToken());
+        System.out.println("consumer.getTokenSecret():"+consumer.getTokenSecret());
+
+	return result;
+	//return consumer.getToken()+":"+consumer.getTokenSecret()
+	//return model.pagePath+"/callback.html"
+</@groovy>

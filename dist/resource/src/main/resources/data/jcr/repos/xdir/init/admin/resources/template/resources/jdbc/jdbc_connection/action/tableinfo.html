@@ -1,0 +1,43 @@
+		<h1>${pageTitle}:${getStringParameter("tableschem")}:${getStringParameter("tablename")}</h1><#assign connection_settings=app.props.resolveStringValue(pageProperties["_connection_settings"].displayableValue)>
+<@groovy>
+	<@sql_init/>
+
+ouputstring="$ouputstring<h3>Table Info</h3><table class=\"sortable\">"
+resultset=new GroovyResultSetExtension(sql.connection.metaData.getColumns(null,"${getStringParameter("tableschem")}","${getStringParameter("tablename")}",null))
+ouputstring="$ouputstring<thead><tr><th>Name</th><th>Type</th><th>Column Size</th><th>Defination</th><th>Is Nullable</th><th>Is Autoincrement</th></tr></thead><tbody>"
+resultset.eachRow{
+	ouputstring="$ouputstring<tr><td>$it.COLUMN_NAME</td><td>$it.TYPE_NAME</td><td>$it.COLUMN_SIZE</td><td>$it.COLUMN_DEF</td><td>$it.IS_NULLABLE</td><td>$it.IS_AUTOINCREMENT</td></tr>"
+}
+ouputstring="$ouputstring</tbody></table>"
+
+<#if (connection_type?? && connection_type=="derby")>
+ouputstring="$ouputstring<h3>Table DDL</h3><pre class=\"code\">CREATE TABLE ${getStringParameter("tableschem")}.${getStringParameter("tablename")} (\n"
+first=true
+sql.eachRow("SELECT C.COLUMNNAME, C.COLUMNDATATYPE, C.COLUMNDEFAULT,C.AUTOINCREMENTSTART,C.AUTOINCREMENTINC FROM SYS.SYSCOLUMNS C, SYS.SYSTABLES T, SYS.SYSSCHEMAS S WHERE S.SCHEMANAME = ? AND T.TABLENAME = ? AND T.TABLEID = C.REFERENCEID ORDER BY C.COLUMNNUMBER"
+	,["${getStringParameter("tableschem")}","${getStringParameter("tablename")}"]){
+	if(first){
+		first=false
+	}else{
+		ouputstring="$ouputstring,\n"		
+	}
+	ouputstring="$ouputstring $it.COLUMNNAME $it.COLUMNDATATYPE "
+	if(it.AUTOINCREMENTSTART!=null){
+		ouputstring="$ouputstring GENERATED"
+		if(it.COLUMNDEFAULT==null){
+			ouputstring="$ouputstring ALWAYS"
+		}else{
+			ouputstring="$ouputstring BY DEFAULT"
+		}
+		ouputstring="$ouputstring AS IDENTITY (START WITH $it.AUTOINCREMENTSTART, INCREMENT BY $it.AUTOINCREMENTINC)";
+	}else if(it.COLUMNDEFAULT!=null){
+		ouputstring="$ouputstring DEFAULT $it.COLUMNDEFAULT"
+	}
+}
+ouputstring="$ouputstring\n)</pre>"
+</#if>
+
+
+	<@sql_query_result "Table Data","select * from "+getStringParameter("tableschem")+"."+getStringParameter("tablename"),10, pageUrl+"?action=runsql&"/>
+
+	<@sql_destroy/>
+</@groovy>

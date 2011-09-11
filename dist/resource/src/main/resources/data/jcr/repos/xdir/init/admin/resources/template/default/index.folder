@@ -1,0 +1,8 @@
+<#if (pageProperties["jcr:primaryType"]?? && pageProperties["jcr:primaryType"].displayableValue=="nt:xfile")>
+	<#include "support/filestream.html">
+	<@file_stream "",false/>
+<#elseif (pagePaths?size>1)>
+	${response.sendRedirect(pagePath+app.format.autoDetectFormat(model))}
+<#else>
+	${response.sendRedirect(pagePath+"/index"+app.format.autoDetectFormat(model))}
+</#if>

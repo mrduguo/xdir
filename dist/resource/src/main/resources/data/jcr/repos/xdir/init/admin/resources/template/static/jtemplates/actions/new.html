@@ -1,0 +1,67 @@
+<form class="action_form_form">
+<table id="action_form" class="xdir_properties_table">
+    <input class="xdirinput" name="action" value="donew" type="hidden"/>
+    <tr>
+        <td colspan="3" style="border-bottom:1px gray solid;">
+		&gt; {$.xdir.utils.breakLongLine(pagePath,70)}<br/>
+            <span class="error"></span>
+        </td>
+    </tr>
+    <tr>
+        <td class="name">Display Name</td>
+        <td><input class="xdirinput" name="displayName" value=""/></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="name">Path*</td>
+        <td>
+	        <input class="xdirinput required" name="pathName" value="" />
+        </td>
+        <td></td>
+    </tr>
+    <tr class="button_tr">
+        <td colspan="3" style="text-align:right; border-top:1px gray solid;">
+            <input class="xdirinput" style="width:20px;" type="checkbox" name="versionable"{#if $.xdir.jcr.versionable==true} checked=\"checked\"{#/if} value="true" id="checkbox_versionable" />
+            <label for="checkbox_versionable">Versionable</label>
+
+            <a href="" class="add_property">add property</a>
+            <button id="action_submit_button">submit</button>
+            <button id="action_cancel_button">cancel</button>
+        </td>
+    </tr>
+</table>
+<div id="action_form_success" style="display:none;">
+    <b class="node_name"></b> added!<br/>
+    <button id="action_close_button">close</button>
+</div>
+</form>
+<script>
+    bindActionFormButtons(function(){#ldelim}
+        $(".action_form_form").validate({#ldelim}
+          rules: {#ldelim}
+            pathName: {#ldelim}
+              required: true,
+              nospace: true
+            {#rdelim}
+          {#rdelim},submitHandler: function(form) {#ldelim}
+           	    
+           {#rdelim}
+        {#rdelim});
+        return $(".action_form_form").valid();
+    {#rdelim},function(){#ldelim}
+             refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+    
+    
+    $(".action_form_form input[@name='displayName']").keyup(function(){#ldelim}
+		var _displayName=$(this).attr("value");
+		if(_displayName!=null && _displayName!=""){#ldelim}
+		$(".action_form_form input[@name='pathName']").attr("value",$.xdir.jcr.normalizePathName(_displayName).toLowerCase());
+	{#rdelim}{#rdelim});
+    
+    $("#action_close_button").click(function(){#ldelim}
+            refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+</script>

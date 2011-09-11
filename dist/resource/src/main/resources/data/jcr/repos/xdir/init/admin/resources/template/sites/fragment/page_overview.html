@@ -1,0 +1,27 @@
+<@page_overview_title/>
+<@application_settings pageProperties/>
+<#if (pageNavLevel3?size>0)>
+	<h3>Children</h3>
+	<@render_children_node node listChildren(node) "" 0/>
+</#if>
+<#macro render_children_node currentNode currentChildren basePath currentlevel>
+	<#if (currentChildren?size>0)>
+		<ul>
+			<#list currentChildren?keys?sort as child>
+				<li><a href="${pagePath}${basePath+"/"+currentChildren[child].node.name}${format}">${currentChildren[child].node.name}</a></li>
+				<#if (currentlevel<20)>
+					<@render_children_node currentChildren[child].node listChildren(currentChildren[child].node) basePath+"/"+currentChildren[child].node.name currentlevel+1/>
+				</#if>
+			</#list>
+		</ul>
+	</#if>
+</#macro>
+<#macro application_settings currentCollection>
+	<table>
+		<#list currentCollection?keys?sort as key>
+			<#if (key?starts_with("_"))>
+				<tr><th>${displayPropertyName(key)}</th><td>${currentCollection[key].displayableValue}</td></tr>
+			</#if>
+		</#list>
+   </table>
+</#macro>

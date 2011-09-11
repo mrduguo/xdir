@@ -1,0 +1,3 @@
+_url=${xdir.web.base.secureurl}/admin/platform/osgi/bundles/index$[format]
+_title=Bundles
+_type=osgi_bundle

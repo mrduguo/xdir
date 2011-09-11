@@ -1,0 +1,57 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@page_overview_description/>
+<@groovy>
+	StringBuilder ouputstring=new StringBuilder()
+	<#if (pageProperties["_log_file"]??)>
+		logfile="${app.props.resolveStringValue(pageProperties["_log_file"].displayableValue)}"
+	<#else>
+		logfile="${app.props.resolveStringValue("$"+"{xdir.dir.logs}")+"/"+node.name}.log"
+	</#if>
+	logfile=new java.io.File(logfile)
+	if(logfile.exists()){
+		logfile.withReader(){
+			pageDefaultSize=1000
+			<#include "../support/pagination">
+			String lineString=null
+			ouputstring.append("<pre>")
+			lineNumber=0
+			while((lineString=it.readLine())!=null){
+				lineNumber++
+				<#if (getStringParameter("filter")??)>
+					if(lineString.indexOf("${getStringParameter("filter")}")<0){
+					 continue
+					}
+					lineString="LINE "+lineNumber+": "+lineString
+				<#elseif (pageProperties["_log_filter"]??)>
+					${app.props.resolveStringValue(pageProperties["_log_filter"].displayableValue)}
+				</#if>
+				pageTotal++
+				if(pageTotal>=pageStart && pageTotal<=pageEnd){
+					ouputstring.append(freemarker.template.utility.StringUtil.HTMLEnc(lineString))				
+					ouputstring.append("\n")
+				}
+			}
+			ouputstring.append("</pre>")
+			paginationLinks=""
+			<@pagination_links "paginationLinks",pageUrl+"?start"/>
+			
+			logfileinfo="<table class=\"fullwidth\"><tr><th>File</th><td>$logfile</td></tr>"
+			logfileinfo="$logfileinfo<tr><th>Size</th><td>"+org.xdir.platform.util.io.FileUtil.byteCountToDisplaySize(logfile.size())+"</td></tr>"
+			logfileinfo="$logfileinfo<tr><th>Last Modified</th><td>"+model.timestampForDisplay(logfile.lastModified())+"</td></tr>"		
+			<#if (getStringParameter("filter")??)>
+				logfileinfo="$logfileinfo<tr><th>Filter</th><td>${getStringParameter("filter")}</td></tr>"					
+			</#if>
+			logfileinfo="$logfileinfo<tr><th>Pagination</th><td>$paginationLinks</td></tr>"
+			logfileinfo="$logfileinfo<tr><td colspan=\"2\">"
+			ouputstring.insert(0,logfileinfo)
+			ouputstring.append("</td></tr>")
+			ouputstring.append("<tr><th>Pagination</th><td>$paginationLinks</td></tr>")		
+			ouputstring.append("</table>")			
+		}
+	}else{
+		ouputstring.append("<div class=\"error\">$logfile doesn't exist</div>")
+	}
+	return ouputstring.toString()
+</@groovy>
+<@page_overview_content/>

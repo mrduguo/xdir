@@ -1,0 +1,8 @@
+${setPageTitle("icon.png")}
+<#include "support/filestream.html">
+<#if (account.hasNode("profile/icon.png"))>
+	${setNode(account.getNode("profile/icon.png"))}
+	<@file_stream "",false/>
+<#else>
+	<@file_stream "model.app.resource.resourceLoader.loadResource(model,\"icon/default_user_icon.png\").getAsInputStream()",false/>
+</#if>

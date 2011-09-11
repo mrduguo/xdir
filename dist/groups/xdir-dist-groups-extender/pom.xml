@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+  <!--
+    Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version
+    2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+    the specific language governing permissions and limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.xdir.platform</groupId>
+    <artifactId>xdir-parent</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
+    <relativePath>../../../xdir-parent/pom.xml</relativePath>
+  </parent>
+
+
+  <!-- ======================================= -->
+  <!-- PROJECT DESCRITPIONS                    -->
+  <!-- ======================================= -->
+
+  <groupId>org.xdir.platform.dist</groupId>
+  <artifactId>xdir-dist-groups-extender</artifactId>
+  <version>0.9.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>XDir Platform Distribution (Groups Extender)</name>
+
+
+  <!-- ======================================= -->
+  <!-- DEPENDENCIES                            -->
+  <!-- ======================================= -->
+  <dependencies>
+
+    <!-- OSGi Compendium API -->
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+    <!-- XDir OSGi Extender -->
+    <dependency>
+      <groupId>org.xdir.platform.osgi</groupId>
+      <artifactId>xdir-osgi-extender</artifactId>
+      <version>${pom.version}</version>
+      <scope>extender</scope>
+    </dependency>
+
+    <!-- Spring OSGi Extender -->
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-extender</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-core</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-io</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    
+    <!-- Spring Framework Dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-asm</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-expression</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+
+    <!-- Logging Dependencies -->
+    <dependency>
+      <groupId>osgified.org.slf4j</groupId>
+      <artifactId>org.slf4j.api</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>osgified.org.slf4j</groupId>
+      <artifactId>org.slf4j.log4j12</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>osgified.org.apache.log4j</groupId>
+      <artifactId>org.apache.log4j</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>osgified.org.slf4j</groupId>
+      <artifactId>org.slf4j.commons.logging</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+
+
+    <!-- Spring AOP Dependencies -->
+    <dependency>
+      <groupId>osgified.org.aopalliance</groupId>
+      <artifactId>org.aopalliance</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      <groupId>osgified.com.jamonapi.jamon</groupId>
+      <artifactId>com.jamonapi.jamon</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      	  <groupId>osgified.net.sf.cglib</groupId>
+	  <artifactId>net.sf.cglib</artifactId>
+      <scope>extender</scope>
+    </dependency>
+    <dependency>
+      	  <groupId>osgified.org.objectweb.asm</groupId>
+	  <artifactId>org.objectweb.asm</artifactId>
+      <scope>extender</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

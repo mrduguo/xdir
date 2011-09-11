@@ -1,0 +1,11 @@
+${mapPut("repositoryAction","repositoryName",getStringParameter("repositoryName"))}
+${model.app.performRepositoryAction(model,getStringParameter("repositoryName"),"repositoryClean")}
+<@page_overview_title/>
+		<div class="text">
+			<#if status??>
+				${status}<br/>
+			<#else>
+				<b>Repository cleaned successfully</b><br/>
+				<a href="${pageUrl}" accesskey="0">Ok</a>
+			</#if>
+		</div>

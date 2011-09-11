@@ -1,0 +1,3 @@
+_title=Error
+_type=ts_logfile
+_log_file=${xdir.dir.logs}/debug.log

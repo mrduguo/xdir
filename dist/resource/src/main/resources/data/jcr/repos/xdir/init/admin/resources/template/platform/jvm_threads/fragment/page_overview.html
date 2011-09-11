@@ -1,0 +1,42 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@groovy>
+	def ouputstring=""
+	def mbean=java.lang.management.ManagementFactory.threadMXBean
+	
+	
+	<@bean_inspect_fields "mbean","threadCpuTimeEnabled0,threadContentionMonitoringEnabled0",
+		"daemonThreadCount,threadCount,peakThreadCount,totalStartedThreadCount,currentThreadUserTime,currentThreadCpuTime"/>
+	
+	
+	<@bean_inspect_threads "mbean","id,name,alive,daemon,interrupted,priority,state"/>
+	
+	return ouputstring
+</@groovy>
+<#macro bean_inspect_threads mbean_name field_includes>
+	field_includes=[<#list field_includes?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
+	ouputstring="$ouputstring<h3>Active Threads</h3><table class=\"sortable fullwidth\"><thead><tr>"
+	field_includes.each{
+		ouputstring="$ouputstring<th>"+BeanUtil.displayFieldName(it)+"</th>"
+	}
+	ouputstring="$ouputstring</thead><tbody>"
+	sortedList=${mbean_name}.threads.toList()
+	sortById = [
+	compare: {a, b -> a.id-b.id>0?1:(a.id-b.id<0?-1:0)}
+	] as Comparator
+	sortedList.sort(sortById)
+	sortedList.each{ field ->
+		ouputstring="$ouputstring<tr>"
+		field_includes.each{
+			if(it=="name"){
+				ouputstring="$ouputstring<td><a href=\"${pageUrl}?action=threadinfo&threadid="+field.id+"\">"
+				ouputstring="$ouputstring"+field."$it"+"</a></td>"
+			}else{
+				ouputstring="$ouputstring<td>"+field."$it"+"</td>"
+			}
+		}
+		ouputstring="$ouputstring</tr>"
+	}
+	ouputstring="$ouputstring</tbody></table>"
+</#macro>
+<@page_overview_content/>

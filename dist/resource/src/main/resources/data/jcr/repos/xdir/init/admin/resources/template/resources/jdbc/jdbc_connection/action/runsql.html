@@ -1,0 +1,31 @@
+	<h1>${pageTitle}: Run Sql</h1>
+	<div class="content_main_level_1">
+		<#if (getStringParameter("query")??)>
+			<form method="post" action="${pageUrl}">
+				<input type="hidden" name="action" value="runsql"/>		
+				<h3>SQL</h3>
+				<div><textarea class="field_input" name="query">${getStringParameter("query")?html}</textarea></div>
+				<div>
+					<input type="submit" value="Run" name="submit"/>&nbsp;<a href="${pageUrl}" accesskey="0">Cancel</a>
+				</div>
+			</form>	
+			<@groovy>
+				<@sql_init/>		
+				<#if (getStringParameter("query")?lower_case?index_of("select ")==0)>
+					<@sql_query_result "Result",getStringParameter("query"),10, pageUrl+"?action=runsql&"/>
+				<#else>	
+					<@sql_execute_result "Result",getStringParameter("query")/>
+				</#if>		
+				<@sql_destroy/>
+			</@groovy>
+		<#else>
+			<form method="post" action="${pageUrl}">
+				<input type="hidden" name="action" value="runsql"/>		
+				<h3>SQL</h3>
+				<div><textarea class="field_input" name="query"></textarea></div>
+				<div>
+					<input type="submit" value="Run" name="submit"/>&nbsp;<a href="${pageUrl}" accesskey="0">Cancel</a>
+				</div>
+			</form>	
+		</#if>
+	</div>

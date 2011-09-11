@@ -1,0 +1,70 @@
+<form class="action_form_form"  method="post"  enctype="multipart/form-data">
+<table id="action_form" class="xdir_properties_table">
+    <input class="xdirinput" name="action" value="doattach" type="hidden"/>
+    <tr>
+        <td colspan="3" style="border-bottom:1px gray solid;">
+		&gt; {$.xdir.utils.breakLongLine(pagePath,70)}<br/>
+            <span class="error"></span>
+        </td>
+    </tr>
+    <tr>
+        <td class="name">Upload*
+        <td><input id="fileToUpload" class="xdirinput" name="uploadedfile" value="" type="file"/></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="name">File Name*</td>
+        <td><input class="xdirinput" name="pathName" value="" /></td>
+        <td></td>
+    </tr>
+    <tr class="button_tr">
+        <td colspan="3" style="text-align:right; border-top:1px gray solid;">
+
+            <button id="action_submit_button">upload</button>
+            <button id="action_cancel_button">cancel</button>
+        </td>
+    </tr>
+</table>
+<div id="action_form_success" style="display:none;">
+    <b class="node_name"></b> uploaded!<br/>
+    <button id="action_close_button">close</button>
+</div>
+</form>
+<script>
+$.requireJs("ajax/js/jquery.ajaxfileupload.js");
+    bindActionFormButtons(function(){#ldelim}
+        $(".action_form_form").validate({#ldelim}
+          rules: {#ldelim}
+            propertiespathNameValue: {#ldelim}
+              required: true,
+              nospace: true
+            {#rdelim}
+          {#rdelim},submitHandler: function(form) {#ldelim}
+           	    
+           {#rdelim}
+        {#rdelim});
+        if($(".action_form_form").valid()){#ldelim}
+            ajaxFileUpload();
+        {#rdelim}
+        return false;
+    {#rdelim},function(){#ldelim}
+            refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+    
+    $("#action_form input[@name='uploadedfile']").change(function(){#ldelim}
+          var fileName=$(this).attr("value");
+          if(fileName.lastIndexOf("\\")>=0){#ldelim}
+            fileName=fileName.substr(fileName.lastIndexOf("\\")+1);
+          {#rdelim}
+          if(fileName.lastIndexOf("/")>=0){#ldelim}
+            fileName=fileName.substr(fileName.lastIndexOf("/")+1);
+          {#rdelim}
+          $("#action_form input[@name='pathName']").attr("value",fileName);
+    {#rdelim});
+    
+    $("#action_close_button").click(function(){#ldelim}
+            refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+</script>

@@ -1,0 +1,3 @@
+_url=${xdir.web.base.secureurl}/admin/resources/template/index$[format]
+_description=Global template
+_mm_no_children=true

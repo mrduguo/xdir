@@ -1,0 +1,10 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@groovy>	
+	com.jamonapi.MonitorFactory.reset()
+	return ""
+</@groovy>
+<div class="info">
+	<p>Monitor reset successfully.</p>
+	<p><a href="${pageUrl}" class="button">OK</a></p>
+</div>

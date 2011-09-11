@@ -1,0 +1,86 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@groovy>
+	import org.xdir.platform.util.bean.BeanUtil
+	import org.xdir.platform.util.io.FileUtil	
+	def ouputstring=""
+	rootLogger=org.apache.log4j.LogManager.getRootLogger()
+	loggerRepository=org.apache.log4j.LogManager.getLoggerRepository()
+	allLoggers=new java.util.HashMap()
+	allLoggers.put("",rootLogger)
+	allLoggerNames=new java.util.HashSet()
+	allLoggerNames.add("")
+	customizedLoggerNames=[""]
+	loggerRepository.getCurrentLoggers().each(){
+		allLoggers.put(it.name,it)
+		allLoggerNames.add(it.name)
+		dotIndex=it.name.indexOf(".")
+		while(dotIndex>0){
+			packageName=it.name.substring(0,dotIndex)
+			allLoggerNames.add(packageName)
+			allLoggers.put(packageName,it.getParent())
+			dotIndex=it.name.indexOf(".",dotIndex+1)
+		}
+		if(it.level!=null){
+			customizedLoggerNames.add(it.name)
+		}
+	}
+	
+	ouputstring="$ouputstring<ul>"
+	allLoggerNames.sort().each(){
+		ouputstring="$ouputstring<li>"
+		logger=it
+		if(it==""){
+			logger="ROOT"
+		}
+		
+		currentLogger=allLoggers.get(it)
+		level=currentLogger.level
+		if(level==null){
+			level=currentLogger.parent.level
+			if(level==null){
+				level=currentLogger.parent.parent.level
+			}
+		}
+		if(level.toString()=="ERROR"){
+			ouputstring="$ouputstring<b>$level</b> "
+		}else{
+			ouputstring="$ouputstring<a href=\"${pageUrl}?action=level&level=ERROR&logger=$logger\">ERROR</a> "
+		}
+		if(level.toString()=="WARN"){
+			ouputstring="$ouputstring<b>$level</b> "
+		}else{
+			ouputstring="$ouputstring<a href=\"${pageUrl}?action=level&level=WARN&logger=$logger\">WARN</a> "
+		}
+		if(level.toString()=="INFO"){
+			ouputstring="$ouputstring<b>$level</b> "
+		}else{
+			ouputstring="$ouputstring<a href=\"${pageUrl}?action=level&level=INFO&logger=$logger\">INFO</a> "
+		}
+		if(level.toString()=="DEBUG"){
+			ouputstring="$ouputstring<b>$level</b> "
+		}else{
+			ouputstring="$ouputstring<a href=\"${pageUrl}?action=level&level=DEBUG&logger=$logger\">DEBUG</a> "
+		}
+		if(level.toString()=="TRACE"){
+			ouputstring="$ouputstring<b>$level</b> "
+		}else{
+			ouputstring="$ouputstring<a href=\"${pageUrl}?action=level&level=TRACE&logger=$logger\">TRACE</a> "
+		}
+		if(it==""){
+			ouputstring="$ouputstring &nbsp; <b>ROOT</b></li>"
+		}else if(customizedLoggerNames.contains(it)){
+			ouputstring="$ouputstring &nbsp; <b>$it</b></li>"
+		}else{
+			ouputstring="$ouputstring &nbsp; $it</li>"
+		}
+		
+	}
+	ouputstring="$ouputstring</ul>"
+
+	return ouputstring
+</@groovy>
+<@page_overview_content/>
+<#macro page_overview_title>
+	<h1><div><a href="${pageUrl}?action=reset" class="button">Reload from log4j.xml</a></div>${pageTitle}</h1>
+</#macro>

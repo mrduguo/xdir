@@ -1,0 +1,3 @@
+_url=${xdir.web.base.secureurl}/admin/platform/jvm/inspector/index$[format]
+_title=Inspector
+_type=jvm_inspector

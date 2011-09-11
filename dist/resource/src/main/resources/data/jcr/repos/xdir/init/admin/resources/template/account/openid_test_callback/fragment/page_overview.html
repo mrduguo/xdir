@@ -1,0 +1,116 @@
+<@page_overview_title/>
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+
+import org.expressme.openid.*;
+
+import org.xdir.platform.util.codec.IdUtil;
+import org.xdir.platform.api.security.Role;
+
+
+json=model.app.security.get("openidgoogle").retriveUserInfo(model.request);
+		model.put("json",json);
+        return ""+json.toString();
+
+System.setProperty("debug","true")
+
+
+        OpenIdManager manager = new OpenIdManager();
+        
+        manager.setReturnTo(model.pagePath+".html");
+        manager.setRealm("https://127.0.0.1:8443");
+        manager.setTimeOut(10000);
+        
+        ShortName shortName=new ShortName();
+        shortName.getUrlMap().put("google", "https://www.google.com/accounts/o8/id");
+        shortName.getUrlMap().put("yahoo", "http://open.login.yahooapis.com/openid20/www.yahoo.com/xrds");
+        shortName.getAliasMap().put("yahoo", "ax");
+        manager.setShortName(shortName);
+        
+        Map<String, String> requiredFields=new HashMap<String, String>();
+        requiredFields.put("email","http://axschema.org/contact/email");
+        requiredFields.put("fullname","http://axschema.org/namePerson");
+        requiredFields.put("language","http://axschema.org/pref/language");
+        requiredFields.put("firstname","http://axschema.org/namePerson/first");
+        requiredFields.put("lastname","http://axschema.org/namePerson/last");
+        requiredFields.put("gender","http://axschema.org/person/gender");
+        requiredFields.put("image","http://axschema.org/media/image/default");
+        requiredFields.put("timezone","http://axschema.org/pref/timezone");
+        manager.setRequiredFields(requiredFields);
+        
+        
+        Endpoint endpoint = manager.lookupEndpoint("google");
+        //Endpoint endpoint = manager.lookupEndpoint("yahoo");
+        System.out.println(endpoint);
+        Association association = manager.lookupAssociation(endpoint);
+        System.out.println(association);
+        String authUrl = manager.getAuthenticationUrl(endpoint, association);
+        
+        session=model.request.getSession(false)
+        if(session==null){
+        	return "session expired";
+        }
+        
+        tokenSecret=session.getAttribute("tokenSecret")
+        Authentication authentication = manager.getAuthentication(model.request, Base64.decode(tokenSecret), endpoint.getAlias());
+        System.out.println(authentication);
+        
+        
+
+        
+        def userName=authentication.identity;
+        def userEmail=authentication.email;
+        def userDisplayName=authentication.fullname;
+        def userIcon=authentication.image;
+        def userTimeZone=authentication.timezone;
+        
+                
+        def result="";
+        result="$result<div>"+userDisplayName+"</div>"
+        result="$result<div><img src=\""+userIcon+"\"/></div>"
+        result="$result<div>"+userName+"</div>"
+        result="$result<div>"+userTimeZone+"</div>"
+        
+        def loginName=userName;
+        loginNode=model.app.loadLogin(loginName);
+        if(loginNode!=null){
+            session.setAttribute("loginName",loginName);
+        	user=model.app.security.login(model)
+        	result="$result<div>logged in</div>"
+        }else{
+        	def userId=userEmail;
+	        def userPath=userEmail.substring(0,userEmail.indexOf("@"));
+        	userNode=model.app.loadUser(userId);
+        	if(userNode!=null){
+        		userId=userId+"_"+System.currentTimeMillis();
+        	}
+        	def userAttributes =new HashMap();
+        	
+        	userAttributes.put("_title",userDisplayName);
+        	userAttributes.put("_source", "openid");
+        	userAttributes.put("_role", Role.USER+"");
+        	
+        	
+        	userAttributes.put("logins/openid_"+userPath+"/_user_name", loginName);
+        	userAttributes.put("logins/openid_"+userPath+"/_type", "login");
+        	userAttributes.put("logins/openid_"+userPath+"/_icon", userIcon);
+        	userAttributes.put("profile/_icon", userIcon);
+        	userAttributes.put("profile/_email", userEmail);
+        	userAttributes.put("profile/_time_zone", userTimeZone);
+        	
+        	System.out.println("userid:\n\n\n"+userId);
+        	userNode=model.app.createUser(userId,userAttributes);
+        	if(userNode!=null){
+        		result="$result<div>user created <a href=\"../../../index"+model.format+"\">OK</a></div>"
+            	
+        		session.setAttribute("loginName",loginName);
+        		user=model.app.security.login(model)
+        	}else{
+        		result="$result<div>user create failed</div>"
+        	}
+        }
+
+	return result;
+	//return consumer.getToken()+":"+consumer.getTokenSecret()
+	//return model.pagePath+"/callback.html"
+</@groovy>

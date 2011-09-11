@@ -1,0 +1,28 @@
+<@page_overview_title/>
+<#assign fileLocation=getStringParameter("file_location")/>
+<#if (getStringParameter("input_location")??)>
+	<#assign fileContent=(app.readResourceAsString(getStringParameter("input_location")))/>
+<#else>
+	<#assign fileContent=(app.readResourceAsString("file:"+fileLocation))/>
+</#if>
+	<form method="post" action="${pageUrl}">
+		<input type="hidden" name="action" value="editconf"/>
+		<table class="fullwidth">
+			<tr><th class="width100px">Source</th><td>${fileLocation}</td></tr>
+			<tr><th>Save As</th><td><input class="fullwidth" type="text" name="file_location" value="${fileLocation}"/></td></tr>
+		<tr>
+			<td colspan="2">
+				<textarea  class="singleautoresize" name="file_content">${fileContent?html}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button type="submit" class="button">Save</button>&nbsp;
+				<a href="${pageUrl}" class="button">Cancel</a>
+			</td>
+		</tr>
+		</table>
+	</form>
+	
+	<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+			

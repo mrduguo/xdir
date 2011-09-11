@@ -1,0 +1,6 @@
+<#if (pagePaths?size>1)>
+	    ${setPageTitle(node.name)}
+</#if>
+<#macro page_nav_link nodeLink>
+	<a href="${internalBuildUrl(nodeLink.node.path)}" title="${nodeLink.node.name}">${nodeLink.node.name}</a>
+</#macro>

@@ -1,0 +1,3 @@
+_title=XDir Core
+_type=osgi_spring
+_service_filter=(Bundle-SymbolicName=xdir-core)

@@ -1,0 +1,13 @@
+${app.attachFile(model,"uploadedfile")}
+<@page_overview_title/>
+<#if status??>
+	<div class="error"><div class="title">Error</div>
+		<p>${status}</p>
+		<p><a href="${pageUrl}" class="button">Ok</a></p>
+	</div>
+<#else>
+	<div class="info">
+		<p>File attached!</p>
+		<p><a href="${pageUrl}" class="button">Ok</a></p>
+	</div>
+</#if>

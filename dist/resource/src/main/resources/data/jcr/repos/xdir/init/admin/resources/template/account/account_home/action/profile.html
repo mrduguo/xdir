@@ -1,0 +1,28 @@
+<h1>${pageTitle} : Edit Profile</h1>
+${app.loadAccount(model)}
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+import org.xdir.platform.core.internal.utils.JcrNodeUtils;
+import org.xdir.platform.core.internal.utils.RequestUtils;
+	account=model.get("account")
+	if(model.getStringParameter("_title")!=null){
+		JcrNodeUtils.setNodeProperty(account,"_title",model.getStringParameter("_title"));
+	}
+	if(model.getStringParameter("_icon")!=null){
+		JcrNodeUtils.setNodeProperty(account,"profile/_icon",model.getStringParameter("_icon"));
+	}
+	
+	properties=RequestUtils.getProperties(model);
+	properties.each(){ k,v ->
+		JcrNodeUtils.setNodeProperty(account,"profile/"+k,v);
+	}
+	account.session.save()
+	return ""
+</@groovy>
+<#if status??>
+	<div class="error">${status}</div>
+<#else>
+	<div class="info"><p>Profile updated!</p>
+	<a href="${pageUrl}" class="button">Ok</a>
+	</div>
+</#if>

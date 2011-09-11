@@ -1,0 +1,8 @@
+${app.jcr.createNode(model)}
+${app.jcr.editNode(model)}
+<#assign newCreatedNodePath=node.name/>
+${model.setNode(node.parent)}
+<@page_overview_title/>
+	<div class="panel info">
+		Object path saved at <a href="${pagePath}/${newCreatedNodePath}${format}">${newCreatedNodePath}${format}</a>
+	</div>

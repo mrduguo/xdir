@@ -1,0 +1,15 @@
+${app.jcr.createNode(model)}
+<#if !status??>
+	${addUpdate("_connection_settings",app.props.resolveToRelativePath(getStringParameter("_connection_settings")))}
+	${addUpdate("_connection_type",app.props.resolveToRelativePath(getStringParameter("_connection_type")))}
+	${addUpdate("_type","jdbc_connection")}
+	${app.jcr.editNode(model)}
+</#if>
+	<div class="name">Create new connection</div>
+	<#if status??>
+		<div class="error">${status}</div>
+		<div class="text"><button onClick="history.go(-1)">Back to change</button></div>
+	<#else>
+		<div class="text"><b>Connection created successfully</b></div>
+		<div class="text"><a href="${pageUrl}" accesskey="0">Ok</a></div>
+	</#if>

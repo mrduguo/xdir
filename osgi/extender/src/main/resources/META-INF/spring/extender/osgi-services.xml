@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/osgi  
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd">
+
+  <osgi:list id="bundleListeners" interface="org.osgi.framework.BundleListener" />
+
+  <osgi:reference id="consoleLogger" interface="org.duguo.xdir.osgi.spi.ConsoleLogger"/>
+
+  <osgi:reference id="conditionalService" interface="org.duguo.xdir.osgi.spi.conditional.ConditionalService"/>
+
+</beans>

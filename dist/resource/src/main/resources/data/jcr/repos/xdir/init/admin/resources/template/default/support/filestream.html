@@ -1,0 +1,26 @@
+<#macro file_stream inputStream,isDownload>
+	<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+	<@groovy>
+	 	fileName=model.getPageTitle()
+	 	response=model.getResponse()
+	 	<#if (inputStream!="")>
+			inputStream=${inputStream}
+		<#else>
+			inputStream=model.getNode().getNode("jcr:content").getProperty( "jcr:data" ).getBinary().getStream()
+		</#if>
+	 	outputStream=response.getOutputStream()
+	 	<#if (isDownload==true)>
+			response.setContentType("application/x-download;charset=UTF-8")
+			response.setHeader("Content-Disposition","attachment; filename="+fileName)
+		<#else>
+			response.setContentType(model.getApp().getFormat().resolveContentType(fileName))
+		</#if>
+		try{
+	 		org.apache.commons.io.IOUtils.copy(inputStream,outputStream)
+	 	}finally{
+	 		inputStream.close()
+	 		outputStream.close()
+	 	}
+	 return ""
+	</@groovy>
+</#macro>

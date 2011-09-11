@@ -1,0 +1,2 @@
+_url=${xdir.web.base.secureurl}/admin/resources/jdbc/index$[format]
+_type=jdbc_home

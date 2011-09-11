@@ -1,0 +1,85 @@
+<@groovy>
+	import org.xdir.platform.util.bean.BeanUtil
+	def ouputstring=""
+	serviceReference=model.get("serviceReference")
+	serviceId=serviceReference.getProperty("service.id")
+	
+	<#include "../support/osgiframework">
+	<@framework_get_spring_application_context/>
+		
+	ouputstring="$ouputstring<table class=\"sortable fullwidth\">"
+	ouputstring="$ouputstring<tr><th>From Bundle</th><td><a href=\"${app.baseUri}/../bundles/"+serviceReference.bundle.bundleId+"${format}\">"+serviceReference.bundle.bundleId+" : "+serviceReference.bundle.symbolicName+"</a></td></tr>"
+	ouputstring="$ouputstring<tr><th>Service ID</th><td>$serviceId <a href=\"${app.baseUri}/../../jvm/inspector/services${format}?action=inspect&objectpath=getService($serviceId)\">Inspect Service</a></td></tr>"
+	ouputstring="$ouputstring<tr><th>Config Xml</th><td><ul>"
+	hasLocalFile=false
+	applicationContext.configLocations.each{
+		resourceLocation=it
+		if(resourceLocation.startsWith("file:")){
+			resourceLocation="file:"+model.app.props.resolveToRelativePath(resourceLocation.substring(5))
+			hasLocalFile=true
+		}
+		ouputstring="$ouputstring<li><a href=\"${pageUrl}?action=springresource&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(resourceLocation,"utf-8")+"\">$resourceLocation</a></li>"
+	}
+	if(hasLocalFile==false){
+		resourceLocation="file:\$"+"{xdir.dir.conf}/$serviceReference.bundle.symbolicName/local.xml"
+		ouputstring="$ouputstring<li><a href=\"${pageUrl}?action=springeditconfform&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(resourceLocation,"utf-8")+"\">Create $resourceLocation</a></li>"
+	}
+	ouputstring="$ouputstring</ul></td></tr>"
+	placeHolderConfigurer=applicationContext.getBeansOfType(org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.class).values().toArray()
+	if(placeHolderConfigurer.size()>0){
+		placeHolderConfigurer=placeHolderConfigurer[0]
+		ouputstring="$ouputstring<tr><th>Config Props</th><td>"
+		properties=placeHolderConfigurer.mergeProperties()
+		if(properties!=null && properties.size()>0){
+			ouputstring="$ouputstring<pre class=\"code\">"
+			properties.each(){key,value->
+				ouputstring="$ouputstring$key=$value\n"
+			}
+			ouputstring="$ouputstring</pre>"
+		}
+		properties=BeanUtil.retriveFieldValue(placeHolderConfigurer,"locations")
+		ouputstring="$ouputstring<ul>"
+		hasLocalFile=false
+		properties.each(){
+			resourceLocation=it.getURL().toString()
+			if(resourceLocation.startsWith("file:")){
+				resourceLocation="file:"+model.app.props.resolveToRelativePath(resourceLocation.substring(5))
+				hasLocalFile=true
+			}
+			ouputstring="$ouputstring<li><a href=\"${pageUrl}?action=springresource&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(resourceLocation,"utf-8")+"\">$resourceLocation</a></li>"
+		}
+		if(hasLocalFile==false){
+			resourceLocation="file:\$"+"{xdir.dir.conf}/$serviceReference.bundle.symbolicName/local.properties"
+			ouputstring="$ouputstring<li><a href=\"${pageUrl}?action=springeditconfform&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(resourceLocation,"utf-8")+"\">Create $resourceLocation</a></li>"
+		}
+		ouputstring="$ouputstring</ul>"
+		ouputstring="$ouputstring</td></tr>"
+	}
+	ouputstring="$ouputstring</table>"
+	
+	
+	
+	ouputstring="$ouputstring"
+	prototypeBeans=""
+	singltonBeans=""
+	applicationContext.beanDefinitionNames.sort().each{beanName->
+		if(applicationContext.isPrototype(beanName)){
+			prototypeBeans="$prototypeBeans<li><a href=\"${pageUrl}?action=beaninfo&beanname="+freemarker.template.utility.StringUtil.URLEnc(beanName,"utf-8")+"\">$beanName</a></li>"
+		}else{
+			singltonBeans="$singltonBeans<li><a href=\"${pageUrl}?action=beaninfo&beanname="+freemarker.template.utility.StringUtil.URLEnc(beanName,"utf-8")+"\">$beanName</a></li>"		
+		}
+	}
+	ouputstring="$ouputstring</ul>"
+	
+	if(prototypeBeans!=""){
+		ouputstring="$ouputstring<h3>Prototype Beans</h3><ul>$prototypeBeans</ul>"
+	}
+	if(singltonBeans!=""){
+		ouputstring="$ouputstring<h3>Singleton Beans</h3><ul>$singltonBeans</ul>"
+	}
+
+	
+	ouputstring="$ouputstring</div>"
+	
+	return ouputstring
+</@groovy>

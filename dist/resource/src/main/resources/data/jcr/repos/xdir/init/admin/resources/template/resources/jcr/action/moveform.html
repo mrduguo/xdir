@@ -1,0 +1,18 @@
+<@page_overview_title/>
+	<div class="content_main_level_1">
+	<div class="title">Move entry</div>
+		<div class="text">		
+	<form method="post" action="${pagePath?substring(0,pagePath?last_index_of("/"))}.html">
+		<input type="hidden" name="action" value="move"/>
+		<input type="hidden" name="oldPathName" value="${pagePath?substring(pagePath?last_index_of("/")+1)}"/>
+
+		<div class="field_title">* Path</div>
+		<div><input class="field_input" type="text" name="_path" value=""/></div>
+		
+		<div>
+			<input type="submit" value="Submit" name="submit"/>&nbsp;
+			<a href="${pagePath}.html" accesskey="0">Cancel</a>
+		</div>
+	</form>
+		</div>
+	</div>

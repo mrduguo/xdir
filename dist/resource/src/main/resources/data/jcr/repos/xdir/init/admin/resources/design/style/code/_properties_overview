@@ -1,0 +1,44 @@
+<div class="info">
+	<div class="title">Supported languages</div>
+	<p>cplusplus,csharp,css,delphi,html,java,js,lotusscript,mysql,php</p>
+	<p>Require script <b>js/chili/jquery_chili.js</b> to enable language highlight.</p>
+</div>
+<h3>pre [class=code]</h3>
+<pre class="code">
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World");
+    }
+}
+</pre>
+<h3>pre [class=java]</h3>
+<pre class="java">
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World");
+    }
+}
+</pre>
+<h3>pre [class=css]</h3>
+<pre class="css">.info {background-color:#D8E4F1;background-image:url(images/icon_info.png);}
+.info, .info .title {border-color:#3C78B5;}
+</pre>
+<h3>pre [class=js]</h3>
+<pre class="js">$(function() {
+	$("p.neat").addClass("ohmy").show("slow");
+});
+</pre>
+<h3>pre [class=html]</h3>
+<pre class="html">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;"
+	&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
+	&lt;head&gt;
+		&lt;title&gt;Html code sample&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;h1&gt;Hello World&lt;/h1&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<script type="text/javaScript" src="/xdir/s/js/chili/jquery_chili.js">//</script>

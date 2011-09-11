@@ -1,0 +1,15 @@
+${model.app.performRepositoryAction(model,getStringParameter("repositoryName"),"repositoryReindex")}
+<#if !model.app.isRepositoryAvaliable(model)>
+	<a href="${displayPropertyValue(app.site.url)}" accesskey="0">Ok</a>
+	${model.setSession(null)}	
+	<#stop "repository closed for admin purpose, ignore exceptions from this request">
+</#if>
+<@page_overview_title/>
+		<div class="text">
+			<#if status??>
+				${status}<br/>
+			<#else>
+				<b>Repository rebuild index successfully</b><br/>
+				<a href="${displayPropertyValue(app.site.url)}" accesskey="0">Ok</a>
+			</#if>
+		</div>

@@ -1,0 +1,49 @@
+<h1>${pageTitle}: Jcr Query</h1>
+<div>
+		<form method="post" action="${pageUrl}">
+			<input type="hidden" name="action" value="jcrquery"/>
+			<div>
+				Language: <input type="text" name="language" value="<#if getStringParameter("language")??>${getStringParameter("language")?html}<#else>JCR-SQL2</#if>"/>
+				xpath, sql, JCR-SQL2, JCR-JQOM 
+			</div>
+			<div>
+				<textarea class="multiautoresize" name="query"><#if getStringParameter("query")??>${getStringParameter("query")?html}</#if></textarea>
+			</div>
+			<div>
+				<button type="submit" class="button">Execute</button>
+				<a class="button" href="${pageUrl}">Cancel</a>
+				<a href="http://www.day.com/specs/jcr/2.0/6_Query.html">Spec</a>
+				<a href="http://docs.jboss.org/jbossdna/0.7/manuals/reference/html/jcr-query-and-search.html">Samples</a>
+			</div>
+			<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+		</form>
+</div>
+<#if getStringParameter("query")??>
+	<h3>Result</h3>
+<@groovy>
+	def ouputstring="<table class=\"sortable\"><thead><tr><th>Node</th></tr></thead><tbody>"
+	statusStr=""
+	queryStr="""${getStringParameter("query")}"""
+	nodeIterator = model.getSession().getWorkspace().getQueryManager().createQuery(queryStr, model.getStringParameter("language")).execute().getNodes();
+	long timespend=System.currentTimeMillis();
+	int maxRecord=100;
+	int i=0;
+	while(nodeIterator.hasNext()){
+		i++;
+		if(i>maxRecord){
+			timespend=System.currentTimeMillis()-timespend;
+			statusStr="<div>Found more than $maxRecord records in $timespend milliseconds</div>"
+			break;
+		}
+		nodePath=nodeIterator.nextNode().getPath()
+		ouputstring="$ouputstring<tr><td><a href=\"${pagePath}"+nodePath+"${format}\">$nodePath</a></td></tr>"
+	}
+	ouputstring="$ouputstring</tbody></table>"
+	if(i<=maxRecord){
+		timespend=System.currentTimeMillis()-timespend;
+		statusStr="<div>Found $i records in $timespend milliseconds</div>"
+	}
+	return statusStr+ouputstring
+</@groovy>
+	
+</#if>
