@@ -20,7 +20,7 @@
     <artifactId>xdir-osgi-extender</artifactId>
     <version>0.9.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>XDir Platform OSGi (Blueprint Extender)</name>
+    <name>XDir Platform OSGi (Extender Gemini Blueprint)</name>
 
     <!-- ======================================= -->
     <!-- BUILD CONFIGURATIONS                    -->
