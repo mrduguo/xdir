@@ -20,11 +20,11 @@ limitations under the License.
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.duguo.xdir</groupId>
-        <artifactId>xdir-parent</artifactId>
+        <artifactId>xdir</artifactId>
         <version>0.9.0-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.osgi</groupId>
-    <artifactId>xdir-osgi-parent</artifactId>
+    <artifactId>xdir-osgi</artifactId>
     <version>0.9.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform OSGi (Parent)</name>
@@ -38,6 +38,7 @@ limitations under the License.
         <module>bootstrap</module>
         <module>boot-group</module>
         <module>extender</module>
+        <module>extender-group</module>
     </modules>
 
 </project>

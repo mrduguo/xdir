@@ -1,13 +1,13 @@
 package org.duguo.xdir.dist.plugin;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.model.*;
+import org.apache.maven.model.Exclusion;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -17,11 +17,13 @@ import org.codehaus.plexus.archiver.*;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarArchiver.TarCompressionMethod;
+import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ import java.util.List;
  * @goal assembly
  * @phase package
  */
-public class AssemblyMojo extends AbstractAssemblyMojo {
+public class AssemblyMojo extends AbstractMojo {
 
 
     /**
@@ -63,11 +65,11 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
 
 
     /**
-     * bundle groups to assemble
+     * dependencies file sets to assemble
      *
-     * @parameter expression="${dependencies}"
+     * @parameter expression="${fileSets}"
      */
-    protected BundleGroup[] bundleGroups;
+    protected FileSet[] fileSets;
 
     /**
      * @component
@@ -103,6 +105,15 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
      */
     protected ArchiverManager archiverManager;
 
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    protected MavenProject project;
+
 
     protected File workingDir;
     protected String outputFileExtension;
@@ -128,6 +139,7 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
     private void unpackageProjectDependencies() throws Exception {
         if (project.getDependencies().size() > 0) {
             for (org.apache.maven.model.Dependency dependency : project.getDependencies()) {
+                getLog().debug("unpackaging dependency: " + project.getDependencies().toString());
                 Artifact artifact = resolveDependencyAsArtifact(dependency);
                 File tempWorkingDir = new File(project.getBuild().getDirectory(), "unpack/" + artifact.getFile().getName());
                 tempWorkingDir.mkdirs();
@@ -135,18 +147,39 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
                 unArchiver.setSourceFile(artifact.getFile());
                 unArchiver.setDestDirectory(tempWorkingDir);
                 unArchiver.extract();
-                if (!"jar".equals(dependency.getType())) {
+
+                List<Exclusion> exclusions = dependency.getExclusions();
+                if ("jar".equals(dependency.getType())) {
+                    Exclusion exclusionMetaInf = new Exclusion();
+                    exclusionMetaInf.setGroupId("META-INF");
+                    exclusions.add(exclusionMetaInf);
+                } else {
                     tempWorkingDir = tempWorkingDir.listFiles()[0];
                 }
-                FileUtils.copyDirectory(tempWorkingDir, workingDir);
+                DirectoryScanner directoryScanner = new DirectoryScanner();
+                directoryScanner.setBasedir(tempWorkingDir);
+                if (dependency.getExclusions().size() > 0) {
+                    List<String> excludeList = new ArrayList();
+                    for (Exclusion exclusion : dependency.getExclusions()) {
+                        excludeList.add("**/" + exclusion.getGroupId() + "/**");
+                        if (exclusion.getArtifactId() != null && exclusion.getArtifactId().length() > 0) {
+                            excludeList.add("**/" + exclusion.getArtifactId() + "*");
+                        }
+                    }
+                    directoryScanner.setExcludes(excludeList.toArray(new String[0]));
+                }
+                directoryScanner.scan();
+                for (String fileRelativePath : directoryScanner.getIncludedFiles()) {
+                    getLog().debug("coping : " + fileRelativePath);
+                    FileUtils.copyFile(new File(tempWorkingDir, fileRelativePath), new File(workingDir, fileRelativePath));
+                }
             }
-            getLog().error(project.getDependencies().toString());
         }
     }
 
     private void copyProjectAssemblyResources() throws Exception {
         if (rootResourceFolder.exists()) {
-            FileUtils.copyDirectory(rootResourceFolder, workingDir);
+            FileUtils.copyDirectoryStructure(rootResourceFolder, workingDir);
         }
     }
 
@@ -162,18 +195,18 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
     }
 
     private void collectBundles() throws Exception {
-        for (BundleGroup bundleGroup : bundleGroups) {
-            collectBundleGroupDependencies(bundleGroup.getDependencies(), bundleGroup.getOutputDirectory());
+        for (FileSet fileSet : fileSets) {
+            collectFileSetDependencies(fileSet.getDependencies(), fileSet.getOutputDirectory());
         }
     }
 
-    private void collectBundleGroupDependencies(List<org.apache.maven.model.Dependency> dependencies, String outputDirectory) throws Exception {
+    private void collectFileSetDependencies(List<org.apache.maven.model.Dependency> dependencies, String outputDirectory) throws Exception {
         for (org.apache.maven.model.Dependency dependency : dependencies) {
             if ("pom".equals(dependency.getType())) {
                 Artifact projectArtifact = artifactFactory.createProjectArtifact(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion());
                 artifactResolver.resolve(projectArtifact, project.getRemoteArtifactRepositories(), localRepository);
                 MavenProject pomProject = mavenProjectBuilder.buildFromRepository(projectArtifact, project.getRemoteArtifactRepositories(), localRepository);
-                collectBundleGroupDependencies(pomProject.getDependencies(), outputDirectory);
+                collectFileSetDependencies(pomProject.getDependencies(), outputDirectory);
             } else {
                 copyDependencyToOutputDirectory(dependency, outputDirectory);
             }
@@ -211,6 +244,9 @@ public class AssemblyMojo extends AbstractAssemblyMojo {
             TarCompressionMethod tarCompressionMethod = new TarCompressionMethod();
             tarCompressionMethod.setValue("gzip");
             archiver.setCompression(tarCompressionMethod);
+            TarLongFileMode tarLongFileMode = new TarLongFileMode();
+            tarLongFileMode.setValue(TarLongFileMode.GNU);
+            archiver.setLongfile(tarLongFileMode);
             addAdditionalFormat(archiver);
         } else {
             throw new MojoExecutionException("Not supported file name [" + outputFile.getName() + "], only support zip and tar.gz file extension");

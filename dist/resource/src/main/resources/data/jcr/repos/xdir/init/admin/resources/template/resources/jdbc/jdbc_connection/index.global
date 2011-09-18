@@ -1,8 +1,0 @@
-<#include "parent:index.global">
-<#macro page_actions>
-		    <li><a href="${pagePaths[1].url}?action=runsql">Run SQL</a></li>
-		    <li><a href="${pagePaths[1].url}?action=deleteform">Delete Conn</a></li>
-</#macro>
-<#include "support/jdbc">
-<#assign connection_settings=app.props.resolveStringValue(pageProperties["_connection_settings"].displayableValue)>
-<#assign connection_type=pageProperties["_connection_type"].displayableValue>

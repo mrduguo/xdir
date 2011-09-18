@@ -1,5 +1,0 @@
-_title=Profiles
-_description=XDir Blog
-_url=$[pageContext]/profiles/index$[format]
-_overview=You are welcome to XDir Platform Blog.
-jcr:name=You are welcome to XDir Platform Blog.

@@ -1,3 +1,0 @@
-_type=jdbc_connection
-_connection_type=derby
-_connection_settings=${xdir.dir.data}/jcr/repos/xdir/workspaces/default/db

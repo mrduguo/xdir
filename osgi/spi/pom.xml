@@ -13,7 +13,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.duguo.xdir.osgi</groupId>
-        <artifactId>xdir-osgi-parent</artifactId>
+        <artifactId>xdir-osgi</artifactId>
         <version>0.9.0-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.osgi</groupId>

@@ -1,4 +1,0 @@
-if(lineString.indexOf(" ERR")<0){
- continue
-}
-lineString="LINE "+lineNumber+": "+lineString

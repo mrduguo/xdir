@@ -1,9 +1,0 @@
-_title=Sites
-_url=${xdir.web.base.secureurl}/admin/sites/index$[format]
-_application_jcr_base_path=/websites/www
-_application_base_url=${xdir.web.base.url}
-_application_template_paths=${xdir.web.template.defaultpath}
-
-_site_global_page_title=XDir Platform
-_site_global_sub_title=Management Excellence
-_site_title=Home

@@ -1,3 +1,0 @@
-_url=${xdir.web.base.secureurl}/admin/platform/osgi/conf/index$[format]
-_application_jcr_base_path=/admin/platform/osgi/conf
-_application_bean=osgiConfManagerApplication
