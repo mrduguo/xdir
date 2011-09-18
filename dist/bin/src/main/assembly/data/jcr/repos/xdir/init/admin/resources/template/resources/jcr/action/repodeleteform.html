@@ -1,0 +1,28 @@
+<@page_overview_title/>
+	<div class="content_main_level_1">
+	<div class="title">Delete repository</div>
+		<#if (getStringParameter("repositoryName")==model.app.jcrRepository)>
+			<div class="text">You are not allowed to delete system repository.<br/>
+			<a href="${pageUrl}" accesskey="0">Cancel</a></div>
+		<#else>
+			<@action_content_delete_repository/>
+		</#if>		
+	</div>
+<#macro action_content_delete_repository>
+		<div class="text">
+		<div class="error">Please confirm to delete repository ${getStringParameter("repositoryName")}</div>
+		<#if (repositoryList.repositories[getStringParameter("repositoryName")].isActive)>
+			Repoistory is running, delete will affect active users.
+		</#if>
+		<table class="sortable"><tr>
+			<td>
+					<form method="post" action="${pageUrl}">
+						<input type="hidden" name="action" value="repodelete"/>
+						<input type="hidden" name="repositoryName" value="${getStringParameter("repositoryName")}"/>
+						<input type="submit" value="Delete" name="submit"/>
+					</form>
+			</td>
+			<td style="vertical-align:top;padding-top:5px;"><a href="${pageUrl}" accesskey="0">Cancel</a></td>			
+		</tr></table>
+		</div>
+</#macro>

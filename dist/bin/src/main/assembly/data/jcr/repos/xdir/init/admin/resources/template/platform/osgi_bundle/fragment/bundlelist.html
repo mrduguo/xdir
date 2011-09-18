@@ -1,0 +1,37 @@
+<@page_overview_title/>
+<@groovy>
+	import org.xdir.platform.util.bean.BeanUtil
+	def ouputstring=""
+	
+	ouputstring="$ouputstring<table class=\"sortable fullwidth\"><thead><tr><th class=\"nosort\">ID</th><th>Symbolic Name</th><th>Version</th><th>Group</th><th>Status</th></thead><tbody>"
+	bundlesBaseDir=System.getProperty("xdir.dir.bundles");
+	model.app.listBundles().each(){
+		bundle=it
+		ouputstring="$ouputstring<tr><td>$bundle.bundleId</td>"
+		ouputstring="$ouputstring<td><a href=\"${pagePath}/"+bundle.bundleId+"${format}\">$bundle.symbolicName</a></td>"
+		ouputstring="$ouputstring<td>$bundle.version</td>"
+		bundleGroup=bundle.location
+		pathIndex=bundleGroup.indexOf(bundlesBaseDir)
+		if(pathIndex>=0){
+			bundleGroup=bundleGroup.substring(pathIndex+bundlesBaseDir.length()+1)
+			bundleGroup=bundleGroup.substring(0,bundleGroup.lastIndexOf("/"))
+		}
+		ouputstring="$ouputstring<td>$bundleGroup</td>"
+		ouputstring="$ouputstring<td>"+org.xdir.platform.util.bean.BundleUtil.displayBundleStatus(bundle.state)
+		
+		<#include "../support/osgiframework">
+		<@framework_get_fragment_host/>
+		if(fragmentHost!=null){
+			ouputstring="$ouputstring Host: <a href=\"${pagePath}/"+fragmentHost.bundleId+"${format}\">"+fragmentHost.bundleId+"</a>"	
+		}
+		
+		ouputstring="$ouputstring</td></tr>"
+	}
+	
+	ouputstring="$ouputstring</tbody></table>"
+	
+	return ouputstring
+</@groovy>
+<#macro page_overview_title>
+	<h1><div><a href="${pageUrl}?action=deployform" class="button">Deploy</a></div>${pageTitle}</h1>
+</#macro>

@@ -1,0 +1,10 @@
+<#include "../support/bean">
+<#include "../support/console">
+<@page_overview_title/>
+<#if app.consoleOutput??>
+	${app.executeCommand(model,getStringParameter("command"))}
+<#else>
+	<div class="notice"><div class="title">Error</div>Console already closed</div>
+</#if>
+<@console_overview/>
+<@page_overview_content/>

@@ -1,0 +1,3 @@
+_title=Node Count
+_type=jdbc_query
+_sql_query=select count(*) from APP.DEFAULT_BUNDLE

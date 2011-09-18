@@ -1,0 +1,16 @@
+<@page_overview_title/>
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+		json=model.app.security.get("openidyahoo").requestLoginUrl(model.request,model.pagePath+"/callback"+model.format);
+		model.put("json",json);
+        authUrl = json.loginUrl;
+        if(authUrl.isNull()){
+        	return "Failed to talk to OpenID provider, please try again later.";
+        }else{
+	        model.response.sendRedirect(authUrl.toString());
+        }
+	return ""
+</@groovy>
+<#if !json.loginUrl.isNull()>
+<#stop "redirected to login"/>
+</#if>

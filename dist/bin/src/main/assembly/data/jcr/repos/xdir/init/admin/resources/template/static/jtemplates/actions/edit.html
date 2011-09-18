@@ -1,0 +1,59 @@
+<form class="action_form_form">
+<table id="action_form" class="xdir_properties_table">
+    <input class="xdirinput" name="action" value="doedit" type="hidden"/>
+    <tr>
+        <td colspan="3" style="border-bottom:1px gray solid;">
+		&gt; {$.xdir.utils.breakLongLine(pagePath,70)}<br/>
+            <span class="error"></span>
+        </td>
+    </tr>
+    {#if $.xdir.jcr.properties && $.xdir.jcr.properties['jcr:displayName'] }
+	    <tr>
+	        <td class="name">Display Name*</td>
+	        <td>
+		        <input class="xdirinput required" name="displayName" value="{$.xdir.jcr.properties['jcr:displayName']}" />
+	        </td>
+	        <td></td>
+	    </tr>
+    {#/if}
+    {#foreach $.xdir.jcr.properties as row}
+        {#if $T.row$key.indexOf(":")<0}
+            {$.xdir.jcr.displayDefaultEditValue($T.row$key,$T.row)}
+        {#/if}
+    {#/for}
+    <tr class="button_tr">
+        <td colspan="3" style="text-align:right; border-top:1px gray solid;">            
+            <a href="" class="add_property">add property</a>
+            <button id="action_submit_button">submit</button>
+            <button id="action_update_button">update</button>
+            <button id="action_cancel_button">cancel</button>
+        </td>
+    </tr>
+</table>
+<div id="action_form_success" style="display:none;">
+    <b class="node_name"></b> updated!<br/>
+    <button id="action_close_button">close</button>
+</div>
+</form>
+<script>
+    bindActionFormButtons(function(){#ldelim}    
+        $(".action_form_form").validate({#ldelim}
+          rules: {#ldelim}
+            displayName: {#ldelim}
+              required: true
+            {#rdelim}
+          {#rdelim},submitHandler: function(form) {#ldelim}
+           	    
+           {#rdelim}
+        {#rdelim});
+        return $(".action_form_form").valid();
+    {#rdelim},function(){#ldelim}
+            refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+    
+    $("#action_close_button").click(function(){#ldelim}
+            refreshNodeView();
+            $("#action_dialog").dialog("close");
+    {#rdelim});
+</script>

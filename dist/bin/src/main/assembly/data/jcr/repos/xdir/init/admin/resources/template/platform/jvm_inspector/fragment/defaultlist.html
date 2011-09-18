@@ -1,0 +1,27 @@
+<div>
+	<h3>Input your object path to inspect</h3>
+	<form method="get" action="${pageUrl}">
+		<table><tr>
+		<td class="fullwidth middlealign"><input class="fullwidth" type="text" name="objectpath" value=""/></td>
+		 <td><button type="submit" class="button">Inspect</button></td>
+		 </tr></table>
+	</form>
+	<h3>Or select from bundles</h3>
+</div>
+<@groovy>
+	def ouputstring=""
+	
+	ouputstring="$ouputstring<table class=\"sortable\">"
+	ouputstring="$ouputstring<thead><tr><th class=\"nosort\">ID</th><th>Symbolic Name</th></tr></thead><tbody>"
+	model.app.listBundles().each(){
+		bundle=it
+		<#include "../support/osgiframework">
+		<@framework_get_fragment_host/>
+		if(fragmentHost==null){
+				ouputstring="$ouputstring<tr><td>$bundle.bundleId</td><td><a href=\"${pageUrl}?action=inspect&objectpath=app.retriveBundleById($bundle.bundleId)\">$bundle.symbolicName</a></td></tr>"	
+		}
+	}	
+	ouputstring="$ouputstring</tbody></table>"
+	
+	return ouputstring
+</@groovy>

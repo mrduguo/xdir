@@ -1,0 +1,41 @@
+<@page_overview_title/>
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+
+import oauth.signpost.OAuth;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.OAuthProvider;
+import oauth.signpost.basic.DefaultOAuthConsumer;
+import oauth.signpost.basic.DefaultOAuthProvider;
+
+System.setProperty("debug","true")
+
+    	OAuthConsumer consumer = new DefaultOAuthConsumer("d179416d9f6541bd8bfc7243dc609f1a","2910dcdd583f471b89ed37525728925cc5cab1f6dc694b918faa731e212efc56");
+
+
+        scope="http://www.google.com/m8/feeds/";
+        scope = model.pagePath;
+        
+        OAuthProvider provider = new DefaultOAuthProvider(
+        		"http://api.myspace.com/request_token",
+                "http://api.myspace.com/access_token",
+                "http://api.myspace.com/authorize");
+                
+        
+        // we do not support callbacks, thus pass OOB
+        
+        //String authUrl = provider.retrieveRequestToken(consumer, OAuth.OUT_OF_BAND);
+        String authUrl = provider.retrieveRequestToken(consumer, model.pagePath+"/callback.html");
+        System.out.println(authUrl);
+        System.out.println("consumer.getToken():"+consumer.getToken());
+        System.out.println("consumer.getTokenSecret():"+consumer.getTokenSecret());
+        
+        model.request.getSession(true).setAttribute("tokenSecret",consumer.getTokenSecret())
+        
+        
+        
+        model.response.sendRedirect(authUrl);
+	return authUrl
+	//return model.pagePath+"/callback.html"
+</@groovy>
+<#stop "redirected to login"/>

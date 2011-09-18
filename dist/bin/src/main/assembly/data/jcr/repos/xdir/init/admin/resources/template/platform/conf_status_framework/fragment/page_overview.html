@@ -1,0 +1,7 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<#if (pageProperties["_system_properties"]??)>
+	<h3>System Properties</h3>
+	<pre class="code">${pageProperties["_system_properties"].displayableValue?html}</pre>
+</#if>
+<@page_overview_content/>

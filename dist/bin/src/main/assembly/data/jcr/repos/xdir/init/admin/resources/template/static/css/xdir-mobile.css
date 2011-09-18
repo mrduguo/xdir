@@ -1,0 +1,5 @@
+body {background:#E6F7D4;font-family: "Trebuchet MS", Trebuchet, Verdana, Helvetica, Arial, sans-serif;}
+div.page_title{ border-bottom:1px solid black;font-weight:bold;}
+div.paths, div.links{ border-top:1px solid black;padding:2px;}
+div.content{background:white;padding:2px;}
+table.properties td.key{background:#DCDCDC;border-right:4px solid gray;text-align:right;vertical-align: top;}

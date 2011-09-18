@@ -1,0 +1,3 @@
+_title=Http Service
+_type=osgi_service
+_service_filter=(&(org.springframework.osgi.bean.name=defaultHttpService)(objectClass=org.osgi.service.http.HttpService))

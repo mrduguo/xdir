@@ -1,0 +1,50 @@
+pre { font-size:small; white-space: pre-wrap;padding:5px;}
+.content_main div.subtitle {color:gray;}
+.content_main div.text {margin:5px;}
+.content_main_page_title {margin:5px 0px 15px 0px;}
+.content_main_page_title .title{font-size:200%;font-weight:bold;}
+.content_main_level_1 {margin:5px 0px 20px 10px;}
+.content_main_level_1 .title{background:#F0F0F0;border-bottom:solid gray 1px;font-size:150%;padding-left:5px;}
+.content_main_level_1 .title a {text-decoration: none;padding:0px;}
+.content_main_level_2 {margin:5px 0px 10px 20px;}
+.content_main_level_2 .title{border-bottom:dashed gray 1px;font-size:120%;padding-left:5px;}
+.content_main_level_3 {margin:5px 0px 10px 30px;}
+.content_main_level_3 .title{background:none;border-bottom:solid gray 0px;font-size:120%;font-weight:bold;padding-left:5px;}
+.content_main_level_4 {margin:5px 0px 10px 40px;}
+.content_main_level_4 .title{background:none;border-bottom:solid gray 0px;font-size:100%;font-weight:bold;padding-left:5px;}
+table.properties_table td { padding:5px;vertical-align:top;}
+table.properties_table td.name { border-right:8px solid gray;font-weight:bold;text-align:right;}
+table.properties_table tr.oddrow td.name{ background:#DCDCDC;}
+table.properties_table tr.evenrow td.name{ background:#F8F8FF;}
+div.content_main a {text-decoration: underline;}
+div.content_main a:hover {text-decoration: none;}
+ul.one_level_list li{list-style-type:square;line-height:20px;}
+
+.field_input {width:90%;}
+.error {color:red;font-weight:bold;}
+
+
+
+.xdir_icon {background-image:url(${pageContext}/_/s/${plugins.cache.version}/images/xdir_all.gif);width: 16px; height: 16px;cursor:pointer;display:block;}
+.xdir_icon_feed {background-position: -16px 0;}
+.xdir_icon_en {background-position: -32px 0;}
+.xdir_icon_zh {background-position: -48px 0;}
+.xdir_icon_mobile {background-position: -64px 0;}
+.xdir_icon_mindmap {background-position: -80px 0;}
+.xdir_icon_delicious {background-position: -112px 0;}
+.xdir_icon_nav_link {margin:2px 0 0 0;}
+
+.xdir_ajax_button{vertical-align:middle;padding:0px;cursor:pointer;background-color:transparent;width: 16px; height: 16px;border:solid white 0px;background-image:url(${pageContext}/_/s/${plugins.cache.version}/images/xdir_all.gif);}
+.button_dropdown{background-position: 0px -16px;}
+.button_info{background-position: -16px -16px;margin:0px 5px 0px 10px;}
+.button_plus{background-position: -32px -16px;margin:0px 5px 0px 0px;}
+.button_minus{background-position: -48px -16px;margin:0px 5px 0px 0px;}
+.button_blank{background-position: 0px 0px;margin:0px 5px 0px 0px;}
+
+.node_type_icon {background-color:transparent;background-image:url(${pageContext}/_/s/${plugins.cache.version}/images/xdir_all.gif);width: 16px; height: 16px;border:solid white 0px;padding:0px;margin:1px;vertical-align:top;}
+.node_type_web_bookmark  {background-position: -112px 0;}
+.node_type_web_album  {background-position: -128px 0;}
+.node_type_web_twitter  {background-position: -144px 0;}
+.node_type_web_linkedin  {background-position: -96px 0;}
+.node_type_web_blog,.node_type_web_news,.node_type_web_techdocs  {background-position: -160px 0;}
+.node_type_web_comment  {background-position: -176px 0;}

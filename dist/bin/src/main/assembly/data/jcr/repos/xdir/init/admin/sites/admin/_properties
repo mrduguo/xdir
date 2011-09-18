@@ -1,0 +1,10 @@
+_title=Admin
+_url=${xdir.web.base.secureurl}/admin/index$[format]
+_site_global_page_title=XDir Platform Admin
+_site_global_sub_title=Management Web Interface
+_site_global_url=${xdir.web.base.secureurl}/admin/index$[format]
+_application_jcr_base_path=/admin
+_application_base_url=${xdir.web.base.secureurl}/admin
+_application_template_paths=/admin/resources/template/admin/,/admin/resources/template/default/
+_application_bean=defaultAdminApplicationPrototype
+_site_metasite=true

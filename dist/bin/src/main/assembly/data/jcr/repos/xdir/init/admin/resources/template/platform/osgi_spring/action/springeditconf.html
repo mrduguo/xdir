@@ -1,0 +1,10 @@
+<@page_overview_title/>
+<#assign spring_service_reference=true/>
+<#include "../support/service_reference">
+<#if (pathInfo.currentPath??)>
+<#elseif (pageProperties["_service_filter"]??)>
+${model.put("serviceReference",app.retriveSpringServiceReference(pageProperties["_service_filter"].displayableValue))}
+</#if>
+${app.saveResource(getStringParameter("config_file_name"),getStringParameter("config_file_content"))}
+			<div>Config save, you need reload the bundle to pick the changes.</div>
+			<a href="${pagePath}/../../bundles/index${format}?action=update&bundleinfo=${serviceReference.bundle.bundleId}" accesskey="0">reload</a> <a href="${pageUrl}" accesskey="0">cancel</a>

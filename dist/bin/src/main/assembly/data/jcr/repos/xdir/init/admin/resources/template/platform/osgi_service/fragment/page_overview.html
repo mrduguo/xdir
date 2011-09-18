@@ -1,0 +1,8 @@
+<#include "../support/service_reference">
+<#if (serviceReference??)>
+<#include "serviceinfo">
+<#else>
+<#include "servicelist">
+</#if>
+<#assign overviewDispalyChildren=false/>
+<@page_overview_content/>

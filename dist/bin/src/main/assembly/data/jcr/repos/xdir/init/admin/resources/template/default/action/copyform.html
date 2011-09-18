@@ -1,0 +1,17 @@
+<h1>${pageTitle} : Copy entry</h1>
+<form method="post" action="${pagePath}.html">
+	<input type="hidden" name="action" value="copy"/>
+	
+	<table class="fullwidth">
+		<tr><th class="width100px">Parent</th><td><input class="fullwidth" type="text" name="parentPath" value=""/></td></tr>
+		<tr><th>Title</th><td><input class="fullwidth" type="text" name="_title" value=""/></td></tr>
+		<tr><th>*Path</th><td><input class="fullwidth" type="text" name="_path" value=""/></td></tr>
+		<tr><th></th><td><input type="checkbox" id="checkbox_includechildren" name="includechildren" value="true" checked="checked"/><label for="checkbox_includechildren">Include children</label></td></tr>	
+		<tr>
+			<td colspan="2">
+				<button type="submit" class="button">Submit</button>&nbsp;
+				<a href="${pageUrl}" class="button">Cancel</a>
+			</td>
+		</tr>
+	</table>
+</form>

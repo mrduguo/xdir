@@ -1,0 +1,78 @@
+<@page_overview_title/>
+<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+
+import org.expressme.openid.*;
+
+import org.xdir.platform.util.codec.IdUtil;
+import org.xdir.platform.api.security.Role;
+
+	authProvider="twitter";
+		json=model.app.security.get("oauth"+authProvider).retriveUserInfo(model.request);
+		model.put("json",json);
+        userInfo = json.user;
+        if(userInfo.identity.isNull()){
+        	System.out.println("user info request ["+json+"]");
+        	return "Failed to talk to OpenID provider, please try again later.";
+        }
+
+
+        
+        def userId=userInfo.identity.get();
+        def loginName=authProvider+":"+userId;
+        def userName=userInfo.userName.get();
+        def userEmail=userInfo.email.get();
+        def userDisplayName=userInfo.fullName.get();
+        def userIcon=userInfo.image.get();
+        def userTimeZone=userInfo.timezone.get();        
+        if(userName==null){
+        	userName=userEmail.substring(0,userEmail.indexOf("@"));
+        }
+        
+        def result="";
+        result="$result<div>"+userDisplayName+"</div>"
+        result="$result<div><img src=\""+userIcon+"\"/></div>"
+        result="$result<div>"+userName+"</div>"
+        result="$result<div>"+userTimeZone+"</div>"
+        
+        loginNode=model.app.loadLogin(loginName);
+        
+        session=model.request.getSession(true)
+        if(loginNode!=null){
+            session.setAttribute("loginName",loginName);
+        	user=model.app.security.login(model)
+        	result="$result<div>logged in</div>"
+        }else{
+	        def userPath=userName;
+        	userNode=model.app.loadUser(userName);
+        	if(userNode!=null){
+        		userId=userName+"_"+System.currentTimeMillis();
+        	}
+        	def userAttributes =new HashMap();
+        	
+        	userAttributes.put("_title",userDisplayName);
+        	userAttributes.put("_source", "openid");
+        	userAttributes.put("_role", Role.USER+"");
+        	
+        	
+        	userAttributes.put("logins/openid_"+userPath+"/_user_name", loginName);
+        	userAttributes.put("logins/openid_"+userPath+"/_type", "login");
+        	userAttributes.put("logins/openid_"+userPath+"/_icon", userIcon);
+        	userAttributes.put("profile/_icon", userIcon);
+        	userAttributes.put("profile/_email", userEmail);
+        	userAttributes.put("profile/_time_zone", userTimeZone);
+        	
+        	System.out.println("userid:\n\n\n"+userId);
+        	userNode=model.app.createUser(userId,userAttributes);
+        	if(userNode!=null){
+        		result="$result<div>user created <a href=\"../../../index"+model.format+"\">OK</a></div>"
+            	
+        		session.setAttribute("loginName",loginName);
+        		user=model.app.security.login(model)
+        	}else{
+        		result="$result<div>user create failed</div>"
+        	}
+        }
+
+	return result;
+</@groovy>

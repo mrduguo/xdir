@@ -1,0 +1,17 @@
+<#include "../support/bean.html">
+<h1><div><a href="${pageUrl}?action=newsnapshot" class="button">Create new snapshot</a></div>${pageTitle}</h1>
+	<#if (pageNavLevel3["snapshots"]??)>
+		<@overview_list_files listChildren(pageNavLevel3["snapshots"].node)/>
+	</#if>
+<#macro overview_list_files currentCollection>
+	<#if (currentCollection?size>0)>
+		<h3>Snapshots</h3>
+		<ul>
+			<#list currentCollection?keys?sort as key>
+			  <li><a href="${currentCollection[key].url}">${currentCollection[key].title}</a></li>
+			</#list>
+		</ul>
+	</#if>
+</#macro>
+<#assign overviewDispalyChildren=false/>
+<@page_overview_content/>

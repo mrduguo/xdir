@@ -1,0 +1,16 @@
+<#assign tmp=node.setProperty("conf_hash","forcescan")/>
+${app.scanConf(node)}
+<@page_overview_title/>
+<#if status??>
+	<div class="error">
+		<div class="title">Create snapshot failed</div>
+		<p>${status}</p>
+		<a href="${pageUrl}" class="button">Ok</a>
+	</div>
+<#else>
+	<div class="info">
+		<div class="title">Snapshot created.</div>
+		<a href="${pageUrl}" class="button">Ok</a>
+	</div>
+</#if>
+	

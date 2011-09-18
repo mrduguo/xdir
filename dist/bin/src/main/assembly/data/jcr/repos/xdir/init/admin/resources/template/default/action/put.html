@@ -1,0 +1,8 @@
+${app.jcr.editNode(model)}
+<@page_overview_title/>
+<#if status??>
+	<div class="error">${status}</div>
+<#else>
+			Node updated!<br/>
+			<a href="${pageUrl}" accesskey="0">Ok</a>
+</#if>

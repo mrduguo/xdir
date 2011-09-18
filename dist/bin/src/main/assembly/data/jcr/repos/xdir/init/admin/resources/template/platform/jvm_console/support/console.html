@@ -1,0 +1,67 @@
+<#macro console_overview>
+	<div>
+		<#if app.consoleOutput??>
+			<@display_console_output app.consoleOutput/>
+			<div class="text">
+				<form method="post" action="${pageUrl}">
+					<input type="hidden" name="action" value="executecommand"/>
+					<div>
+					<textarea class="multiautoresize" name="command"></textarea>
+					</div>
+					<div>
+						<button type="submit" class="button">Run</button
+						<a class="button" href="${pageUrl}?action=executecommand&command=exit">Close</a>
+						<a class="button" href="${pageUrl}?action=executecommand&command=clear">Clear</a>
+						<a class="button" href="${pageUrl}">Refresh</a>
+						<#if (app.consoleOutput?size>0)>
+							<a class="button" href="${pageUrl}?action=savehistory&_path=${timestampForKey(app.consoleOutput[0][3])}">Save</a>
+						</#if>
+					</div>
+					<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+				</form>
+			</div>
+		<#else>
+			<p><a href="${pageUrl}?action=openconsole" class="button">Open Console</a></p>
+	  	</#if>
+	</div>
+	<#if model.get("result")??>
+		<h3>Last Return Object</h3>
+		<div class="text">
+		<@groovy>
+		import org.xdir.platform.util.bean.BeanUtil
+	def ouputstring=""
+	try{
+		<#include "objectinspector">
+		selectedObject=model.get("result")
+		<@inspect_object_root "selectedObject"/>		
+		<@inspect_object_methods "selectedObject"/>
+	}catch(Exception ex){
+		return ouputstring="$ouputstring<br/>Object not found"
+	}
+	return ouputstring
+</@groovy>
+				
+		</div>
+  	</#if>
+</#macro>
+<#macro display_console_output currentCollection><#assign is_first_command=true>	
+	<#list currentCollection as line>
+		<#if line[0]=="command">
+			<#if (is_first_command!=true)></div></#if><#assign is_first_command=false>
+			<div class="console">
+		</#if>
+		<div class="${line[0]}">
+			<#if line[0]=="command">
+				<div class="prompt">${line[1]}@groovy:</div>
+				<div class="timestamp">${timestampForDisplay(line[3])}</div>
+				<pre class="rawtext">${line[2]?html}</pre>
+			<#elseif line[0]=="result">
+				<div class="prompt">===></div>
+				<pre class="rawtext">${line[1]?html}</pre>
+			<#else>
+				<pre class="rawtext">${line[1]?html}</pre>
+			</#if>
+		</div>
+	</#list>
+	<#if (is_first_command!=true)></div></#if>
+</#macro>

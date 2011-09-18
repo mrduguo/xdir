@@ -1,0 +1,18 @@
+<@page_overview_title/>
+	<div class="content_main_level_1">
+	<div class="title">Rebuild index of repository ${getStringParameter("repositoryName")}</div>
+		<div class="text">
+		<#if (repositoryList.repositories[getStringParameter("repositoryName")].isActive)>
+			Repoistory is running, Rebuild index will shutdown first and it will affect active users.
+		</#if>
+	<form method="post" action="${pageUrl}">
+		<input type="hidden" name="action" value="reporeindex"/>
+		<input type="hidden" name="repositoryName" value="${getStringParameter("repositoryName")}"/>
+
+		<div>
+			<input type="submit" value="Submit" name="submit"/>&nbsp;
+			<a href="${pageUrl}" accesskey="0">Cancel</a>
+		</div>
+	</form>
+		</div>
+	</div>

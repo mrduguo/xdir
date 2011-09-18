@@ -1,0 +1,141 @@
+<h3>sortable</h3>
+  <table class="fullwidth sortable">
+    <thead>
+      <tr>
+        <th class="nosort">Label</th>
+        <th>Hits</th>
+        <th>Avg</th>
+        <th>Total</th>
+        <th>Min</th>
+        <th>Max</th>
+        <th>First Accessed</th>
+        <th>Last Accessed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>HTTP_STATUS_500</th>
+        <td>6</td>
+        <td>145</td>
+        <td>870</td>
+        <td>26</td>
+        <td>222</td>
+        <td><div>3</div><div>hours</div></td>
+        <td>68 minutes</td>
+      </tr>
+      <tr>
+        <th><div>HTTP_STATUS</div><div>404</div></th>
+        <td>2</td>
+        <td>62</td>
+        <td>123</td>
+        <td>58</td>
+        <td>65</td>
+        <td>3 hours</td>
+        <td>3 hours</td>
+      </tr>
+      <tr>
+        <th>HTTP_STATUS_200</th>
+        <td>1121</td>
+        <td>78</td>
+        <td>87515</td>
+        <td>1</td>
+        <td>1587</td>
+        <td>3 hours</td>
+        <td>3 seconds</td>
+      </tr>
+    </tbody>
+  </table>
+<h3>normal table [class= fullwidth tdcenteralign]</h3>
+  <table class="fullwidth tdcenteralign">
+    <thead>
+      <tr>
+        <th>Label</th>
+        <th>Hits</th>
+        <th>Avg</th>
+        <th>Total</th>
+        <th>Min</th>
+        <th>Max</th>
+        <th>First Accessed</th>
+        <th>Last Accessed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>HTTP_STATUS_500</th>
+        <td>6</td>
+        <td>145</td>
+        <td>870</td>
+        <td>26</td>
+        <td>222</td>
+        <td><div>3</div><div>hours</div></td>
+        <td>68 minutes</td>
+      </tr>
+      <tr>
+        <th><div>HTTP_STATUS</div><div>404</div></th>
+        <td>2</td>
+        <td>62</td>
+        <td>123</td>
+        <td>58</td>
+        <td>65</td>
+        <td>3 hours</td>
+        <td>3 hours</td>
+      </tr>
+      <tr>
+        <th>HTTP_STATUS_200</th>
+        <td>1121</td>
+        <td>78</td>
+        <td>87515</td>
+        <td>1</td>
+        <td>1587</td>
+        <td>3 hours</td>
+        <td>3 seconds</td>
+      </tr>
+    </tbody>
+  </table>
+<h3>zebra table rows</h3>
+  <table class="sortable">
+    <thead>
+      <tr>
+        <th class="nosort">Label</th>
+        <th class="nosort">Hits</th>
+        <th class="nosort">Avg</th>
+        <th class="nosort">Total</th>
+        <th class="nosort">Min</th>
+        <th class="nosort">Max</th>
+        <th class="nosort">First Accessed</th>
+        <th class="nosort">Last Accessed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>HTTP_STATUS_500</th>
+        <td>6</td>
+        <td>145</td>
+        <td>870</td>
+        <td>26</td>
+        <td>222</td>
+        <td><div>3</div><div>hours</div></td>
+        <td>68 minutes</td>
+      </tr>
+      <tr>
+        <th><div>HTTP_STATUS</div><div>404</div></th>
+        <td>2</td>
+        <td>62</td>
+        <td>123</td>
+        <td>58</td>
+        <td>65</td>
+        <td>3 hours</td>
+        <td>3 hours</td>
+      </tr>
+      <tr>
+        <th>HTTP_STATUS_200</th>
+        <td>1121</td>
+        <td>78</td>
+        <td>87515</td>
+        <td>1</td>
+        <td>1587</td>
+        <td>3 hours</td>
+        <td>3 seconds</td>
+      </tr>
+    </tbody>
+  </table>

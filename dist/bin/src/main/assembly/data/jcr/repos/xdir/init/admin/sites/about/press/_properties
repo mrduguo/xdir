@@ -1,0 +1,6 @@
+_title=Press
+_url=${xdir.web.base.url}/about/press$[format]
+_description=XDir Blog
+_type=blog_home
+_overview=You are welcome to XDir Platform Blog.
+jcr:name=You are welcome to XDir Platform Blog.

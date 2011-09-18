@@ -1,0 +1,4 @@
+<#include "parent:index.global">
+<#macro page_actions>
+    <li><a href="${pageUrl}?action=connectionnewlist">New Connection</a></li>
+</#macro>

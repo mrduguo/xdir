@@ -1,0 +1,48 @@
+<#macro framework_get_fragment_host>
+	fragmentHost=null
+	if(bundle.getClass().name.equals("org.eclipse.osgi.framework.internal.core.BundleFragment")){
+		fragmentHost=BeanUtil.retriveFieldValue(bundle,"hosts")[0]
+	}
+</#macro>
+<#macro framework_list_bundle_details>
+	fragmentsList=null
+	if(fragmentHost==null){
+		fragmentsList=BeanUtil.retriveFieldValue(bundle,"fragments")
+		if(fragmentsList!=null && fragmentsList.size()>0){
+			<@list_bundles_in_tr "fragmentsList","Fragments"/>
+		}else{
+			fragmentsList=null
+		}
+		
+		bundleDescription=bundle.loaderProxy
+		bundleDescription=BeanUtil.retriveFieldValue(bundleDescription,"description")
+		dependentImporters=bundleDescription.dependents
+		if(dependentImporters!=null && dependentImporters.size()>0){
+			<@framework_list_bundles "dependentImporters","Importers"/>
+		}
+		dependentRequirers=bundleDescription.dependencies
+		if(dependentRequirers!=null && dependentRequirers.size()>0){
+			<@framework_list_bundles "dependentRequirers","Requirers"/>
+		}
+	}		
+</#macro>
+<#macro framework_list_all_services_support>
+	frameworkListAllServices={sourceObject->
+		services=sourceObject.getFramework().getServiceRegistry()
+		services=BeanUtil.retriveFieldValue(services,"allPublishedServices")
+		return services
+	}
+</#macro>
+<#macro framework_get_spring_application_context>
+		applicationContext=BeanUtil.retriveFieldValue(serviceReference.getRegistration(),"service")
+		applicationContextServiceLink="${pagePath}/../../../jvm/inspector/services${format}?action=inspect&objectpath=getService($serviceId).service"
+</#macro>
+<#macro framework_list_bundles bundlesVarName, sectionTitle>
+	if(${bundlesVarName}!=null && ${bundlesVarName}.size()>0){
+		tempArray=[]
+		${bundlesVarName}.collect(){
+			tempArray.add(bundle.bundleContext.getBundle(it.bundleId))
+		}
+		<@list_bundles_in_tr "tempArray",sectionTitle/>
+	}	
+</#macro>

@@ -1,0 +1,11 @@
+${mapPut("repositoryAction","workspaceName",getStringParameter("workspaceName"))}
+${model.app.performRepositoryAction(model,model.pathInfo.getPath(model.pathInfo.getCurrentIndex()-1),"workspaceCreate")}
+<@page_overview_title/>
+		<div class="text">
+			<#if status??>
+				${status}
+			<#else>
+				<b>Workspace created successfully</b>
+			</#if>
+			<br/><a href="${pageUrl}" accesskey="0">Ok</a>
+		</div>

@@ -1,0 +1,7 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@page_overview_content/>
+<#if (pageProperties["_service_properties"]??)>
+	<h3>Service Properties</h3>
+	<pre class="code">${pageProperties["_service_properties"].displayableValue?html}</pre>
+</#if>

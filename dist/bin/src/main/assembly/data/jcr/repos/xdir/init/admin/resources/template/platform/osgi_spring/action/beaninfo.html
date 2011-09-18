@@ -1,0 +1,48 @@
+<@page_overview_title/>
+<#assign spring_service_reference=true/>
+<#include "../support/service_reference">
+<@groovy>
+	import org.xdir.platform.util.bean.BeanUtil
+	def ouputstring=""
+	serviceReference=model.get("serviceReference")
+	serviceId=serviceReference.getProperty("service.id")
+	beanName=model.getStringParameter("beanname")
+	
+	<#include "../support/osgiframework">
+	<@framework_get_spring_application_context/>
+	beanDefinationInfo=model.app.generateBeanDefinationXml(beanName,applicationContext)
+	ouputstring="$ouputstring<h2><div>"
+	if(beanDefinationInfo["configResource"]!=null){
+		ouputstring="$ouputstring From <a href=\"${pageUrl}?action=springresource&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(beanDefinationInfo["configResource"],"utf-8")+"\">"+beanDefinationInfo["configResource"]+"</a>"	
+		if(beanDefinationInfo["configResource"].startsWith("file:")){
+			ouputstring="$ouputstring <a href=\"${pageUrl}?action=springeditconfform&resourcelocation="+freemarker.template.utility.StringUtil.URLEnc(beanDefinationInfo["configResource"],"utf-8")+"\" class=\"button\">Edit Bean</a>"
+		}else{
+			ouputstring="$ouputstring <a href=\"${pageUrl}?action=springeditconfform&resourcelocation=local.xml&configstring="
+			ouputstring="$ouputstring"+freemarker.template.utility.StringUtil.URLEnc(beanDefinationInfo["beanXml"],"utf-8")
+			ouputstring="$ouputstring\" class=\"button\">Edit Bean</a>"
+		}		
+	}
+	ouputstring="$ouputstring</div>${getStringParameter("beanname")}</h2>"
+	ouputstring="$ouputstring<pre class=\"code\">"+freemarker.template.utility.StringUtil.HTMLEnc(beanDefinationInfo["beanXml"])+"</pre>"
+	
+	if(applicationContext.isSingleton(beanName)){
+		ouputstring="$ouputstring<h2><div>"	
+		ouputstring="$ouputstring<a href=\"$applicationContextServiceLink"+".getBean("+freemarker.template.utility.StringUtil.URLEnc("\"","utf-8")+"$beanName"+freemarker.template.utility.StringUtil.URLEnc("\"","utf-8")+")\" class=\"button\">Inspect Object</a>"	
+		monitorService=model.app.retriveMonitorService()
+		if(monitorService!=null && monitorService.isMonitable(beanName,applicationContext.getBeanFactory())){
+			if(monitorService.isMonited(beanName,applicationContext.getBeanFactory())){
+				ouputstring="$ouputstring <a href=\"${pageUrl}?action=beanunmonitor&beanname=$beanName\" class=\"button\">Unmonitor Bean</a>"
+			}else{
+				ouputstring="$ouputstring <a href=\"${pageUrl}?action=beanmonitor&beanname=$beanName\" class=\"button\">Monitor Bean</a>"
+			}
+		}
+		ouputstring="$ouputstring</div>Bean Information</h2>"
+		selectedObject=applicationContext.getBean(beanName)
+		<#include "../support/objectinspector">
+		<@inspect_object_root "selectedObject"/>
+	}
+	
+	
+	
+	return ouputstring
+</@groovy>

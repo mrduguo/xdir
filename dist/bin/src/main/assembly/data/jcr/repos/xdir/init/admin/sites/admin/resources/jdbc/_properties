@@ -1,0 +1,4 @@
+_url=${xdir.web.base.secureurl}/admin/resources/jdbc/index$[format]
+_application_jcr_base_path=/admin/resources/jdbc
+_application_bean=jdbcManagerApplication
+_application_template_paths=/admin/resources/template/resources/jdbc/,/admin/resources/template/admin/,/admin/resources/template/default/

@@ -1,0 +1,13 @@
+<#include "../support/bean.html">
+<#if (pathInfo.currentPath??)>
+${model.put("bundle",app.retriveBundle(pathInfo.currentPath))}
+${model.addPageNavPath(pathInfo.currentPath,pathInfo.currentPath)}
+<#include "bundleinfo">
+<#elseif (pageProperties["_bundle_info"]??)>
+${model.put("bundle",app.retriveBundle(pageProperties["_bundle_info"].displayableValue))}
+<#include "bundleinfo">
+<#else>
+<#include "bundlelist">
+</#if>
+<#assign overviewDispalyChildren=false/>
+<@page_overview_content/>

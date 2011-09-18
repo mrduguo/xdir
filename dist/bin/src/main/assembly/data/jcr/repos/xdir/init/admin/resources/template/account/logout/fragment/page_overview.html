@@ -1,0 +1,12 @@
+${app.security.logout(model)}
+<#if (getStringParameter("go")??)>
+	${response.sendRedirect(getStringParameter("go"))}
+<#else>
+	<@page_overview_title/>
+	<@page_overview_description/>
+	<@page_overview_content/>
+	<div class="tips">
+		<p>You logged out successfully.</p>
+		<p><a href="${displayPropertyValue(app.site.globalUrl)}" class="button">Ok</a></p>
+	</div>
+</#if>

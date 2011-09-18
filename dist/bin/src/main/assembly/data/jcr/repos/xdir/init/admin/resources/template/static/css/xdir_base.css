@@ -1,0 +1,35 @@
+${model.response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
+	${app.loadCssConf(model)}
+	<#--
+	config loaded from xdir.css.* properties, you may override here
+	
+	${store("nav_text_padding",5)}
+	${store("nav_header_height",70)}
+	${store("nav_sidebar_width",150)}
+	
+	${store("article_text_font",14)}
+	${store("nav_header_height",(nav_header_height*article_text_font/14))}
+	${store("nav_sidebar_width",(nav_sidebar_width*article_text_font/14))}
+
+	${store("nav_background_color","#3D3D3D")}
+	${store("nav_text_color","#8E9181")}
+	${store("article_background_color","#FFF")}
+	${store("article_text_color","#000")}
+	${store("article_link_color","#2200CC")}
+	${store("article_box_border_color",nav_text_color)}
+	${store("article_box_background_color","#EEEEEE")}
+	-->
+
+	<#include "yui_reset.css">
+	<#include "yui_fonts.css">
+	<#include "yui_base.css">
+	<#include "xdir_content.css">
+	
+	<#if (css_content??)>
+		<@css_content/>
+	</#if>	
+	<#if (custom_css??)>
+		${custom_css}
+	</#if>
+</#assign>
+${model.app.template.compress("css",rawoutput)}

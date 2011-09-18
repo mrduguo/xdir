@@ -1,0 +1,8 @@
+<@page_overview_title/>
+<@page_overview_description/>
+<#if getStringParameter("openid.ns")??>
+	<#include "../support/callback">
+<#else>
+	<#include "../support/loginform">
+	<@page_overview_content/>
+</#if>
