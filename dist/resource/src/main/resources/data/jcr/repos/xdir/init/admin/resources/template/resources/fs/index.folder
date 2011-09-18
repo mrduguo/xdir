@@ -1,9 +1,0 @@
-<#include "index.global">
-<#if (file??)>
-	<#include "support/filestream.html">
-	<@file_stream "new java.io.FileInputStream(model.get(\"file\"))",false/>
-<#elseif (pagePaths?size>1)>
-	${response.sendRedirect(pagePath+app.format.autoDetectFormat(model))}
-<#else>
-	${response.sendRedirect(pagePath+"/index"+app.format.autoDetectFormat(model))}
-</#if>
