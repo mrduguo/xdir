@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+  <bean id="openidGoogle" class="org.duguo.xdir.security.impl.authentication.openid.OpenId2DirectedIdentityProvider">
+    <property name="discoveryUrl" value="https://www.google.com/accounts/o8/id"/>
+    <property name="loginUrlNamespacePrefix" value="openid.ext1"/>
+    <property name="loginUrlBaseParams">
+    	<map>
+    		<entry key="openid.ns" value="http://specs.openid.net/auth/2.0"/>
+    		<entry key="openid.claimed_id" value="http://specs.openid.net/auth/2.0/identifier_select"/>
+    		<entry key="openid.identity" value="http://specs.openid.net/auth/2.0/identifier_select"/>
+    		<entry key="openid.mode" value="checkid_setup"/>
+    		<entry key="openid.ns.ext1" value="http://openid.net/srv/ax/1.0"/>
+    		<entry key="openid.ext1.mode" value="fetch_request"/>
+    	</map>
+    </property>
+    
+    <property name="httpClientService" ref="defaultHttpClientService"/>
+    <property name="discoveryPath" value="xrds:XRDS.XRD.Service.URI.text"/>
+    <property name="tokenStore" ref="sessionTokenStore"/>
+    <property name="signService" ref="hmacsha1SignService"/>
+    <property name="userInfoRetriver" ref="openidGoogleUserInfoRetriver"/>
+    <property name="loginUrlRealm" value="https://${xdir.web.host}:${xdir.port.https}"/>
+    <property name="associationRequestParams">
+    	<map>
+    		<entry key="openid.ns" value="http://specs.openid.net/auth/2.0"/>
+    		<entry key="openid.mode" value="associate"/>
+    		<entry key="openid.session_type" value="no-encryption"/>
+    		<entry key="openid.assoc_type" value="HMAC-SHA1"/>
+    	</map>
+    </property>
+    <property name="loginUrlRequiredFields">
+    	<map>
+    		<entry key="email" value="http://axschema.org/contact/email"/>
+    		<entry key="fullName" value="http://axschema.org/namePerson"/>
+    		<entry key="language" value="http://axschema.org/pref/language"/>
+    		<entry key="firstName" value="http://axschema.org/namePerson/first"/>
+    		<entry key="lastName" value="http://axschema.org/namePerson/last"/>
+    		<entry key="gender" value="http://axschema.org/person/gender"/>
+    		<entry key="image" value="http://axschema.org/media/image/default"/>
+    		<entry key="timezone" value="http://axschema.org/pref/timezone"/>
+    	</map>
+    </property>
+  </bean>
+  
+  <bean id="openidGoogleUserInfoRetriver" class="org.duguo.xdir.security.impl.authentication.openid.OpenIdUserInfoRetriver">
+    <property name="userInfoMap">
+    	<map>
+    		<entry key="identity" value="openid.identity"/>
+    		<entry key="email" value="openid.ext1.value.email"/>
+    		<entry key="fullName" value="openid.ext1.value.fullName"/>
+    		<entry key="language" value="openid.ext1.value.language"/>
+    		<entry key="firstName" value="openid.ext1.value.firstName"/>
+    		<entry key="lastName" value="openid.ext1.value.lastName"/>
+    		<entry key="gender" value="openid.ext1.value.gender"/>
+    		<entry key="image" value="openid.ext1.value.image"/>
+    		<entry key="timezone" value="openid.ext1.value.timezone"/>
+    	</map>
+    </property>
+  </bean>
+
+</beans>

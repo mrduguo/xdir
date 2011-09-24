@@ -1,5 +1,5 @@
 <@page_overview_title/>
-<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
 <@groovy>
 
 import oauth.signpost.OAuth;
@@ -7,8 +7,8 @@ import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthProvider;
-import org.xdir.platform.api.security.Role;
-import org.xdir.platform.util.codec.IdUtil;
+import org.duguo.xdir.spi.security.Role;
+import org.duguo.xdir.util.codec.IdUtil;
 
 import javax.xml.parsers.DocumentBuilderFactory
 

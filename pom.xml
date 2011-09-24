@@ -30,8 +30,10 @@ limitations under the License.
     <!-- ======================================= -->
     <modules>
         <module>spi</module>
+        <module>util</module>
         <module>core</module>
         <module>osgi</module>
+        <module>service</module>
         <module>dist</module>
     </modules>
 
@@ -39,8 +41,8 @@ limitations under the License.
     <!-- GLOBAL PROPERTIES                       -->
     <!-- ======================================= -->
     <properties>
-        <lib.servlet.api.version>3.0.1</lib.servlet.api.version>
-        <lib.osgi.core.version>4.3.0</lib.osgi.core.version>
+        <lib.servlet.api.version>2.5.0</lib.servlet.api.version>
+        <lib.osgi.core.version>4.2.0</lib.osgi.core.version>
         <lib.osgi.compendium.version>4.2.0</lib.osgi.compendium.version>
         <lib.springframework.version>3.0.6.RELEASE</lib.springframework.version>
         <lib.gemini.blueprint.version>1.0.0.RELEASE</lib.gemini.blueprint.version>
@@ -48,6 +50,9 @@ limitations under the License.
         <lib.junit.version>4.9</lib.junit.version>
         <lib.slf4j.version>1.6.2</lib.slf4j.version>
         <lib.log4j.version>1.2.16</lib.log4j.version>
+        <lib.http.jetty.version>7.1.4.v20100610</lib.http.jetty.version>
+        <lib.jcr.api.version>2.0</lib.jcr.api.version>
+        <lib.jcr.jackrabbit.version>2.1.0</lib.jcr.jackrabbit.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>

@@ -1,0 +1,304 @@
+package org.duguo.xdir.http.json.impl.parser;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Map;
+import java.util.Stack;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.duguo.xdir.http.json.Json;
+import org.duguo.xdir.http.json.JsonArray;
+import org.duguo.xdir.http.json.JsonMap;
+import org.duguo.xdir.http.json.impl.JsonArrayImpl;
+import org.duguo.xdir.http.json.impl.JsonMapImpl;
+import org.duguo.xdir.http.json.impl.JsonNull;
+
+
+/**
+ * Default json string parser. It support single ' and double " quota. Root object could be array.
+ * 
+ * Sample valid input:
+ * {"key":"value"}
+ * [1,2,3,4]
+ * {"stringkey":"stringvalue", "intkey":2147483647, "longkey":9223372036854775807, "doublekey":1.7976931348623157E308, "booleankey":true, "arraykey":["stringvalue", 2147483647], "nullkey":null}
+ * 
+ * Part of the parse algorithm is come from @see org.apache.jackrabbit.commons.json.JsonParser
+ * 
+ * @author mrduguo
+ */
+public class DefaultJsonTextConverter extends AbstractTextConverter {
+
+    private static final Logger logger = LoggerFactory.getLogger( DefaultJsonTextConverter.class );
+    
+    public static final DefaultJsonTextConverter DEFAULT_JSON_TEXT_CONVERT=new DefaultJsonTextConverter(); 
+	
+	private static final String NULL = "null";
+    private static final int KEY_START = 1;
+    private static final int VALUE_START = 2;
+    private static final int VALUE = 4;
+    
+
+    /**
+     *
+     * @param reader The reader
+     * @throws IOException If an error occurs.
+     */
+    protected Json doParse(Reader reader) throws IOException {
+        Json rootJson=null;
+        int state;
+
+        //create root json object
+        int next = JsonConverterUtil.readIgnoreWhitespace(reader);
+        if (next == '{') {
+        	rootJson=new JsonMapImpl();
+            state = KEY_START;
+            next = JsonConverterUtil.readIgnoreWhitespace(reader);
+        } else if (next == '[') {
+            state = VALUE_START;
+        	rootJson=new JsonArrayImpl();
+            next = JsonConverterUtil.readIgnoreWhitespace(reader);
+        } else {
+            throw new IOException("JSON object must start with a '{' or '[', while it start with '"+((char)next)+"'");
+        }
+        
+    	parseElements(reader, rootJson, state, next);
+        
+        
+        return rootJson;
+    }
+
+    protected void parseElements(Reader reader, Json rootJson, int state, int next)
+			throws IOException {
+		StringBuffer value = new StringBuffer();
+        Stack<String> nameStack = new Stack<String>();
+        Stack<Json> objectStack = new Stack<Json>();
+        objectStack.push(rootJson);
+
+        try{
+	        while (next != JsonConverterUtil.EOF) {
+	            switch (state) {
+	
+	                case KEY_START:
+	                    if (next == '"' || next=='\'') {
+	                        String key = JsonConverterUtil.nextString(reader,(char)next);
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+                            nameStack.push(key);
+                            state = VALUE_START;
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                    } else if (next == '}') {
+	                        // empty object
+	                        state = VALUE;
+	                    } else {
+	                        throw new IOException("Key must be in String format (double quotes)");
+	                    }
+	                    break;
+	
+	                case VALUE_START:
+	                    if (next == '[') {
+	                        objectStack.push(new JsonArrayImpl());
+	                        // status still value_start
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                    } else if (next == '{') {
+	                        objectStack.push(new JsonMapImpl());
+	                        state = KEY_START;
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                    } else if (next == '"' || next=='\'') {
+	                    	String valueString=JsonConverterUtil.nextString(reader, (char)next);
+	                        storeValue(nameStack, objectStack, valueString);
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                        state = KEY_START;
+	                    } else {
+	                        // start of boolean/long/double/null value
+	                        // will be notified as key-value pair
+	                        state = VALUE;
+	                    }
+	                    break;
+	
+	                case VALUE:
+	                	if (next == '"' || next=='\'') {
+	                        throw new IOException("Invalid json format");
+	                    } else if (next == ',') {
+	                        state = (objectStack.peek().isMap()) ? KEY_START : VALUE_START;
+	                        storeSimpleValue(nameStack, objectStack,value);
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                    } else if (next == ']') {
+	                        storeSimpleValue(nameStack, objectStack,value);
+	
+	                    	Json valueObject=objectStack.pop();
+	                        if (!valueObject.isArray()) {
+	                            throw new IOException("Invalid json format: Unexpected array termination.");
+	                        }
+	                    	if(!objectStack.isEmpty() && !nameStack.isEmpty()){
+	                        	storeValue(nameStack, objectStack,valueObject);    		
+	                    	}
+	
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                        if (!(next == ',' || next == '}' || next == ']' || next == JsonConverterUtil.EOF)) {
+	                            throw new IOException("Invalid json format");
+	                        }
+	                    } else if (next == '}') {
+	                        storeSimpleValue(nameStack, objectStack,value);
+	                    	Json valueObject=objectStack.pop();
+	                        if (!valueObject.isMap()) {
+	                            throw new IOException("Invalid json format: Unexpected object termination.");
+	                        }
+	                    	if(!objectStack.isEmpty() && !nameStack.isEmpty()){
+	                        	storeValue(nameStack, objectStack,valueObject);    		
+	                    	}
+	
+	                        next = JsonConverterUtil.readIgnoreWhitespace(reader);
+	                        if (!(next == ',' || next == '}' || next == ']' || next == JsonConverterUtil.EOF)) {
+	                            throw new IOException("Invalid json format");
+	                        }
+	                    } else {
+	                        // simple value
+	                    	if(next != ' ' && next != '\n' && next != '\r' && next != '\t'){
+		                        value.append((char) next);	                    		
+	                    	}
+	                        next = reader.read();
+	                    }
+	                    break;
+	            }
+	        }
+	        
+	        // EOF reached -> minimal validation check
+	        if (value.length() != 0) {
+	            throw new IOException("Invalid json format");
+	        }
+        }catch (IOException ex){
+        	if(next == JsonConverterUtil.EOF){
+            	logger.error(ex.getMessage()+": Unexpected object termination\nparsed json object:\n{}",rootJson);
+        	}else{
+            	String remainText=JsonConverterUtil.readToEnd(reader);
+            	if(remainText.length()>0){
+                	logger.error(ex.getMessage()+"\nparsed json object:\n{}\nremain text:\n{}",rootJson,((char)next)+remainText);
+            	}else{
+                	logger.error(ex.getMessage()+"\nparsed json object:\n{}",rootJson);            		
+            	}
+        	}
+        	throw ex;
+        }
+	}
+
+	protected void storeSimpleValue(Stack<String> nameStack ,Stack<Json> objectStack,StringBuffer value) throws IOException {
+        if (value != null && value.length() > 0) {
+            String v = value.toString();
+            if (NULL.equals(v)) {
+            	storeValue(nameStack, objectStack,JsonNull.instance());
+            } else if (v.equalsIgnoreCase("true")) {
+                storeValue(nameStack, objectStack, true);
+            } else if (v.equalsIgnoreCase("false")) {
+                storeValue(nameStack, objectStack, false);
+            } else if (v.indexOf('.') > -1) {
+                double d = Double.parseDouble(v);
+                storeValue(nameStack, objectStack, d);
+            } else {
+                long l = Long.parseLong(v);
+                storeValue(nameStack, objectStack, l);
+            }
+        }
+        value.delete(0, value.length());
+    }
+
+    protected void storeValue(Stack<String> nameStack ,Stack<Json> objectStack,Object value) throws IOException {
+		if(objectStack.peek().isArray()){
+			addArrayValue((JsonArray)objectStack.peek(),value);
+		}else{
+			addMapValue((JsonMap)objectStack.peek(),nameStack.pop(),value);
+		}
+    }
+    
+    /**
+     * Add new value to json array, may override this meth(" \n"+inputString+" \n")od to perform additional process
+     * @param jsonArray
+     * @param value
+     */
+	protected void addArrayValue(JsonArray jsonArray, Object value) {
+		jsonArray.add(value);
+	}
+
+
+    /**
+     * Add new value to json map, may override this method to perform additional process based on current json object, key and value
+     * @param jsonMap	parent json map to be updated
+     * @param key	the new object key in the map
+     * @param value json value object, could be anything including JsonArray, JsonMap
+     */
+	protected void addMapValue(JsonMap jsonMap,String key, Object value) {
+		jsonMap.add(key,value);
+	}
+
+	@Override
+	protected void doSerialize(Json json, Writer writer) throws IOException {
+		toJsonStyleText(json, writer,0);
+	}
+
+	private void toJsonStyleText(Json json,Writer writer,int indentLevel) throws IOException  {
+		if(json.isValue()){
+			if(json.isNull()){
+				writer.append("null");
+			}else{
+				Object value=json.value().get();
+				if(value instanceof Integer || value instanceof Long || value instanceof Double || value instanceof Boolean){
+					writer.append(value.toString());
+				}else{
+					writer.append('"');
+					writer.append(JsonConverterUtil.escape(value.toString()));
+					writer.append('"');
+				}
+			}
+		}else if(json.isMap()){
+			writeIndent(writer,indentLevel);
+			writer.append("{");
+			indentLevel++;
+			if(!json.isNull()){
+				boolean isFirst=true;
+				for(Map.Entry<String, Json> entry:json.map().get().entrySet()){
+					if(isFirst){
+						isFirst=false;
+					}else{
+						writer.append(",");
+					}
+					writeIndent(writer,indentLevel);
+					writer.append('"');
+					writer.append(JsonConverterUtil.escape(entry.getKey()));
+					writer.append('"');
+					writer.append(":");
+					toJsonStyleText(entry.getValue(),writer,indentLevel+1);
+				}
+			}
+			indentLevel--;
+			writeIndent(writer,indentLevel);
+			writer.append("}");
+		}else if(json.isArray()){
+			writeIndent(writer,indentLevel);
+			writer.append("[");
+			indentLevel++;
+			if(!json.isNull()){
+				boolean isFirst=true;
+				for(Json entry:json.array().get()){
+					if(isFirst){
+						isFirst=false;
+					}else{
+						writer.append(",");
+					}
+					if(entry.isValue()){
+						writeIndent(writer,indentLevel);
+						toJsonStyleText(entry,writer,indentLevel+1);
+					}else{
+						toJsonStyleText(entry,writer,entry.isValue()?indentLevel+1:indentLevel);
+					}
+				}
+			}
+			indentLevel--;
+			writeIndent(writer,indentLevel);
+			writer.append("]");
+		}else{
+			// json.isNull()
+			writer.append("null");			
+		}
+	}
+
+}

@@ -1,7 +1,7 @@
 <@page_overview_title/>
 <@groovy>
-	import org.xdir.platform.util.bundle.BundleHeaderUtil
-	import org.xdir.platform.util.bean.BeanUtil
+	import org.duguo.xdir.util.bundle.BundleHeaderUtil
+	import org.duguo.xdir.util.bean.BeanUtil
 	def ouputstring=""
 	bundlesBaseDir=System.getProperty("xdir.dir.bundles");
 	
@@ -19,7 +19,7 @@
 		ouputstring="$ouputstring<tr><td>Location</td><td>$bundleLocation</td></tr>"
 	}
 	ouputstring="$ouputstring<tr><td>Group</td><td>$bundleGroup</td></tr>"
-	ouputstring="$ouputstring<tr><td>State</td><td>"+org.xdir.platform.util.bean.BundleUtil.displayBundleStatus(bundle.state)+"</td></tr>"
+	ouputstring="$ouputstring<tr><td>State</td><td>"+org.duguo.xdir.util.bean.BundleUtil.displayBundleStatus(bundle.state)+"</td></tr>"
 	ouputstring="$ouputstring<tr><td>Version</td><td>$bundle.version</td></tr>"
 	
 	

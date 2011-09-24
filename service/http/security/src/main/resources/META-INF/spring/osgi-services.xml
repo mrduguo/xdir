@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/osgi  
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd">
+       
+  <osgi:service ref="securityService" interface="org.duguo.xdir.spi.security.SecurityService"/>
+  
+  <osgi:reference id="accountService" interface="org.duguo.xdir.spi.security.AccountService" availability="optional"/>
+
+  <osgi:reference id="defaultHttpClientService" interface="org.duguo.xdir.http.client.HttpClientService"/>
+
+  <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="properties">
+      <value>
+        xdir.port.http=8080
+        xdir.port.https=8443
+        xdir.security.crypt.schema=DESede
+        xdir.security.crypt.key=momlmCcasPs4JYJhJmCjRmf5CAplCKS6Y66CMqoyo2sjyrLq
+        xdir.security.rememberme.expire.in.days=7
+      </value>
+    </property>
+  </bean>
+  
+</beans>
+

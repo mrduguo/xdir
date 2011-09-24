@@ -11,7 +11,7 @@ if(!backupfile.endsWith(".zip")){
 backupfile=model.app.props.resolveStringValue(backupfile)
 tmpFolder=backupfile+".tmp"
 sql.executeUpdate("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)",[tmpFolder])
-org.xdir.platform.util.io.FileUtil.zip(tmpFolder,backupfile)
+org.duguo.xdir.util.io.FileUtil.zip(tmpFolder,backupfile)
 new File(tmpFolder).deleteDir()
 ouputstring="db backup successfully to<br/>File: $backupfile<br/>Size:"+FileUtils.byteCountToDisplaySize(new File(backupfile).size())
 

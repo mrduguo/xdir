@@ -37,7 +37,7 @@
 			<@pagination_links "paginationLinks",pageUrl+"?start"/>
 			
 			logfileinfo="<table class=\"fullwidth\"><tr><th>File</th><td>$logfile</td></tr>"
-			logfileinfo="$logfileinfo<tr><th>Size</th><td>"+org.xdir.platform.util.io.FileUtil.byteCountToDisplaySize(logfile.size())+"</td></tr>"
+			logfileinfo="$logfileinfo<tr><th>Size</th><td>"+org.duguo.xdir.util.io.FileUtil.byteCountToDisplaySize(logfile.size())+"</td></tr>"
 			logfileinfo="$logfileinfo<tr><th>Last Modified</th><td>"+model.timestampForDisplay(logfile.lastModified())+"</td></tr>"		
 			<#if (getStringParameter("filter")??)>
 				logfileinfo="$logfileinfo<tr><th>Filter</th><td>${getStringParameter("filter")}</td></tr>"					

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="loginManager" class="org.duguo.xdir.security.impl.authentication.manager.LoginManagerImpl">
+    <property name="accountService" ref="accountService"/>
+    <property name="rememberMeEncoder" ref="rememberMeEncoder"/>
+    <property name="rememberMexpireInDays" value="${xdir.security.rememberme.expire.in.days}"/>
+  </bean>
+
+  <bean id="chainedAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.ChainedAuthenticator">
+    <property name="authenticators">
+      <list>
+        <ref bean="userNamePasswordAuthenticator"/>
+        <ref bean="rememberMeAuthenticator"/>
+        <ref bean="authorisedLoginAuthenticator"/>
+        <!-- ref bean="localUserAuthenticator"/-->
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="userNamePasswordAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.UserNamePasswordAuthenticator">
+    <property name="userNamePasswordRetrievers">
+      <list>
+        <ref bean="paramUserNamePasswordRetriever"/>
+        <ref bean="basicAuthUserNamePasswordRetriever"/>
+      </list>
+    </property>
+    <property name="userNamePasswordNormalizer" ref="userNamePasswordNormalizer"/>
+    <property name="userNamePasswordValidators">
+      <list>
+        <ref bean="inMemoryUserValidator"/>
+        <ref bean="accountServiceUserValidator"/>
+        <ref bean="userNameEqualsPasswordValidator"/>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="authorisedLoginAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.HeaderBasedAuthenticator">
+    <property name="loginRetriever" ref="authorisedLoginRetriever"/>
+    <property name="loginValidator" ref="accountServiceUserValidator"/>
+  </bean>
+  
+  <bean id="paramUserNamePasswordRetriever" class="org.duguo.xdir.security.impl.authentication.retriever.ParamUserNamePasswordRetriever">
+  </bean>
+  
+  <bean id="authorisedLoginRetriever" class="org.duguo.xdir.security.impl.authentication.retriever.AuthorisedLoginRetriever">
+  </bean>
+  
+  
+  
+  <bean id="basicAuthUserNamePasswordRetriever" class="org.duguo.xdir.security.impl.authentication.retriever.BasicAuthUserNamePasswordRetriever">
+  </bean>
+  
+  <bean id="userNamePasswordNormalizer" class="org.duguo.xdir.security.impl.authentication.normalizer.UserNamePasswordNormalizer">
+  </bean>
+  
+  <bean id="userNameEqualsPasswordValidator" class="org.duguo.xdir.security.impl.authentication.validator.UserNameEqualsPasswordValidator">
+  </bean>
+  
+  <bean id="accountServiceUserValidator" class="org.duguo.xdir.security.impl.authentication.validator.AccountServiceUserValidator">
+    <property name="accountService" ref="accountService"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+  </bean>
+  
+  <bean id="localUserAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.LocalUserAuthenticator">
+  </bean>
+  
+  <bean id="rememberMeAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.HeaderBasedAuthenticator">
+    <property name="loginRetriever" ref="rememberMeLoginRetriever"/>
+    <property name="loginValidator" ref="authorisedValidator"/>
+  </bean>
+  
+  <bean id="rememberMeLoginRetriever" class="org.duguo.xdir.security.impl.authentication.retriever.RememberMeLoginRetriever">
+    <property name="rememberMeDecoder" ref="rememberMeDecoder"/>
+  </bean>
+  
+  <bean id="authorisedValidator" class="org.duguo.xdir.security.impl.authentication.validator.AuthorisedValidator">
+  </bean>
+  
+  <bean id="inMemoryUserValidator" class="org.duguo.xdir.security.impl.authentication.validator.InMemoryUserValidator">
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+    <property name="users">
+      <list>
+        <bean class="org.duguo.xdir.security.impl.authentication.UserImpl">
+        	<property name="userId" value="superuser"/>
+        	<property name="password" value="e0a69cbb2953a94f8a21e1d306751e3d"/>
+        	<property name="displayName" value="Super User"/>
+        	<property name="role" value="100000"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
+</beans>

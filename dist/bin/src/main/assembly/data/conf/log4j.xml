@@ -43,7 +43,7 @@
         <level value="info"/>
         <appender-ref ref="info"/>
     </logger>
-    <logger name="org.xdir" additivity="true">
+    <logger name="org.duguo" additivity="true">
         <level value="debug"/>
         <appender-ref ref="xdir"/>
     </logger>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="securityService" class="org.duguo.xdir.security.impl.SecurityServiceImpl">
+    <property name="securityUrlManager" ref="securityUrlManager" />
+    <property name="accessDeniedHandler" ref="accessDeniedHandler" />
+    
+    <property name="authenticator" ref="chainedAuthenticator" />
+    <property name="loginManager" ref="loginManager" />
+    <property name="accountService" ref="accountService" />
+    
+    <property name="radomStringGenerator" ref="radomStringGenerator" />
+    <property name="radomNumberGenerator" ref="radomNumberGenerator" />
+    <property name="encoderService" ref="encoderService" />
+    <property name="map" ref="extendedSecurityServices" />
+  </bean>
+
+  <bean id="securityUrlManager" class="org.duguo.xdir.security.impl.url.SecurityUrlManagerImpl">
+    <property name="httpPort" value="${xdir.port.http}" />
+    <property name="httpsPort" value="${xdir.port.https}" />
+  </bean>
+
+  <bean id="accessDeniedHandler" class="org.duguo.xdir.security.impl.url.AccessDeniedHandlerImpl">
+    <property name="authRealm" value="XDir Login"/>
+  </bean>
+  
+  <util:map id="extendedSecurityServices">
+  	<entry key="facebook" value-ref="facebook"/>
+  	<entry key="openidyahoo" value-ref="openidYahoo"/>
+  	<entry key="openidgoogle" value-ref="openidGoogle"/>
+  	<entry key="oauthtwitter" value-ref="oauthTwitter"/>
+  	<entry key="oauthgoogle" value-ref="oauthGoogle"/>
+  	<entry key="oauthlinkedin" value-ref="oauthLinkedin"/>
+  	<entry key="oauthyahoo" value-ref="oauthYahoo"/>
+  </util:map>
+
+  <bean id="sessionTokenStore" class="org.duguo.xdir.security.impl.token.SessionTokenStore">
+    <property name="storeKey" value="authToken"/>
+  </bean>
+  
+</beans>

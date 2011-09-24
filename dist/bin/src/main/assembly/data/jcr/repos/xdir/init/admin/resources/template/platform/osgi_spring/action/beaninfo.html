@@ -2,7 +2,7 @@
 <#assign spring_service_reference=true/>
 <#include "../support/service_reference">
 <@groovy>
-	import org.xdir.platform.util.bean.BeanUtil
+	import org.duguo.xdir.util.bean.BeanUtil
 	def ouputstring=""
 	serviceReference=model.get("serviceReference")
 	serviceId=serviceReference.getProperty("service.id")

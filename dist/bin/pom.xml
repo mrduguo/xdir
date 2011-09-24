@@ -50,6 +50,21 @@
                                     </dependencies>
                                 </fileSet>
                                 <fileSet>
+                                    <outputDirectory>bundles/installable</outputDirectory>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.apache.felix</groupId>
+                                            <artifactId>org.apache.felix.shell</artifactId>
+                                            <version>1.4.1</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>org.apache.felix</groupId>
+                                            <artifactId>org.apache.felix.shell.tui</artifactId>
+                                            <version>1.4.1</version>
+                                        </dependency>
+                                    </dependencies>
+                                </fileSet>
+                                <fileSet>
                                     <outputDirectory>bundles/system/extender</outputDirectory>
                                     <dependencies>
                                         <dependency>
@@ -60,6 +75,53 @@
                                         </dependency>
                                     </dependencies>
                                 </fileSet>
+                                <fileSet>
+                                    <outputDirectory>bundles/system/xdir/common</outputDirectory>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir</groupId>
+                                            <artifactId>xdir-spi</artifactId>
+                                            <version>${project.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir</groupId>
+                                            <artifactId>xdir-util</artifactId>
+                                            <version>${project.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>commons-io</groupId>
+                                            <artifactId>commons-io</artifactId>
+                                            <version>1.4</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>commons-codec</groupId>
+                                            <artifactId>commons-codec</artifactId>
+                                            <version>1.5</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir.service.db</groupId>
+                                            <artifactId>xdir-service-db-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir.service.http</groupId>
+                                            <artifactId>xdir-service-http-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
+                                        </dependency>
+                                    </dependencies>
+                                </fileSet>
+                                <!--<fileSet>-->
+                                <!--<outputDirectory>bundles/system/xdir/platform</outputDirectory>-->
+                                <!--<dependencies>-->
+                                <!--<dependency>-->
+                                <!--<groupId>org.duguo.xdir</groupId>-->
+                                <!--<artifactId>xdir-core</artifactId>-->
+                                <!--<version>${project.version}</version>-->
+                                <!--</dependency>-->
+                                <!--</dependencies>-->
+                                <!--</fileSet>-->
                             </fileSets>
                         </configuration>
                     </execution>

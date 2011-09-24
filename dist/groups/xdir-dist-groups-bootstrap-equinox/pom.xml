@@ -12,7 +12,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.xdir.platform</groupId>
+    <groupId>org.duguo.xdir</groupId>
     <artifactId>xdir</artifactId>
     <version>0.9.0-SNAPSHOT</version>
     <relativePath>../../../xdir-parent/pom.xml</relativePath>
@@ -23,7 +23,7 @@
   <!-- PROJECT DESCRITPIONS                    -->
   <!-- ======================================= -->
 
-  <groupId>org.xdir.platform.dist</groupId>
+  <groupId>org.duguo.xdir.dist</groupId>
   <artifactId>xdir-dist-groups-bootstrap-equinox</artifactId>
   <version>0.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -36,15 +36,15 @@
   <!-- ======================================= -->
   <dependencies>
     <dependency>
-      <groupId>org.xdir.platform.osgi</groupId>
+      <groupId>org.duguo.xdir.osgi</groupId>
       <artifactId>xdir-osgi-api</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>boot</scope>
     </dependency>
     <dependency>
-      <groupId>org.xdir.platform.osgi</groupId>
+      <groupId>org.duguo.xdir.osgi</groupId>
       <artifactId>xdir-osgi-bootstrap</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>boot</scope>
     </dependency>
     <dependency>

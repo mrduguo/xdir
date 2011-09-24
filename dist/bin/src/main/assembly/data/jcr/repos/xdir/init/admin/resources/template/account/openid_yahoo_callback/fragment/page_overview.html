@@ -1,11 +1,11 @@
 <@page_overview_title/>
-<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
 <@groovy>
 
 import org.expressme.openid.*;
 
-import org.xdir.platform.util.codec.IdUtil;
-import org.xdir.platform.api.security.Role;
+import org.duguo.xdir.util.codec.IdUtil;
+import org.duguo.xdir.spi.security.Role;
 
 
 json=model.app.security.get("openidyahoo").retriveUserInfo(model.request);

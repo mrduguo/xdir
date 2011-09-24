@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+       
+
+
+  <bean id="encoderService" class="org.duguo.xdir.security.impl.codec.EncoderServiceImpl">
+    <property name="encoderProviders" ref="encoderProviders"/>
+  </bean>
+
+  <util:map id="encoderProviders">
+    <entry key="encrypt" value-ref="secretEncoder" />
+    <entry key="decrypt" value-ref="secretDecoder" />
+    <entry key="digest" value-ref="md5Encoder" />
+    <entry key="md5" value-ref="md5Encoder" />
+  </util:map>
+
+  <bean id="passwordEncoder" class="org.duguo.xdir.security.impl.codec.EncodedPasswordEncoder">
+    <property name="stringEncoder" ref="saltEnabledEncoder"/>
+  </bean>
+  
+  <bean id="saltEnabledEncoder" class="org.duguo.xdir.security.impl.codec.SaltEnabledEncoder">
+    <property name="salt" value="5PK1MvyrSRGFoXts"/>
+    <property name="stringEncoder" ref="secureDigestEncoder"/>
+  </bean>
+  
+  <bean id="secureDigestEncoder" class="org.duguo.xdir.security.impl.codec.DigestStringEncoder">
+    <property name="digestLoop" value="1000"/>
+    <property name="digestAlgorithm" value="MD5"/>
+  </bean>
+  
+  <bean id="md5Encoder" class="org.duguo.xdir.security.impl.codec.DigestStringEncoder">
+    <property name="digestAlgorithm" value="MD5"/>
+  </bean>
+  
+  <bean id="hmacsha1SignService" class="org.duguo.xdir.security.impl.codec.crypt.DefaultSignService">
+    <property name="algorithm" value="HmacSHA1"/>
+  </bean>
+  
+  
+  
+  <bean id="radomStringGenerator" class="org.duguo.xdir.security.impl.codec.RadomStringGenerator"/>
+  
+  <bean id="radomNumberGenerator" class="org.duguo.xdir.security.impl.codec.RadomNumberGenerator"/>
+  
+  <bean id="secretEncoder" class="org.duguo.xdir.security.impl.codec.crypt.SecretEncoder">
+    <property name="encryptionScheme" value="${xdir.security.crypt.schema}"/>
+    <property name="cryptKey" ref="cryptKey"/>
+  </bean>
+  
+  <bean id="secretDecoder" class="org.duguo.xdir.security.impl.codec.crypt.SecretDecoder">
+    <property name="encryptionScheme" value="${xdir.security.crypt.schema}"/>
+    <property name="cryptKey" ref="cryptKey"/>
+  </bean>
+  
+  <bean id="cryptKey" class="org.duguo.xdir.security.impl.codec.crypt.KeyFactoryBean">
+    <property name="encryptionScheme" value="${xdir.security.crypt.schema}"/>
+    <property name="encryptionKey" value="${xdir.security.crypt.key}"/>
+  </bean>
+  
+  <bean id="rememberMeEncoder" class="org.duguo.xdir.security.impl.codec.rememberme.RememberMeEncoder">
+    <property name="secretCodec" ref="secretEncoder"/>
+    <property name="expireInDays" value="${xdir.security.rememberme.expire.in.days}"/>
+  </bean>
+  
+  <bean id="rememberMeDecoder" class="org.duguo.xdir.security.impl.codec.rememberme.RememberMeDecoder">
+    <property name="secretCodec" ref="secretDecoder"/>
+  </bean>
+
+</beans>

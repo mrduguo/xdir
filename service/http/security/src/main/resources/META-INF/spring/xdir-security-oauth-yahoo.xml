@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="oauthYahoo" class="org.duguo.xdir.security.impl.authentication.oauth.signpost.DefaultSignpostOAuthService">
+    <property name="oauthProvider" ref="oauthYahooProvider"/>
+    <property name="oauthConsumerFactoryBeanName" value="oauthYahooConsumer"/>    
+    <property name="apiResponseFormat" value="json"/>
+    <property name="httpClientService" ref="defaultHttpClientService"/>
+    <property name="tokenStore" ref="sessionTokenStore"/>
+    <property name="userInfoRetriver" ref="oauthYahooUserInfoRetriver"/>
+  </bean>
+  
+  <bean id="oauthYahooUserInfoRetriver" class="org.duguo.xdir.security.impl.authentication.oauth.OauthUserInfoRetriver">
+    <property name="oauthService" ref="oauthYahoo"/>
+    <property name="userInfoUrl" value="http://twitter.com/account/verify_credentials.json"/>
+    <property name="userInfoMap">
+    	<map>
+    		<entry key="identity" value="id"/>
+    		<entry key="fullName" value="name"/>
+    		<entry key="userName" value="screen_name"/>
+    		<entry key="image" value="profile_image_url"/>
+    		<entry key="_twitter_id" value="id"/>
+    	</map>
+    </property>
+  </bean>
+  
+  <bean id="oauthYahooProvider" class="oauth.signpost.basic.DefaultOAuthProvider">
+  	<constructor-arg value="https://api.login.yahoo.com/oauth/v2/get_request_token" />
+  	<constructor-arg value="https://api.login.yahoo.com/oauth/v2/get_token" />
+  	<constructor-arg value="https://api.login.yahoo.com/oauth/v2/request_auth" />
+    <property name="OAuth10a" value="true"/>
+  </bean>
+  
+  <bean id="oauthYahooConsumer" class="oauth.signpost.commonshttp.CommonsHttpOAuthConsumer" scope="prototype">
+  	<constructor-arg value="dj0yJmk9S3g4TThjaFRoaFVzJmQ9WVdrOVowVndRVnBQTkdjbWNHbzlPVFEzTmpVMU16WXkmcz1jb25zdW1lcnNlY3JldCZ4PTEw" />
+  	<constructor-arg value="76caeb663a882118254fd0b2f54d067737b08c1e" />
+  </bean>
+
+</beans>

@@ -1,9 +1,9 @@
 <h1>${pageTitle} : Edit Profile</h1>
 ${app.loadAccount(model)}
-<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
 <@groovy>
-import org.xdir.platform.core.internal.utils.JcrNodeUtils;
-import org.xdir.platform.core.internal.utils.RequestUtils;
+import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.core.internal.utils.RequestUtils;
 	account=model.get("account")
 	if(model.getStringParameter("_title")!=null){
 		JcrNodeUtils.setNodeProperty(account,"_title",model.getStringParameter("_title"));

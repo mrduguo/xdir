@@ -53,7 +53,7 @@ limitations under the License.
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <artifactId>com.springsource.javax.servlet</artifactId>
             <version>${lib.servlet.api.version}</version>
         </dependency>
     </dependencies>

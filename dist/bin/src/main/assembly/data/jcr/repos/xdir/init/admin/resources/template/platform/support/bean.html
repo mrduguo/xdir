@@ -1,5 +1,5 @@
 <#macro bean_inspect_fields bean_name field_excludes field_orders>
-	import org.xdir.platform.util.bean.BeanUtil
+	import org.duguo.xdir.util.bean.BeanUtil
 	field_excludes=[<#list field_excludes?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
 	ouputstring="$ouputstring<table class=\"sortable\"><thead><tr><th>Name</th><th>Value</th></thead><tbody>"
 	<#if (field_orders?length>0)>

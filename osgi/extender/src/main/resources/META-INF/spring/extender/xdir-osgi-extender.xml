@@ -10,13 +10,13 @@
   <!-- Configuration folder support            -->
   <!-- ======================================= -->
 
-  <bean id="configurationScanner" class="org.xdir.platform.osgi.extender.conf.ConfFolderAwareConditionalSpringConfigurationScanner">
+  <bean id="configurationScanner" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwareConditionalSpringConfigurationScanner">
   	<property name="conditionalService" ref="conditionalService"/>
   </bean>
 
-  <bean id="confFolderAwarePropertiesPostProcessor" class="org.xdir.platform.osgi.extender.conf.ConfFolderAwarePropertiesPostProcessor" />
+  <bean id="confFolderAwarePropertiesPostProcessor" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwarePropertiesPostProcessor" />
 
-  <bean id="extenderProperties" class="org.xdir.platform.osgi.extender.conf.SystemProperties" />
+  <bean id="extenderProperties" class="org.duguo.xdir.osgi.extender.conf.SystemProperties" />
 
 
   <!-- ======================================= -->
@@ -24,17 +24,17 @@
   <!-- Event support                           -->
   <!-- ======================================= -->
 
-  <bean id="applicationContextCreator" class="org.xdir.platform.osgi.extender.event.TrackableOsgiApplicationContextCreator">
+  <bean id="applicationContextCreator" class="org.duguo.xdir.osgi.extender.event.TrackableOsgiApplicationContextCreator">
     <property name="configurationScanner" ref="configurationScanner" />
     <property name="osgiApplicationContextTracker" ref="osgiApplicationContextTracker" />
     <property name="consoleLogger" ref="consoleLogger" />
   </bean>
 
-  <bean id="osgiApplicationContextListener" class="org.xdir.platform.osgi.extender.event.OsgiApplicationContextListener">
+  <bean id="osgiApplicationContextListener" class="org.duguo.xdir.osgi.extender.event.OsgiApplicationContextListener">
     <property name="osgiApplicationContextTracker" ref="osgiApplicationContextTracker" />
   </bean>
 
-  <bean id="osgiApplicationContextTracker" class="org.xdir.platform.osgi.extender.event.OsgiApplicationContextTracker">
+  <bean id="osgiApplicationContextTracker" class="org.duguo.xdir.osgi.extender.event.OsgiApplicationContextTracker">
     <property name="bundleListeners" ref="bundleListeners" />
   </bean>
 

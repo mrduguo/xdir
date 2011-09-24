@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="oauthTwitter" class="org.duguo.xdir.security.impl.authentication.oauth.signpost.DefaultSignpostOAuthService">
+    <property name="oauthProvider" ref="oauthTwitterProvider"/>
+    <property name="oauthConsumerFactoryBeanName" value="oauthTwitterConsumer"/>    
+    <property name="apiResponseFormat" value="json"/>
+    <property name="httpClientService" ref="defaultHttpClientService"/>
+    <property name="tokenStore" ref="sessionTokenStore"/>
+    <property name="userInfoRetriver" ref="oauthTwitterUserInfoRetriver"/>
+  </bean>
+  
+  <bean id="oauthTwitterUserInfoRetriver" class="org.duguo.xdir.security.impl.authentication.oauth.OauthUserInfoRetriver">
+    <property name="oauthService" ref="oauthTwitter"/>
+    <property name="userInfoUrl" value="http://twitter.com/account/verify_credentials.json"/>
+    <property name="userInfoMap">
+    	<map>
+    		<entry key="identity" value="id"/>
+    		<entry key="fullName" value="name"/>
+    		<entry key="userName" value="screen_name"/>
+    		<entry key="image" value="profile_image_url"/>
+    		<entry key="website" value="url"/>
+    	</map>
+    </property>
+  </bean>
+  
+  <bean id="oauthTwitterProvider" class="oauth.signpost.basic.DefaultOAuthProvider">
+  	<constructor-arg value="http://twitter.com/oauth/request_token" />
+  	<constructor-arg value="http://twitter.com/oauth/access_token" />
+  	<constructor-arg value="http://twitter.com/oauth/authorize" />
+    <property name="OAuth10a" value="true"/>
+  </bean>
+  
+  <bean id="oauthTwitterConsumer" class="oauth.signpost.commonshttp.CommonsHttpOAuthConsumer" scope="prototype">
+  	<constructor-arg value="gA6JjWFSWeQeFfWscSRydQ" />
+  	<constructor-arg value="uFkNEDHyVxhU3MKJRxE2KWPgJwn4y0JxGE0rSMpF5dY" />
+  </bean>
+
+</beans>

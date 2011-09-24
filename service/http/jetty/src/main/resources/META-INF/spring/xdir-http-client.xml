@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="defaultHttpClientService" class="org.duguo.xdir.http.client.impl.DefaultHttpClientService">
+    <property name="responseHandlers" ref="responseHandlers"/>
+  </bean>
+
+  <util:map id="responseHandlers">
+    <entry key="text" value-ref="textResponseHandler"/>
+    <entry key="json" value-ref="jsonResponseHandler"/>
+    <entry key="xml" value-ref="xmlResponseHandler"/>
+    <entry key="props" value-ref="propsResponseHandler"/>
+    <entry key="colon" value-ref="colonResponseHandler"/>
+    <entry key="query" value-ref="queryResponseHandler"/>
+  </util:map>
+  
+  <bean id="textResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+    	<bean class="org.duguo.xdir.http.json.impl.parser.PlainJsonTextConverter"/>
+    </property>
+  </bean>
+  <bean id="jsonResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+    	<bean class="org.duguo.xdir.http.json.impl.parser.DefaultJsonTextConverter"/>
+    </property>
+  </bean>  
+  <bean id="xmlResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+    	<bean class="org.duguo.xdir.http.json.impl.parser.XmlJsonTextConverter"/>
+    </property>
+  </bean>
+  <bean id="propsResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+    	<bean class="org.duguo.xdir.http.json.impl.parser.PropertiesTextConverter"/>
+    </property>
+  </bean>
+  <bean id="colonResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+		<bean class="org.duguo.xdir.http.json.impl.parser.PropertiesTextConverter">
+			<property name="propertySpliter" value=":"/>
+		</bean>
+    </property>
+  </bean>
+  <bean id="queryResponseHandler" class="org.duguo.xdir.http.client.impl.JsonResponseHandler">
+    <property name="jsonTextConverter">
+    	<bean class="org.duguo.xdir.http.json.impl.parser.QueryStringConverter"/>
+    </property>
+  </bean>
+
+</beans>

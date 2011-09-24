@@ -4,7 +4,7 @@
 	<input type="text" name="query" value="${getStringParameter("query")}"/>
 	<button type="submit" class="button">Search Profiles</button>
 </form>
-<#assign groovy = "org.xdir.platform.core.internal.template.freemarker.GroovyDirective"?new()>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
 <h3>Results</h3>
 <@groovy>
 	def ouputstring="<table class=\"sortable\"><thead><tr><th>User ID</th><th>Display Name</th></tr></thead><tbody>"

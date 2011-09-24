@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="oauthGoogle" class="org.duguo.xdir.security.impl.authentication.oauth.signpost.DefaultSignpostOAuthService">
+    <property name="oauthProvider" ref="oauthGoogleProvider"/>
+    <property name="oauthConsumerFactoryBeanName" value="oauthGoogleConsumer"/>    
+    <property name="apiResponseFormat" value="json"/>
+    <property name="httpClientService" ref="defaultHttpClientService"/>
+    <property name="tokenStore" ref="sessionTokenStore"/>
+    <property name="userInfoRetriver" ref="oauthGoogleUserInfoRetriver"/>
+  </bean>
+  
+  <bean id="oauthGoogleUserInfoRetriver" class="org.duguo.xdir.security.impl.authentication.oauth.OauthUserInfoRetriver">
+    <property name="oauthService" ref="oauthGoogle"/>
+    <property name="userInfoUrl" value="http://twitter.com/account/verify_credentials.json"/>
+    <property name="userInfoMap">
+    	<map>
+    		<entry key="identity" value="id"/>
+    		<entry key="fullName" value="name"/>
+    		<entry key="userName" value="screen_name"/>
+    		<entry key="image" value="profile_image_url"/>
+    		<entry key="_twitter_id" value="id"/>
+    	</map>
+    </property>
+  </bean>
+  
+  <bean id="oauthGoogleProvider" class="oauth.signpost.basic.DefaultOAuthProvider">
+  	<constructor-arg value="https://www.google.com/accounts/OAuthGetRequestToken?scope=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2F" />
+  	<constructor-arg value="https://www.google.com/accounts/OAuthGetAccessToken" />
+  	<constructor-arg value="https://www.google.com/accounts/OAuthAuthorizeToken?hd=default" />
+  </bean>
+  
+  <bean id="oauthGoogleConsumer" class="oauth.signpost.commonshttp.CommonsHttpOAuthConsumer" scope="prototype">
+  	<constructor-arg value="duguo.com" />
+  	<constructor-arg value="Aheu7iiguk37aVKybqu16gAd" />
+  </bean>
+
+</beans>
