@@ -36,6 +36,8 @@ limitations under the License.
     <modules>
         <module>db</module>
         <module>http</module>
+        <module>template</module>
+        <module>jcr</module>
     </modules>
 
 </project>

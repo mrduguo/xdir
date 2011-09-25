@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="basic-status-check" verbose="1" >
+  <test name="BasicStatusCheckIT" >
+    <classes>
+       <class name="org.duguo.xdir.tests.functional.statuscheck.BasicStatusCheckIT" />
+    </classes>
+  </test>
+</suite>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+  
+  <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl">
+    <property name="servletService" ref="servletService"/>
+    <property name="jcrFactory" ref="jcrFactory"/>
+    <property name="rootApplication" ref="rootApplication"/>
+    <property name="sitesRoot" value="${xdir.jcr.sites.root}" />
+    <property name="defaultApplicationPrototypeBeanName" value="defaultApplicationPrototype"/>
+  </bean>
+  
+  <bean id="rootApplication" scope="singleton" parent="defaultApplicationPrototype">
+    <!-- <property name="children" ref="rootSites"/> -->
+  </bean>
+
+  <!--
+  <util:map id="rootSites">
+    <entry key="s" value-ref="staticResourceService"/>
+  </util:map>
+   -->
+  
+  <bean id="defaultApplicationPrototype" class="org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication" scope="prototype">
+    <property name="format" ref="defaultFormatService"/>
+    <property name="formats" ref="defaultFormats"/>
+    <property name="jcrFactory" ref="jcrFactory"/>
+    <property name="jcr" ref="jcrService"/>
+    <property name="security" ref="securityService"/>
+    <property name="template" ref="freeMarkerTemplateEngine"/>
+    <property name="jcrRepository" value="${xdir.jcr.default.repository}"/>
+    <property name="jcrWorkspace" value="${xdir.jcr.default.workspace}"/>
+    <property name="props" ref="propertiesService"/>
+    <property name="resource" ref="staticResourceService"/>
+    <property name="httpClient" ref="defaultHttpClientService"/>
+  </bean>
+  
+  <bean id="bestPathMatchApplicationPrototype" class="org.duguo.xdir.core.internal.app.BestPathMatchApplication" scope="prototype" parent="defaultApplicationPrototype">
+  </bean>
+  
+  <bean id="defaultAdminApplicationPrototype" class="org.duguo.xdir.core.internal.server.DefaultAdminApplication" scope="prototype" parent="bestPathMatchApplicationPrototype">
+  </bean>
+  
+  <bean id="staticResourceService" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" scope="singleton" parent="defaultApplicationPrototype">
+    <property name="resource"><null/></property>
+    <property name="resourceLoader" ref="resourceLoader"/>
+    <property name="templateFormats">
+      <list>
+        <value>.js</value>
+        <value>.css</value>
+      </list>
+    </property>
+  </bean>
+  
+  
+  <bean id="fileManagerApplication" class="org.duguo.xdir.core.internal.server.FileManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+    <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
+  </bean>
+  
+  
+  <bean id="jcrManagerApplication" class="org.duguo.xdir.core.internal.jcr.JcrManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+    <property name="repositoryFactory" ref="jcrRepositoryFactory"/>
+  </bean>
+  
+  <bean id="jdbcManagerApplication" class="org.duguo.xdir.core.internal.resource.jdbc.JdbcManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+    <property name="repositoryFactory" ref="jcrRepositoryFactory"/>
+  </bean>  
+  
+  <bean id="osgiBundleManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiBundleManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+    <property name="osgiFrameworkAdaptor" ref="osgiFrameworkAdaptor" />
+    <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
+  </bean>
+  
+  <bean id="osgiFrameworkAdaptor" lazy-init="false" class="org.duguo.xdir.core.internal.server.OsgiFrameworkAdaptorImpl">
+    <property name="bootstrapFrameworkListener" ref="bootstrapFrameworkListener" />
+  </bean>    
+  
+  
+    
+  <bean id="osgiSpringManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiSpringManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  </bean>
+  
+  <bean id="osgiConfManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiConfManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+    <property name="additionalConfigurations">
+      <list>
+        <value>${xdir.dir.data}/jcr/template/repository.xml</value>
+        <value>${xdir.dir.data}/jcr/template/repository/nodetypes/custom_nodetypes.xml</value>
+      </list>
+    </property>
+    <property name="ignoredFiles" value=".*log"/>
+    <property name="hashOnlyFiles" value=".*jar|.*zip"/>
+    <property name="initDelay" value="-1"/>
+  </bean>    
+  
+  <bean id="jvmGroovyConsoleApplication" class="org.duguo.xdir.core.internal.server.JvmGroovyConsoleApplication" scope="singleton" parent="defaultAdminApplicationPrototype"/>
+
+  
+  <bean id="accountService" class="org.duguo.xdir.core.internal.account.AccountManagerApplication" scope="singleton" parent="defaultApplicationPrototype">
+  </bean>  
+  
+  <bean id="profilesApplication" class="org.duguo.xdir.core.internal.account.ProfilesApplication" scope="singleton" parent="defaultApplicationPrototype">
+  </bean>  
+   
+</beans>

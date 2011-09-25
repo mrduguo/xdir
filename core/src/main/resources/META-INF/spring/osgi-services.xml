@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/osgi  
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd">
+
+  <osgi:service ref="applicationService" interface="org.duguo.xdir.core.internal.app.register.ApplicationService" depends-on="applicationService" />
+  
+  
+  <osgi:service ref="accountService" interface="org.duguo.xdir.spi.security.AccountService" depends-on="accountService"/>
+    
+  <osgi:reference id="bootstrapFrameworkListener" interface="org.osgi.framework.FrameworkListener" bean-name="bootstrapFrameworkListener" />
+
+  <osgi:reference id="defaultHttpClientService" interface="org.duguo.xdir.http.client.HttpClientService"/>
+
+  <osgi:reference id="defaultHttpService" bean-name="defaultHttpService" interface="org.osgi.service.http.HttpService">
+    <osgi:listener bind-method="onBind" unbind-method="onUnbind" ref="servletService" />
+  </osgi:reference>
+  
+  <osgi:reference id="securityService" interface="org.duguo.xdir.spi.security.SecurityService" />
+
+  <osgi:reference id="jcrRepositoryFactory" interface="javax.jcr.RepositoryFactory" />
+
+  <bean id="servletService" class="org.duguo.xdir.http.service.impl.ServletServiceImpl">
+    <property name="servlets">
+      <map>
+        <entry key="/" value-ref="xdirServlet"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="propertiesService" class="org.duguo.xdir.core.internal.config.PropertiesServiceImpl">
+    <property name="properties">
+      <value>
+        xdir.port.http=8080
+        xdir.port.https=8443
+        xdir.web.host=localhost
+        xdir.web.context.path=/xdir
+        xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
+        xdir.jcr.default.repository=xdir
+        xdir.jcr.default.workspace=default
+        xdir.jcr.sites.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/admin/sites
+        xdir.jcr.root=${xdir.dir.data}/jcr/repos
+        xdir.web.default.contenttype=text/html;charset=UTF-8
+
+        xdir.web.virtualhost.defaulthttpurl=http://${xdir.web.host}:${xdir.port.http}
+        xdir.web.virtualhost.defaulthttpsurl=https://${xdir.web.host}:${xdir.port.https}
+        xdir.web.base.url=http://${xdir.web.host}:${xdir.port.http}${xdir.web.context.path}
+        xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}${xdir.web.context.path}
+        xdir.web.template.defaultpath=/admin/resources/template/default/
+        xdir.web.template.staticresource=/admin/resources/template/static/
+        
+        xdir.css.article.text.font=14
+        xdir.css.nav.header.height=70
+        xdir.css.nav.sidebar.width=150
+        xdir.css.nav.text.padding=5
+        xdir.css.nav.background.color=#3D3D3D
+        xdir.css.nav.text.color=#8E9181
+        xdir.css.article.background.color=#FFF
+        xdir.css.article.text.color=#000
+        xdir.css.article.link.color=#2200CC
+        xdir.css.article.box.border.color=${xdir.css.nav.text.color}
+        xdir.css.article.box.background.color=#EEEEEE
+      </value>
+    </property>
+    <property name="locations">
+      <list>
+        <value>classpath:/META-INF/spring/buildlevel.properties</value>
+      </list>
+    </property>
+  </bean>
+
+
+</beans>

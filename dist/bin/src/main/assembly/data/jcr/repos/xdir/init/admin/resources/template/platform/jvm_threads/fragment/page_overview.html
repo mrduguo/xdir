@@ -5,7 +5,7 @@
 	def mbean=java.lang.management.ManagementFactory.threadMXBean
 	
 	
-	<@bean_inspect_fields "mbean","threadCpuTimeEnabled0,threadContentionMonitoringEnabled0",
+	<@bean_inspect_fields "mbean","threadCpuTimeEnabled0,threadContentionMonitoringEnabled0,threadAllocatedMemoryEnabled0",
 		"daemonThreadCount,threadCount,peakThreadCount,totalStartedThreadCount,currentThreadUserTime,currentThreadCpuTime"/>
 	
 	

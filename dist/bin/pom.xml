@@ -110,18 +110,30 @@
                                             <version>${project.version}</version>
                                             <type>pom</type>
                                         </dependency>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir.service.template</groupId>
+                                            <artifactId>xdir-service-template-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir.service.jcr</groupId>
+                                            <artifactId>xdir-service-jcr-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
+                                        </dependency>
                                     </dependencies>
                                 </fileSet>
-                                <!--<fileSet>-->
-                                <!--<outputDirectory>bundles/system/xdir/platform</outputDirectory>-->
-                                <!--<dependencies>-->
-                                <!--<dependency>-->
-                                <!--<groupId>org.duguo.xdir</groupId>-->
-                                <!--<artifactId>xdir-core</artifactId>-->
-                                <!--<version>${project.version}</version>-->
-                                <!--</dependency>-->
-                                <!--</dependencies>-->
-                                <!--</fileSet>-->
+                                <fileSet>
+                                    <outputDirectory>bundles/system/xdir/platform</outputDirectory>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir</groupId>
+                                            <artifactId>xdir-core</artifactId>
+                                            <version>${project.version}</version>
+                                        </dependency>
+                                    </dependencies>
+                                </fileSet>
                             </fileSets>
                         </configuration>
                     </execution>

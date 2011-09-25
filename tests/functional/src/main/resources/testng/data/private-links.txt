@@ -1,0 +1,11 @@
+Platform
+    Jvm
+    Osgi
+    Troubleshooting
+Resources
+    Design
+    Fs
+    Jcr
+    Jdbc
+    Template
+Sites

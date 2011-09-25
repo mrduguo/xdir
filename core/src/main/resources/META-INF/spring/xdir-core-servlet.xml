@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="xdirServlet"  class="org.duguo.xdir.core.internal.servlet.VirtualHostAwareXdirServlet">
+    <property name="application" ref="rootApplication" />
+    <property name="alias" value="/"/>
+    <property name="defaultHostUrls">
+      <set>
+        <value>${xdir.web.virtualhost.defaulthttpurl}</value>
+        <value>${xdir.web.virtualhost.defaulthttpsurl}</value>
+        <value>http://${xdir.web.host}</value>
+        <value>https://${xdir.web.host}</value>
+      </set>
+    </property>
+  </bean>
+  
+  
+
+  <bean id="multipartRequestResolver" class="org.duguo.xdir.core.internal.resource.MultipartRequestResolverImpl">
+    <property name="tempDir" value="${xdir.dir.var}/upload" />
+  </bean>
+
+
+  <bean id="defaultFormatService" class="org.duguo.xdir.core.internal.model.FormatServiceImpl">
+    <property name="formatMatchers" ref="defaultFormatMatchers" />
+    <property name="textContentTypes" ref="textContentTypes" />
+    <property name="binaryContentTypes" ref="binaryContentTypes" />
+    <property name="defaultContentType" value="${xdir.web.default.contenttype}" />
+  </bean>
+
+
+  <util:map id="defaultFormatMatchers">
+    <entry key=".webkit" value=".*Android.*|.*iPhone.*" />
+    <entry key=".xhtml" value=".*Windows CE.*|.*mobile.*" />
+  </util:map>
+
+  <util:map id="textContentTypes">
+    <entry key=".css" value="text/css;charset=UTF-8" />
+    <entry key=".js" value="text/javascript;charset=UTF-8" />
+    <entry key=".json" value="text/javascript;charset=UTF-8" />
+    <entry key=".htm" value="text/html;charset=UTF-8" />
+    <entry key=".html" value="text/html;charset=UTF-8" />
+    <entry key=".print" value="text/html;charset=UTF-8" />
+    <entry key=".global" value="text/html;charset=UTF-8" />
+    <entry key=".ajax" value="text/html;charset=UTF-8" />
+    <entry key=".xhtml" value="application/xhtml+xml;charset=UTF-8" />
+    <entry key=".webkit" value="application/xhtml+xml;charset=UTF-8" />
+    <entry key=".xml" value="application/xml;charset=UTF-8" />
+    <entry key=".jcr" value="application/xml;charset=UTF-8" />
+    <entry key=".mm" value="application/xml;charset=UTF-8" />
+    <entry key=".ws" value="text/xml;charset=UTF-8" />
+    <entry key=".wml" value="text/vnd.wap.wml;charset=UTF-8" />
+    <entry key=".txt" value="text/plain;charset=UTF-8" />
+    <entry key=".log" value="text/plain;charset=UTF-8" />
+    <entry key=".sql" value="text/plain;charset=UTF-8" />
+    <entry key=".bat" value="text/plain;charset=UTF-8" />
+    <entry key=".properties" value="text/plain;charset=UTF-8" />
+    <entry key=".messages" value="text/plain;charset=UTF-8" />
+    <entry key=".jvm" value="text/plain;charset=UTF-8" />
+    <entry key=".tsv" value="text/tab-separated-values;charset=UTF-8" />
+    <entry key=".csv" value="text/comma-separated-values;charset=UTF-8" />
+    <entry key=".dtd" value="application/xml-dtd;charset=UTF-8" />
+    <entry key=".java" value="text/plain;charset=UTF-8" />
+    <entry key=".jsp" value="text/plain;charset=UTF-8" />
+    <entry key=".svg" value="image/svg+xml;charset=UTF-8" />
+    <entry key=".sh" value="application/x-sh;charset=UTF-8" />
+  </util:map>
+
+  <util:map id="binaryContentTypes">
+    <entry key=".png" value="image/png" />
+    <entry key=".tif" value="image/tiff" />
+    <entry key=".jpg" value="image/jpeg" />
+    <entry key=".jpeg" value="image/jpeg" />
+    <entry key=".ico" value="image/x-icon" />
+    <entry key=".gif" value="image/gif" />
+    <entry key=".avi" value="video/x-msvideo" />
+    <entry key=".bin" value="application/octet-stream" />
+    <entry key=".cab" value="application/x-cabinet" />
+    <entry key=".class" value="application/java-vm" />
+    <entry key=".dll" value="application/x-msdownload" />
+    <entry key=".doc" value="application/msword" />
+    <entry key=".exe" value="application/octet-stream" />
+    <entry key=".gzip" value="application/gzip" />
+    <entry key=".mov" value="video/quicktime" />
+    <entry key=".mp3" value="audio/mpeg" />
+    <entry key=".mpeg" value="video/mpeg" />
+    <entry key=".mpg" value="video/mpeg" />
+    <entry key=".msi" value="application/octet-stream" />
+    <entry key=".pdf" value="application/pdf" />
+    <entry key=".pps" value="application/vnd.ms-powerpoint" />
+    <entry key=".ppt" value="application/vnd.ms-powerpoint" />
+    <entry key=".ps" value="application/postscript" />
+    <entry key=".rm" value="audio/x-pn-realaudio" />
+    <entry key=".swf" value="application/x-shockwave-flash" />
+    <entry key=".wav" value="audio/x-wav" />
+    <entry key=".zip" value="application/zip" />
+    <entry key=".jar" value="application/java-archive" />
+    <entry key=".tar" value="application/x-tar" />
+    <entry key=".tgz" value="application/x-gtar" />
+    <entry key=".gz" value="application/gzip" />
+    <entry key=".gzip" value="application/gzip" />
+  </util:map>
+
+  <bean id="defaultFormats" class="org.duguo.xdir.core.internal.model.FormatsMap">
+    <property name="formats">
+      <map>
+        <entry key=".print">
+          <list>
+            <value>.print</value>
+            <value>.html</value>
+          </list>
+        </entry>
+        <entry key=".xhtml">
+          <list>
+            <value>.xhtml</value>
+            <value>.html</value>
+          </list>
+        </entry>
+        <entry key=".webkit">
+          <list>
+            <value>.webkit</value>
+            <value>.xhtml</value>
+            <value>.html</value>
+          </list>
+        </entry>
+      </map>
+    </property>
+  </bean>
+
+
+</beans>

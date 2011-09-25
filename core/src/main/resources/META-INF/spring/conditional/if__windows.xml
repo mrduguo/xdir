@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <bean id="freeMarkerTemplateEngine" class="org.duguo.xdir.core.internal.template.freemarker.FreeMarkerTemplateEngine">
+    <property name="templateStringLoader" ref="resourceLoader"/>
+    <property name="compressors" ref="templateCompressors"/>
+  </bean>
+  
+  
+  <util:map id="templateCompressors">
+    <entry key="javascript" value-ref="javascriptCompressor"/>
+    <entry key="css" value-ref="cssCompressor"/>
+    <entry key="html" value-ref="htmlCompressor"/>
+    <entry key="xml" value-ref="xmlCompressor"/>
+    <entry key="test" value-ref="xmlCompressor"/>
+  </util:map>
+  
+  
+  <util:map id="templateCompressorsWindows">
+    <entry key="javascript" value-ref="javascriptCompressor"/>
+    <entry key="css" value-ref="cssCompressor"/>
+    <entry key="html" value-ref="htmlCompressor"/>
+    <entry key="xml" value-ref="xmlCompressor"/>
+    <entry key="test" value-ref="xmlCompressor"/>
+  </util:map>
+  
+  <bean id="javascriptCompressor" class="org.duguo.xdir.core.internal.template.compressor.JavaScriptCompressor"/>
+  <bean id="cssCompressor" class="org.duguo.xdir.core.internal.template.compressor.CssCompressor"/>
+  <bean id="htmlCompressor" class="org.duguo.xdir.core.internal.template.compressor.HtmlCompressor">
+    <property name="compressJavaScript" value="true"/>
+    <property name="compressCss" value="true"/>
+  </bean>
+  <bean id="xmlCompressor" class="org.duguo.xdir.core.internal.template.compressor.XmlCompressor"/>
+  
+  <bean id="groovyPropertyAccessSupport" class="org.duguo.xdir.core.internal.template.freemarker.GroovyPropertyAccessSupport">
+    <property name="supportedClasses">
+      <array>
+		<value>org.duguo.xdir.http.json.impl.JsonArrayImpl</value>
+		<value>org.duguo.xdir.http.json.impl.JsonArrayNull</value>
+		<value>org.duguo.xdir.http.json.impl.JsonMapImpl</value>
+		<value>org.duguo.xdir.http.json.impl.JsonMapNull</value>
+		<value>org.duguo.xdir.http.json.impl.JsonNull</value>
+      </array>
+    </property>
+  </bean>
+  
+</beans>

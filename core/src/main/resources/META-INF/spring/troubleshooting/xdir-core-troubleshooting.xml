@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  
+       http://www.springframework.org/schema/util/spring-util.xsd">
+  
+  <bean id="servletMonitorInterceptor" class="org.duguo.xdir.core.internal.aop.ServletMonitorInterceptor"/>
+
+  <bean id="serviceMonitorInterceptor" class="org.duguo.xdir.core.internal.aop.RequestAwarePerformanceMonitor"/>
+
+  <bean id="debugInterceptor" class="org.duguo.xdir.core.internal.aop.DebugInterceptor">
+    <property name="useDynamicLogger" value="true"/>
+  </bean>
+  
+  <util:list id="defaultMonitorInterceptors">
+    <value>serviceMonitorInterceptor</value>
+    <value>debugInterceptor</value>
+  </util:list>
+  
+  <bean id="monitorService" class="org.duguo.xdir.core.internal.aop.MonitorServiceImpl">
+    <property name="proxyCreator" ref="monitorProxyCreator"/>
+  </bean>
+
+  <bean id="servletAutoProxyCreator"  class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="beanNames" value="xdirServlet"/>
+    <property name="interceptorNames">
+      <list>
+        <value>servletMonitorInterceptor</value>
+        <value>debugInterceptor</value>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="serviceAutoProxyCreator"  class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="beanNames" value="freeMarkerTemplateEngine,resourceLoader"/>
+    <property name="proxyTargetClass" value="true"/>
+    <property name="interceptorNames" ref="defaultMonitorInterceptors"/>
+  </bean>
+
+<!--
+  <bean id="serviceAutoProxyCreator"  class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="beanNames" value="freeMarkerTemplateEngine,resourceLoader,jcrService,jcrFactory,*Compressor"/>
+    <property name="proxyTargetClass" value="true"/>
+    <property name="interceptorNames" ref="defaultMonitorInterceptors"/>
+  </bean>
+ -->
+ 
+  <bean id="monitorProxyCreator"  class="org.duguo.xdir.core.internal.aop.ProxyCreatorImpl">
+    <property name="monitorProxyFactoryBeanName" value="monitorProxyFactoryBean"/>
+  </bean>
+  
+  <bean id="monitorProxyFactoryBean" scope="prototype" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyTargetClass" value="true"/>
+    <property name="interceptorNames" ref="defaultMonitorInterceptors"/>
+  </bean>
+
+</beans>

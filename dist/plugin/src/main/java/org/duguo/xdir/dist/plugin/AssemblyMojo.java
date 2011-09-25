@@ -57,6 +57,13 @@ public class AssemblyMojo extends AbstractMojo {
     protected String[] executableScripts;
 
     /**
+     * only gather files to the working folder and skip package the binary distribution.
+     *
+     * @parameter expression="${skipPackBinary}" default-value="false"
+     */
+    private boolean skipPackBinary;
+
+    /**
      * attach output artifact to current build project
      *
      * @parameter expression="${attachArtifact}" default-value="true"
@@ -128,7 +135,9 @@ public class AssemblyMojo extends AbstractMojo {
             unpackageProjectDependencies();
             copyProjectAssemblyResources();
             collectBundles();
-            packFormats();
+            if(!skipPackBinary){
+                packFormats();
+            }
         } catch (MojoExecutionException e) {
             throw e;
         } catch (Exception e) {

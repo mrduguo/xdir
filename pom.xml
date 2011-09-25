@@ -35,6 +35,7 @@ limitations under the License.
         <module>osgi</module>
         <module>service</module>
         <module>dist</module>
+        <module>tests</module>
     </modules>
 
     <!-- ======================================= -->
@@ -53,6 +54,7 @@ limitations under the License.
         <lib.http.jetty.version>7.1.4.v20100610</lib.http.jetty.version>
         <lib.jcr.api.version>2.0</lib.jcr.api.version>
         <lib.jcr.jackrabbit.version>2.1.0</lib.jcr.jackrabbit.version>
+        <lib.template.freemarker.version>2.3.15</lib.template.freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
