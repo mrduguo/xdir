@@ -7,7 +7,7 @@ import java.io.FileReader;
 public class I18nEncoder
 {
     public static void main(String...strings )throws Exception{
-        File inputFile=new File( "/data/projects/xdirplatform/source/platform/osgi/xdir-osgi-bootstrap/src/main/resources/org/xdir/platform/osgi/bootstrap/i18n/Messages_zh_CN.txt" );
+        File inputFile=new File( "/data/projects/xdirplatform/source/platform/osgi/xdir-osgi-bootstrap/src/main/resources/org/duguo/xdir/osgi/bootstrap/i18n/Messages_zh_CN.txt" );
 
         BufferedReader input = new BufferedReader( new FileReader( inputFile ) );
         try

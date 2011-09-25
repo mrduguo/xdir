@@ -2,7 +2,7 @@
 <@page_overview_title/>
 <#assign connection_settings=app.props.resolveStringValue(node.parent.getProperty("_connection_settings").getString())>
 <#assign connection_type=node.parent.getProperty("_connection_type").getString()>
-${store("sqlQuery",pageProperties["_sql_query"].displayableValue)}
+${put("sqlQuery",pageProperties["_sql_query"].displayableValue)}
 <h3>Query</h3>
 <div class="text">
 	<pre>${sqlQuery?html}</pre>

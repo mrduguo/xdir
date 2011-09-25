@@ -23,7 +23,7 @@
 
     <properties>
         <testng>basic-status-check</testng>
-        <skipTests>false</skipTests>
+        <skipTests>true</skipTests>
         <test.web.driver.impl>org.openqa.selenium.htmlunit.HtmlUnitDriver</test.web.driver.impl>
     </properties>
 
@@ -45,6 +45,7 @@
                                     <suiteXmlFile>${basedir}/src/main/resources/testng/${testng}.xml</suiteXmlFile>
                                 </suiteXmlFiles>
                                 <systemPropertyVariables>
+                                    <log4j.configuration>ignore.css.warning.log4j.xml</log4j.configuration>
                                     <test.web.driver.impl>${test.web.driver.impl}</test.web.driver.impl>
                                 </systemPropertyVariables>
                             </configuration>
@@ -69,11 +70,19 @@
             <artifactId>testng</artifactId>
             <version>6.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${lib.log4j.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
         <profile>
             <id>basic-status-check-it</id>
+            <properties>
+                <skipTests>false</skipTests>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -87,6 +96,7 @@
             <id>craw-links-it</id>
             <properties>
                 <testng>craw-links</testng>
+                <skipTests>false</skipTests>
             </properties>
             <build>
                 <plugins>

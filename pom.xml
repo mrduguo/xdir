@@ -47,7 +47,8 @@ limitations under the License.
         <lib.osgi.compendium.version>4.2.0</lib.osgi.compendium.version>
         <lib.springframework.version>3.0.6.RELEASE</lib.springframework.version>
         <lib.gemini.blueprint.version>1.0.0.RELEASE</lib.gemini.blueprint.version>
-        <lib.felix.version>3.2.2</lib.felix.version>
+        <!--<lib.felix.version>3.2.2</lib.felix.version>-->
+        <lib.felix.version>2.0.4</lib.felix.version>
         <lib.junit.version>4.9</lib.junit.version>
         <lib.slf4j.version>1.6.2</lib.slf4j.version>
         <lib.log4j.version>1.2.16</lib.log4j.version>

@@ -17,7 +17,7 @@
 	def ouputstring=""
 </#macro>
 <#macro sql_destroy>
-	model.app.remove("connection")
+	model.app.map.remove("connection")
 	sql.connection.close()
 	return ouputstring
 </#macro>

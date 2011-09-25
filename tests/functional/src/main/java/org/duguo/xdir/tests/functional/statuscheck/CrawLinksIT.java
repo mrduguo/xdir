@@ -34,7 +34,7 @@ public class CrawLinksIT extends AbstractUIIT {
     }
 
     @Test(groups = {"private"}, dependsOnGroups = {"login"}, parameters = {"test.private.exclude.paths"})
-    public void clickOnPrivateLink(@Optional("/sites/,/login/,/account/logout.html") String excludePaths) {
+    public void clickOnPrivateLink(@Optional("/sites/,/login/,/fs/,/resources/template/,/osgi/bundles/,/osgi/services/,/osgi/spring/,/admin/resources/jcr/,/account/logout.html") String excludePaths) {
         String[] excludedPathsList = excludePaths.split(",");
         crawLinks("https://", excludedPathsList);
     }
@@ -61,7 +61,7 @@ public class CrawLinksIT extends AbstractUIIT {
         List<WebElement> currentPageLinks = _webDriver.findElements(By.xpath("//a"));
         for (WebElement link : currentPageLinks) {
             String linkHref = link.getAttribute("href");
-            if (linkHref.startsWith(baseUrl) && linkHref.endsWith(".html")) {
+            if (linkHref.startsWith(baseUrl) && linkHref.endsWith(".html") && linkHref.indexOf("?")<0) {
                 boolean isExcluded = false;
                 for (String currentExclude : excludedPathsList) {
                     if (linkHref.indexOf(currentExclude) >= 0) {
