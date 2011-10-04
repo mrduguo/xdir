@@ -101,6 +101,6 @@
   </bean>  
   
   <bean id="profilesApplication" class="org.duguo.xdir.core.internal.account.ProfilesApplication" scope="singleton" parent="defaultApplicationPrototype">
-  </bean>  
+  </bean>
    
 </beans>

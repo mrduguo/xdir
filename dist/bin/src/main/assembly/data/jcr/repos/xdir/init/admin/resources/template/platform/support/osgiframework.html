@@ -1,10 +1,10 @@
 <#macro framework_get_fragment_host>
-	fragmentHost=bundle.currentModule?.dependentHosts
-	if(fragmentHost!=null && fragmentHost.size()>0){
-		fragmentHost=fragmentHost[0].bundle
-	}else{
+	//fragmentHost=bundle.currentModule?.dependents
+	//if(fragmentHost!=null && fragmentHost.size()>0){
+	//	fragmentHost=fragmentHost[0].bundle
+	//}else{
 		fragmentHost=null
-	}
+	//}
 </#macro>
 <#macro framework_list_bundle_details>
 	fragmentsList=bundle.currentModule?.fragments

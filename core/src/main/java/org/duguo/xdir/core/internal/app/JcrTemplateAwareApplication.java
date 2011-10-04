@@ -25,29 +25,34 @@ import org.duguo.xdir.http.client.HttpClientService;
 import org.duguo.xdir.util.http.HttpUtil;
 
 
-public class JcrTemplateAwareApplication extends SimplePathApplication
-{
-    private static final Logger logger = LoggerFactory.getLogger( JcrTemplateAwareApplication.class );
+public class JcrTemplateAwareApplication extends SimplePathApplication {
+    private static final Logger logger = LoggerFactory.getLogger(JcrTemplateAwareApplication.class);
 
-    /*******************************************************
+    /**
+     * ****************************************************
      * resources
-     *******************************************************/
+     * *****************************************************
+     */
     private TemplateEngine template;
     private FormatService format;
     private JcrFactory jcrFactory;
 
-    /*******************************************************
+    /**
+     * ****************************************************
      * services
-     *******************************************************/
+     * *****************************************************
+     */
     private ResourceService resource;
     private PropertiesService props;
     private JcrService jcr;
     private SecurityService security;
     private HttpClientService httpClient;
 
-    /*******************************************************
+    /**
+     * ****************************************************
      * configurations
-     *******************************************************/
+     * *****************************************************
+     */
     private Site site;
     private String jcrRepository;
     private String jcrWorkspace;
@@ -57,304 +62,259 @@ public class JcrTemplateAwareApplication extends SimplePathApplication
     private String baseUrl;
     private String baseUri;
 
-    
-    public int execute( ModelImpl model ) throws Exception
-    {   
-        model.setApp( this );
-        int handleStatus=STATUS_PAGE_NOT_FOUND;
-        try
-        {
-            jcrFactory.retriveSession( model );
-            handleStatus = handleInSession( model, handleStatus );
-        }
-        catch ( ResourceNotFoundException ex )
-        {
-        }
-        catch ( Throwable ex )
-        {
-            handleStatus = handleInternalException( model, STATUS_INTERNAL_ERROR ,ex);
-        }
-        finally
-        {
-            if(handleStatus==STATUS_PAGE_NOT_FOUND){
-                handleStatus = handlePageNotFound( model );
+
+    public int execute(ModelImpl model) throws Exception {
+        model.setApp(this);
+        int handleStatus = STATUS_PAGE_NOT_FOUND;
+        try {
+            jcrFactory.retriveSession(model);
+            handleStatus = handleInSession(model, handleStatus);
+        } catch (ResourceNotFoundException ex) {
+        } catch (Throwable ex) {
+            handleStatus = handleInternalException(model, STATUS_INTERNAL_ERROR, ex);
+        } finally {
+            if (handleStatus == STATUS_PAGE_NOT_FOUND) {
+                handleStatus = handlePageNotFound(model);
             }
-            closeSessionIfAlreadyOpen( model );
+            closeSessionIfAlreadyOpen(model);
         }
         return handleStatus;
     }
-	
-    public void doInDefaultSession(SessionCallback sessionCallback){
-    	try{
-			Session session=getJcrFactory().retriveSession(getJcrRepository(), getJcrWorkspace());
-			Assert.notNull(session);
-			try{
-		    	sessionCallback.execute(session);
-			}finally{
-				if(session!=null){
-					session.logout();
-				}
-			}
-    	}catch(Exception ex){
-    		throw new RuntimeException("failed to execute session callback",ex);
-    	}
-	}
 
-    protected int handleInSession( ModelImpl model, int handleStatus ) throws Exception
-    {
-        format.resolveFormat( model );
-        if ( resolveNode( model ) != null )
-        {
+    public void doInDefaultSession(SessionCallback sessionCallback) {
+        try {
+            Session session = getJcrFactory().retriveSession(getJcrRepository(), getJcrWorkspace());
+            Assert.notNull(session);
+            try {
+                sessionCallback.execute(session);
+            } finally {
+                if (session != null) {
+                    session.logout();
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("failed to execute session callback", ex);
+        }
+    }
+
+    protected int handleInSession(ModelImpl model, int handleStatus) throws Exception {
+        format.resolveFormat(model);
+        if (resolveNode(model) != null) {
             setupAction(model);
-            handleStatus = processTemplate( model );
+            handleStatus = processTemplate(model);
         }
         return handleStatus;
     }
 
-    protected int processTemplate( ModelImpl model ) throws Exception
-    {
-        int handleStatus=getTemplate().process( model,TemplateEngine.TEMPLATE_DEFAULT,model.getNodeType() );
+    protected int processTemplate(ModelImpl model) throws Exception {
+        int handleStatus = getTemplate().process(model, TemplateEngine.TEMPLATE_DEFAULT, model.getNodeType());
         return handleStatus;
     }
 
-    protected Node resolveNode( ModelImpl model ) throws Exception
-    {
-        return jcrFactory.retriveNode( model );
+    protected Node resolveNode(ModelImpl model) throws Exception {
+        return jcrFactory.retriveNode(model);
     }
 
-    protected void setupAction( ModelImpl model )
-    {
-        String action=RequestUtils.retriveStringParameter( model, "action", null );
-        if(action==null){
-            action=model.getRequest().getMethod();
-            if(HttpUtil.METHOD_GET.equals( action )){
+    protected void setupAction(ModelImpl model) {
+        String action = RequestUtils.retriveStringParameter(model, "action", null);
+        if (action == null) {
+            action = model.getRequest().getMethod();
+            if (HttpUtil.METHOD_GET.equals(action)) {
                 // ignore get method
                 return;
-            }else{
-                action=action.toLowerCase();
+            } else {
+                action = action.toLowerCase();
             }
         }
-        model.setAction( action);
+        model.setAction(action);
     }
 
 
-    protected void closeSessionIfAlreadyOpen( ModelImpl model )
-    {
-        if ( model.getSession() != null )
-        {
+    protected void closeSessionIfAlreadyOpen(ModelImpl model) {
+        if (model.getSession() != null) {
             model.getSession().logout();
         }
     }
 
-    protected int handleErrorCode( ModelImpl model, int handleStatus )
-    {
-        try
-        {
-            model.getResponse().setStatus( handleStatus );
-            getTemplate().process( model,String.valueOf( handleStatus ) );
+    protected int handleErrorCode(ModelImpl model, int handleStatus) {
+        try {
+            model.getResponse().setStatus(handleStatus);
+            getTemplate().process(model, String.valueOf(handleStatus));
             return STATUS_SUCCESS;
-        }
-        catch ( ResourceNotFoundException ex )
-        {
+        } catch (ResourceNotFoundException ex) {
             // ignore and return original status
-        }
-        catch ( Exception ex )
-        {
-            logger.error( "failed to handle status code ["+handleStatus+"]",ex );
+        } catch (Exception ex) {
+            logger.error("failed to handle status code [" + handleStatus + "]", ex);
         }
         return handleStatus;
     }
 
 
-    
-    
-    /*******************************************************
+    /**
+     * ****************************************************
      * modified getter and setter
-     *******************************************************/
-    public void setBaseUrl( String baseUrl )
-    {
-        Assert.notNull( baseUrl );
+     * *****************************************************
+     */
+    public void setBaseUrl(String baseUrl) {
+        Assert.notNull(baseUrl);
         this.baseUrl = baseUrl;
-        baseUri=HttpUtil.retriveUriFromUrl( baseUrl);
+        baseUri = HttpUtil.retriveUriFromUrl(baseUrl);
     }
 
 
-    
-    
-    /*******************************************************
+    /**
+     * ****************************************************
      * default getter and setter
-     *******************************************************/
+     * *****************************************************
+     */
 
-    public TemplateEngine getTemplate()
-    {
+    public TemplateEngine getTemplate() {
         return template;
     }
 
 
-    public void setTemplate( TemplateEngine template )
-    {
+    public void setTemplate(TemplateEngine template) {
         this.template = template;
     }
 
 
-    public FormatService getFormat()
-    {
+    public FormatService getFormat() {
         return format;
     }
 
 
-    public void setFormat( FormatService format )
-    {
+    public void setFormat(FormatService format) {
         this.format = format;
     }
 
 
-    public JcrFactory getJcrFactory()
-    {
+    public JcrFactory getJcrFactory() {
         return jcrFactory;
     }
 
 
-    public void setJcrFactory( JcrFactory jcrFactory )
-    {
+    public void setJcrFactory(JcrFactory jcrFactory) {
         this.jcrFactory = jcrFactory;
     }
 
 
-    public ResourceService getResource()
-    {
+    public ResourceService getResource() {
+        System.out.println("getResource:" + resource.getClass()+":"+this);
+        //System.out.println("getSite:" + getSite().getUrl());
+        //System.out.println("getApp:" + getSite().getApp().getClass());
         return resource;
     }
 
 
-    public void setResource( ResourceService resource )
-    {
+    public void setResource(ResourceService resource) {
+        if (resource != null)
+            System.out.println("setResource:" + resource.getClass()+":"+this);
         this.resource = resource;
     }
 
 
-    public PropertiesService getProps()
-    {
+    public PropertiesService getProps() {
         return props;
     }
 
 
-    public void setProps( PropertiesService props )
-    {
+    public void setProps(PropertiesService props) {
         this.props = props;
     }
 
 
-    public Site getSite()
-    {
+    public Site getSite() {
         return site;
     }
 
 
-    public void setSite( Site site )
-    {
+    public void setSite(Site site) {
         this.site = site;
     }
 
-    public String getBaseUrl()
-    {
+    public String getBaseUrl() {
         return baseUrl;
     }
 
-    public String[] getTemplatePaths()
-    {
+    public String[] getTemplatePaths() {
         return templatePaths;
     }
 
 
-    public void setTemplatePaths( String[] templatePaths )
-    {
+    public void setTemplatePaths(String[] templatePaths) {
         this.templatePaths = templatePaths;
     }
 
 
-    public Map<String, String[]> getFormats()
-    {
+    public Map<String, String[]> getFormats() {
         return formats;
     }
 
 
-    public void setFormats( Map<String, String[]> formats )
-    {
+    public void setFormats(Map<String, String[]> formats) {
         this.formats = formats;
     }
 
 
-    public String getJcrRepository()
-    {
+    public String getJcrRepository() {
         return jcrRepository;
     }
 
 
-    public void setJcrRepository( String jcrRepository )
-    {
+    public void setJcrRepository(String jcrRepository) {
         this.jcrRepository = jcrRepository;
     }
 
 
-    public String getJcrWorkspace()
-    {
+    public String getJcrWorkspace() {
         return jcrWorkspace;
     }
 
 
-    public void setJcrWorkspace( String jcrWorkspace )
-    {
+    public void setJcrWorkspace(String jcrWorkspace) {
         this.jcrWorkspace = jcrWorkspace;
     }
 
-    public String getJcrBasePath()
-    {
+    public String getJcrBasePath() {
         return jcrBasePath;
     }
 
 
-    public void setJcrBasePath( String jcrBasePath )
-    {
+    public void setJcrBasePath(String jcrBasePath) {
         this.jcrBasePath = jcrBasePath;
     }
 
 
-    public JcrService getJcr()
-    {
+    public JcrService getJcr() {
         return jcr;
     }
 
 
-    public void setJcr( JcrService jcr )
-    {
+    public void setJcr(JcrService jcr) {
         this.jcr = jcr;
     }
 
 
-    public String getBaseUri()
-    {
+    public String getBaseUri() {
         return baseUri;
     }
 
 
-    public SecurityService getSecurity()
-    {
+    public SecurityService getSecurity() {
         return security;
     }
 
 
-    public void setSecurity( SecurityService security )
-    {
+    public void setSecurity(SecurityService security) {
         this.security = security;
     }
 
-	public HttpClientService getHttpClient() {
-		return httpClient;
-	}
+    public HttpClientService getHttpClient() {
+        return httpClient;
+    }
 
-	public void setHttpClient(HttpClientService httpClient) {
-		this.httpClient = httpClient;
-	}
+    public void setHttpClient(HttpClientService httpClient) {
+        this.httpClient = httpClient;
+    }
 
 }

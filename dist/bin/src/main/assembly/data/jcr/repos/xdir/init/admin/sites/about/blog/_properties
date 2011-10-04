@@ -1,5 +1,5 @@
 _title=Blog
-_controller_jcr_path=/websites/www/about/blog
+_application_jcr_base_path=/websites/www/about/blog
 _type=blog_home
 _site_global_page_title=XDir Platform Team Blog
 _site_global_sub_title=Leading Engineering Excellence

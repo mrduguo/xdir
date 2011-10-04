@@ -1,0 +1,6 @@
+_title=S3 Blog
+_application_jcr_base_path=/websites/www/about/s3blog
+_application_bean=aboutS3BlogApplication
+_site_global_page_title=XDir Platform Team S3 Blog
+_site_global_sub_title=Leading Engineering Excellence
+_site_global_url=${xdir.web.base.url}/about/s3blog/index$[format]

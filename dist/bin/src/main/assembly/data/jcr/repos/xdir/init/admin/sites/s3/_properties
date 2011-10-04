@@ -1,0 +1,5 @@
+_title=Static Resource on S3
+_application_jcr_base_path=/admin/sites/s3
+_application_bean=staticS3ResourceService
+_application_template_paths=${xdir.web.template.staticresource}
+_site_metasite=true

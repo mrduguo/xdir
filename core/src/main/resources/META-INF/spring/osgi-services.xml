@@ -65,6 +65,11 @@
         xdir.css.article.link.color=#2200CC
         xdir.css.article.box.border.color=${xdir.css.nav.text.color}
         xdir.css.article.box.background.color=#EEEEEE
+
+        xdir.s3.aws.bucket.name=s3.duguo.org
+        xdir.s3.aws.access.key.id=AKIAIRWH4WWIGGXAHLWA
+        xdir.s3.aws.secret.access.key=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
+        xdir.s3.aws.base.url=http://${xdir.s3.aws.bucket.name}
       </value>
     </property>
     <property name="locations">
