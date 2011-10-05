@@ -23,9 +23,6 @@
                 <value>.css</value>
             </list>
         </property>
-        <property name="awsBucketName" value="${xdir.s3.aws.bucket.name}"/>
-        <property name="awsAccessKeyId" value="${xdir.s3.aws.access.key.id}"/>
-        <property name="awsSecretAccessKey" value="${xdir.s3.aws.secret.access.key}"/>
         <property name="awsS3BaseUrl" value="${xdir.s3.aws.base.url}"/>
     </bean>
 

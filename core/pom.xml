@@ -40,7 +40,7 @@ limitations under the License.
                 <configuration>
                     <instructions>
                         <DynamicImport-Package>*</DynamicImport-Package>
-                        <Export-Package>org.duguo.xdir.core*;version=${pom.version},com.amazon.s3;version=${pom.version}</Export-Package>
+                        <Export-Package>org.duguo.xdir.core*;version=${pom.version}</Export-Package>
                         <Import-Package>
                             javax.servlet*;version="[2.4.0, 4.0.0)";resolution:=optional,
                             org.slf4j*;version="[1.5.6, 2.0.0)",
