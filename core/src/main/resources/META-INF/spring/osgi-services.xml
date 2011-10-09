@@ -39,7 +39,7 @@
         xdir.port.http=8080
         xdir.port.https=8443
         xdir.web.host=localhost
-        xdir.web.context.path=/xdir
+        xdir.web.context.path=
         xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
         xdir.jcr.default.repository=xdir
         xdir.jcr.default.workspace=default
@@ -67,8 +67,6 @@
         xdir.css.article.box.background.color=#EEEEEE
 
         xdir.s3.aws.bucket.name=s3.duguo.org
-        xdir.s3.aws.access.key.id=AKIAIRWH4WWIGGXAHLWA
-        xdir.s3.aws.secret.access.key=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
         xdir.s3.aws.base.url=http://${xdir.s3.aws.bucket.name}
       </value>
     </property>

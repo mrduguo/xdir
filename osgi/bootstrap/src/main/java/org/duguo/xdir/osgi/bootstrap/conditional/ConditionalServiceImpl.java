@@ -30,7 +30,7 @@ public class ConditionalServiceImpl implements ConditionalService {
 		termSpliter=System.getProperty(KEY_XDIR_OSGI_CONDITIONAL_TERM_SPLITER,"__");
 		conditionalPrefix=System.getProperty(KEY_XDIR_OSGI_CONDITIONAL_PREFIX,"if"+termSpliter);
 		paramDecoder=ClassUtil.loadRequiredInstanceFromSystemProperty(ParamDecoder.class, ParamDecoderImpl.class, KEY_XDIR_OSGI_CONDITIONAL_PARAM_DECODER);
-	}
+    }
 	
 	public boolean isConditionalString(String source){
 		return source.startsWith(conditionalPrefix);

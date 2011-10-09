@@ -1,0 +1,3 @@
+_application_jcr_base_path=/virtualhosts
+_application_template_paths=/admin/resources/template/profiles/,/admin/resources/template/default/
+_site_metasite=true

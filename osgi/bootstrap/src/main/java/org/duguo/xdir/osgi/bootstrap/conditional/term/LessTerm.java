@@ -12,16 +12,10 @@ package org.duguo.xdir.osgi.bootstrap.conditional.term;
  * @author mrduguo
  *
  */
-public class LessTerm extends EqualsTerm {
+public class LessTerm extends GreaterTerm {
 
 	protected boolean verifyPair(String left, String right) {
-		try {
-			float leftValue = Float.parseFloat(left);
-			float rightValue = Float.parseFloat(right);
-			return leftValue < rightValue;
-		} catch (NumberFormatException ex) {
-			return left.compareTo(right) < 0;
-		}
+		return super.verifyPair(right,left);
 	}
 
 }

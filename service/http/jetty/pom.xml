@@ -95,6 +95,11 @@
             <artifactId>jetty-servlet</artifactId>
             <version>${lib.http.jetty.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>${lib.http.jetty.version}</version>
+        </dependency>
 
         <!-- Logging Dependencies -->
         <dependency>

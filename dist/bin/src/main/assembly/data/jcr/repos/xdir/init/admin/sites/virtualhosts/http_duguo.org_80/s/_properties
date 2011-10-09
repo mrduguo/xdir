@@ -1,0 +1,5 @@
+_title=Static Resource
+_application_jcr_base_path=/admin/sites/s
+_application_bean=staticResourceService
+_application_template_paths=${xdir.web.template.staticresource}
+_site_metasite=true

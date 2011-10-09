@@ -105,11 +105,11 @@ public class JcrFactoryImpl implements JcrFactory
         Session session = model.getSession();
         if ( session == null )
         {
-            if(model.getVirtualHostPath()!=null){
-                session = retriveSession( model.getVirtualHostPath(),model.getApp().getJcrWorkspace());
-            }else{
+            //if(model.getVirtualHostPath()!=null){
+            //    session = retriveSession( model.getVirtualHostPath(),model.getApp().getJcrWorkspace());
+            //}else{
                 session = retriveSession( model.getApp().getJcrRepository(),model.getApp().getJcrWorkspace());
-            }            
+            //}
             
             model.setSession( session );
         }
