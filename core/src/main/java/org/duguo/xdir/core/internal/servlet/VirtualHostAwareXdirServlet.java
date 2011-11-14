@@ -62,12 +62,10 @@ public class VirtualHostAwareXdirServlet extends XdirServletImpl implements Init
             if (supportedVirtualHostUrls != null && !supportedVirtualHostUrls.contains(virtualHostUrl)) {
                 return null;
             }
-            //model.setVirtualHostPath( scheme+"_"+serverName+"_"+port );
             model.setVirtualHostPath(scheme + "_" + serverName + "_" + port);
-            String path = "virtualhosts/" + scheme + "_" + serverName + "_" + port + "/" + super.buildPath(request, model);
+            String path = "virtualhosts/" + scheme + "_" + serverName.replaceAll("\\.","_") + "_" + port + "/" + super.buildPath(request, model);
             if (logger.isDebugEnabled())
                 logger.debug("resolved virtual host path [{}]", path);
-            logger.error("xxxx resolved virtual host path [{}]", path);
             return path;
         } else {
             return super.buildPath(request, model);

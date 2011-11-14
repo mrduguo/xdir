@@ -9,7 +9,7 @@
     <property name="servletService" ref="servletService"/>
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="rootApplication" ref="rootApplication"/>
-    <property name="sitesRoot" value="${xdir.jcr.sites.root}" />
+    <property name="appsRoot" value="${xdir.jcr.apps.root}" />
     <property name="defaultApplicationPrototypeBeanName" value="defaultApplicationPrototype"/>
   </bean>
   

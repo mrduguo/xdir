@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sun Oct 09 07:49:05 IST 2011:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance a816c00e-0132-e771-0e9e-0000026daec0 
-on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/version/db  with class loader 26.0 
+Tue Nov 08 23:31:06 GMT 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance a816c00e-0133-8585-3f1a-0000026bd020 
+on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/version/db  with class loader 27.0 
 Loaded from reference:file:/storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/bundles/system/xdir/common/derby-10.8.1.2.jar
 java.vendor=Sun Microsystems Inc.
 java.runtime.version=1.6.0_26-b03
@@ -9,9 +9,9 @@ user.dir=/storage/gits/xdir
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Sun Oct 09 07:49:15 IST 2011:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance ac3880cc-0132-e771-0e9e-0000026daec0 
-on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/workspaces/default/db  with class loader 26.0 
+Tue Nov 08 23:31:14 GMT 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance ac3880cc-0133-8585-3f1a-0000026bd020 
+on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/workspaces/default/db  with class loader 27.0 
 Loaded from reference:file:/storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/bundles/system/xdir/common/derby-10.8.1.2.jar
 java.vendor=Sun Microsystems Inc.
 java.runtime.version=1.6.0_26-b03
@@ -19,11 +19,11 @@ user.dir=/storage/gits/xdir
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Sun Oct 09 08:19:44 IST 2011:
-Shutting down instance ac3880cc-0132-e771-0e9e-0000026daec0 on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/workspaces/default/db with class loader 26.0 
+Fri Nov 11 21:00:16 GMT 2011:
+Shutting down instance ac3880cc-0133-8585-3f1a-0000026bd020 on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/workspaces/default/db with class loader 27.0 
 ----------------------------------------------------------------
-Sun Oct 09 08:19:45 IST 2011:
-Shutting down instance a816c00e-0132-e771-0e9e-0000026daec0 on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/version/db with class loader 26.0 
+Fri Nov 11 21:00:18 GMT 2011:
+Shutting down instance a816c00e-0133-8585-3f1a-0000026bd020 on database directory /storage/gits/xdir/dist/bin/target/xdir-dist-bin-0.9.0-SNAPSHOT/data/jcr/repos/xdir/version/db with class loader 27.0 
 ----------------------------------------------------------------
-Sun Oct 09 08:19:45 IST 2011: Shutting down Derby engine
+Fri Nov 11 21:00:18 GMT 2011: Shutting down Derby engine
 ----------------------------------------------------------------

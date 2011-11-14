@@ -1,177 +1,183 @@
 package org.duguo.xdir.core.internal.app.register;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
+import org.duguo.xdir.core.internal.app.SimplePathApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.core.internal.site.Site;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils;
 import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils.RepoPath;
-import org.duguo.xdir.util.http.HttpUtil;
 
 
-public class ApplicationRegisterImpl extends AbstractApplicationRegister
-{
-    
-    private static final Logger logger = LoggerFactory.getLogger( ApplicationRegisterImpl.class );
+public class ApplicationRegisterImpl extends AbstractApplicationRegister {
+
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationRegisterImpl.class);
 
 
-    public void afterPropertiesSet() throws Exception
-    {
-        loadRootSite();
+    public void afterPropertiesSet() throws Exception {
+        scanApps();
     }
 
-    public void register( String path, Application application ) throws Exception
-    {
-        String[] paths=path.split( "/" );
-        Assert.state( paths.length<2, "you are not allowed to register root application" );
+    public void register(String path, Application application) throws Exception {
+//        String[] paths = path.split("/");
+//        Assert.state(paths.length < 2, "you are not allowed to register root application");
+//
+//        String rootApplicationName = ((JcrTemplateAwareApplication) application).getSite().getName();
+//        if (paths[0].equals(rootApplicationName)) {
+//            String[] subPaths = new String[paths.length - 1];
+//            System.arraycopy(paths, 0, subPaths, 0, paths.length - 1);
+//            registerApplication(application, subPaths);
+//            if (logger.isDebugEnabled())
+//                logger.debug("register application [{}] success", path);
+//            return;
+//        }
+//        if (logger.isDebugEnabled())
+//            logger.debug("register application [{}] can not found root", path);
+    }
 
-                String rootApplicationName=((JcrTemplateAwareApplication)application).getSite().getName();
-                if(paths[0].equals( rootApplicationName )){
-                    String[] subPaths=new String[paths.length-1];
-                    System.arraycopy( paths, 0, subPaths, 0, paths.length-1 );
-                    registerApplication( application, subPaths );
-                    if(logger.isDebugEnabled())
-                        logger.debug("register application [{}] success",path);
+
+    public void unregister(String path) throws Exception {
+        String[] paths = path.split("/");
+        Assert.state(paths.length < 2, "you are not allowed to unregister root application, which could be unregisterd by unregister the servlet");
+
+        Application application = rootApplication;
+        String rootApplicationName = ((JcrTemplateAwareApplication) application).getSite().getName();
+        if (paths[0].equals(rootApplicationName)) {
+            for (int i = 1; i < paths.length; i++) {
+                application = application.getChildren().get(paths[i]);
+                if (application == null) {
+                    break;
+                }
+                if (i == paths.length - 1) {
+                    application.getParent().getChildren().remove(paths[i]);
+                    if (logger.isDebugEnabled())
+                        logger.debug("unregister application [{}] success", path);
                     return;
                 }
-        if(logger.isDebugEnabled())
-            logger.debug("register application [{}] can not found root",path);
-    }
-
-
-    public void unregister( String path ) throws Exception
-    {
-        String[] paths=path.split( "/" );
-        Assert.state( paths.length<2, "you are not allowed to unregister root application, which could be unregisterd by unregister the servlet" );
-        
-            Application application=rootApplication;
-                String rootApplicationName=((JcrTemplateAwareApplication)application).getSite().getName();
-                if(paths[0].equals( rootApplicationName )){
-                    for(int i=1;i<paths.length;i++){
-                        application=application.getChildren().get( paths[i] );
-                        if(application==null){
-                            break;
-                        }
-                        if(i==paths.length-1){
-                            application.getParent().getChildren().remove( paths[i] );
-                            if(logger.isDebugEnabled())
-                                logger.debug("unregister application [{}] success",path);
-                            return;
-                        }
-                    }
-            }
-        if(logger.isDebugEnabled())
-            logger.debug("unregister application [{}] not found",path);
-    }
-
-
-    public void loadRootSite() throws Exception
-    {
-        RepoPath repoPath = JcrRepositoryUtils.parseRepoPath( sitesRoot );
-        Session session = jcrFactory.retriveSession( repoPath.getRepositoryName(), repoPath.getWorkspaceName() );
-        try
-        {
-            if ( session.itemExists( repoPath.getAbsPath() ) )
-            {
-                if(logger.isDebugEnabled())
-                    logger.debug( "loading applications from [{}]", sitesRoot );
-                
-                Node configNode = session.getNode( repoPath.getAbsPath() );
-                jcrFactory.bindValueToObject( configNode, rootApplication, "_application_" );
-                Site rootSite =registerSite( configNode, null );
-                scanChildSites( configNode, rootSite );
-                
-                if(logger.isDebugEnabled())
-                    logger.debug( "loaded applications from [{}]", sitesRoot );
-            }
-            else
-            {
-                logger.warn( "applications root not found [{}]", sitesRoot );
             }
         }
-        finally
-        {
+        if (logger.isDebugEnabled())
+            logger.debug("unregister application [{}] not found", path);
+    }
+
+
+    public void scanApps() throws Exception {
+        RepoPath repoPath = JcrRepositoryUtils.parseRepoPath(appsRoot);
+        Session session = jcrFactory.retriveSession(repoPath.getRepositoryName(), repoPath.getWorkspaceName());
+        try {
+            if (session.itemExists(repoPath.getAbsPath())) {
+                if (logger.isDebugEnabled())
+                    logger.debug("loading applications from [{}]", appsRoot);
+                Node appNode = session.getNode(repoPath.getAbsPath());
+                scanAppNode(appNode, null);
+
+                StringBuilder appsString = new StringBuilder();
+                printAppsTree("root",getRootApplication(), appsString, 0);
+                logger.info("registered apps\n{}",  appsString);
+                if (logger.isDebugEnabled())
+                    logger.debug("loaded applications from [{}]", appsRoot);
+            } else {
+                logger.warn("applications root not found [{}]", appsRoot);
+            }
+        } finally {
             session.logout();
         }
     }
 
-    protected void scanChildSites(Node configNode,Site parentSite) throws Exception
-    {   
-        NodeIterator children = configNode.getNodes();
-        while ( children.hasNext() )
-        {
+    private void printAppsTree(String appName,Application application, StringBuilder appsString, int level) {
+        appsString.append("\n");
+        if (level > 0) {
+            for (int i = 0; i < level; i++) {
+                appsString.append("  ");
+            }
+        }
+        appsString.append(appName);
+        for(Map.Entry<String,Application> entry:application.getChildren().entrySet()){
+            printAppsTree(entry.getKey(),entry.getValue(), appsString, level+1);
+        }
+    }
+
+    private void scanAppNode(Node appNode, Application parentApp) throws Exception {
+        Application currentApp = registerApp(appNode, parentApp);
+        NodeIterator children = appNode.getNodes();
+        while (children.hasNext()) {
             Node childNode = children.nextNode();
-            Site childSite =registerSite( childNode, parentSite );
-            scanChildSites( childNode,childSite);
+            scanAppNode(childNode, currentApp);
         }
     }
 
 
-    protected Site registerSite( Node configNode, Site parentSite) throws Exception
-    {
-        Site site = new Site();
-        jcrFactory.bindValueToObject( configNode, site, "_site_" );
-        
-        System.out.println("\n\nbinded site url:"+site.getUrl());
-        site.setName( configNode.getName());
-        if(configNode.hasProperty( "_site_metasite" )){
-            site.setParent( parentSite );
-        }else{
-            addSiteToParent(parentSite,site);
-        }
-        
-        if(site.getTitle()==null){
-            site.setTitle( JcrNodeUtils.getNodeTitle( configNode ) );
-        }
-        if(site.getUrl()==null){
-            if(parentSite==null){
-                site.setUrl( buildDefaultApplicationUrl( rootApplication.getBaseUrl() ));
-            }else{
-                site.setUrl(HttpUtil.autoDetectRelativeUrl( site.getParent().getUrl(), site.getName() ));
+    protected Application registerApp(Node appNode, Application parentApp) throws Exception {
+        Application application = null;
+        if (appNode.hasProperty("_application_jcr_base_path")) {
+            String applicationBeanName;
+            if (appNode.hasProperty("_application_bean")) {
+                applicationBeanName = appNode.getProperty("_application_bean").getString();
+            } else {
+                applicationBeanName = defaultApplicationPrototypeBeanName;
             }
-        }
+            application = beanFactory.getBean(applicationBeanName, Application.class);
+            jcrFactory.bindValueToObject(appNode, application, "_application_");
 
-        NearestApplication nearestApp=retriveNearestApplication(site);
-        if(site.getGlobalPageTitle()==null){
-            site.setGlobalSite(nearestApp.getApplication().getSite().getGlobalSite());
+            if (application instanceof JcrTemplateAwareApplication) {
+                JcrTemplateAwareApplication nearestJcrTemplateAwareApplication = retrieveNearestJcrTemplateAwareApplication(parentApp);
+                JcrTemplateAwareApplication jcrTemplateAwareApplication = (JcrTemplateAwareApplication) application;
+                copyRequiredField(nearestJcrTemplateAwareApplication, jcrTemplateAwareApplication,
+                        "formats", "format", "resource", "template", "jcrRepository", "jcrWorkspace", "templatePaths");
+            }
+            invokeInitIfExist(application);
+            if (logger.isDebugEnabled())
+                logger.debug("created application [" + applicationBeanName + ":{}] from [{}]", application.getClass().getSimpleName(), appNode.getPath());
+        } else {
+            application = new SimplePathApplication();
         }
-        if(site.getGlobalUrl()==null){
-            // for root site
-            String globalUrl=site.getUrl();
-            site.setGlobalUrl(globalUrl);            
+        if(parentApp!=null){
+            parentApp.getChildren().put(appNode.getName(),application);
+            if(application instanceof SimplePathApplication)
+                ((SimplePathApplication)application).setParent(parentApp);
         }
-        if(parentSite!=null){
-            lookupApplication( configNode, site );
-        }
-        return site;
+        return application;
     }
 
-    protected void addSiteToParent( Site parentSite, Site site )
-    {
-        if(parentSite==null){
-            rootApplication.setSite( site );
-            site.setApp( rootApplication );
-        }else{
-            
-            Map<String, Site> siteChildren = parentSite.getChildren();
-            if(siteChildren==null){
-                siteChildren=new HashMap<String, Site>();
-                parentSite.setChildren( siteChildren );
+    private void setupParentChildRelationship(Node siteNode, Site parentSite, Site childSite, boolean isRootSite) throws Exception {
+        if (parentSite != null) {
+            if (!isRootSite) {
+                childSite.setParent(parentSite);
             }
-            siteChildren.put( site.getName(), site );            
-            site.setParent( parentSite );
+            if (!siteNode.hasProperty("_site_metasite")) {
+                Map<String, Site> siteChildren = parentSite.getChildren();
+                if (siteChildren == null) {
+                    siteChildren = new HashMap<String, Site>();
+                    parentSite.setChildren(siteChildren);
+                }
+                siteChildren.put(childSite.getName(), childSite);
+            }
+            List<Site> subSites = parentSite.getSubSites();
+            if (subSites == null) {
+                subSites = new ArrayList<Site>();
+                parentSite.setSubSites(subSites);
+            }
+            subSites.add(childSite);
         }
+    }
+
+    protected void addSiteToParent(Site parentSite, Site site) {
+
+        Map<String, Site> siteChildren = parentSite.getChildren();
+        if (siteChildren == null) {
+            siteChildren = new HashMap<String, Site>();
+            parentSite.setChildren(siteChildren);
+        }
+        siteChildren.put(site.getName(), site);
     }
 
 

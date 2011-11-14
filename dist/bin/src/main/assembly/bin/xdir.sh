@@ -31,9 +31,9 @@
 #   XDIR_CONF - location of XDir's configuration dir, default to $XDir_HOME/data/conf
 #   XDIR_OPTS - parameters passed to the Java VM when running server
 #     e.g. to debug Maven itself, use
-#       set XDIR_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"
+#       set XDIR_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
 # ----------------------------------------------------------------------------
-#XDIR_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"
+XDIR_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
 PROGNAME="$0"
 
 warn() {

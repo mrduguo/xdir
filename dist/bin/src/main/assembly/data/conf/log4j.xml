@@ -44,12 +44,12 @@
         <appender-ref ref="info"/>
     </logger>
     <logger name="org.duguo" additivity="true">
-        <level value="debug"/>
+        <level value="info"/>
         <appender-ref ref="xdir"/>
     </logger>
 	
     <root>
-        <priority value="debug"/>
+        <priority value="info"/>
         <appender-ref ref="stdout"/>
         <appender-ref ref="info"/>
         <appender-ref ref="debug"/>

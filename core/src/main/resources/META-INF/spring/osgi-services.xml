@@ -43,7 +43,7 @@
         xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
         xdir.jcr.default.repository=xdir
         xdir.jcr.default.workspace=default
-        xdir.jcr.sites.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/admin/sites
+        xdir.jcr.apps.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/admin/apps
         xdir.jcr.root=${xdir.dir.data}/jcr/repos
         xdir.web.default.contenttype=text/html;charset=UTF-8
 

@@ -1,0 +1,10 @@
+_title=XDir Home
+_url=http://xdir.duguo.org/index$[format]
+_site_global_page_title=Management Excellence
+_site_global_sub_title=XDir homepage
+_site_global_url=http://xdir.duguo.org/index$[format]
+_application_jcr_base_path=$jcr_node_path
+_application_controller_path=http_xdir_duguo_org_80
+_application_template_paths=/admin/resources/template/virtualhosts/,/admin/resources/template/default/
+
+_site_root=true

@@ -1,5 +1,6 @@
 package org.duguo.xdir.core.internal.site;
 
+import java.util.List;
 import java.util.Map;
 
 import org.duguo.xdir.core.internal.app.Application;
@@ -10,15 +11,18 @@ public class Site
     private String name;
     private String url;
     private String description;
+    private String baseUrl;
     
     private String globalPageTitle;
     private String globalSubTitle;
     private String globalUrl;
     private Site   globalSite;
+    private boolean isRoot=false;
     
     private Application app;
     private Site parent;
     private Map<String,Site> children;
+    private List<Site> subSites;  // children + meta sites
     
     public String getTitle()
     {
@@ -68,6 +72,15 @@ public class Site
     {
         this.url = url;
     }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
     public String getGlobalPageTitle()
     {
         if(globalSite!=null){
@@ -121,5 +134,20 @@ public class Site
     {
         this.app = app;
     }
-    
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean root) {
+        isRoot = root;
+    }
+
+    public List<Site> getSubSites() {
+        return subSites;
+    }
+
+    public void setSubSites(List<Site> subSites) {
+        this.subSites = subSites;
+    }
 }

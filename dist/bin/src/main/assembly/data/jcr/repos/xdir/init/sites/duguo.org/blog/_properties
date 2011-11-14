@@ -1,0 +1,8 @@
+_title=Blog
+_url=http://xdir.duguo.org/index$[format]
+_application_jcr_base_path=/websites/www/about/blog
+_type=blog_home
+_site_global_page_title=duguo.org Blog
+_site_global_sub_title=Leading Engineering Excellence
+_site_global_url=http://blog.duguo.org/index$[format]
+_application_controller_path=http_blog_duguo_org_80

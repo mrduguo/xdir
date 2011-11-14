@@ -113,7 +113,7 @@ public class HttpUtil
     public static String autoDetectRelativeUrl( String parentUrl, String name )
     {
         String relativeUrl=null;
-        int lastIndexOfSlash=parentUrl.lastIndexOf( "/" );
+        int lastIndexOfSlash=parentUrl.lastIndexOf("/");
         if(lastIndexOfSlash==parentUrl.length()-1){
             // sample http://localhost/
             relativeUrl=parentUrl+name+"/";
@@ -141,6 +141,40 @@ public class HttpUtil
         if(logger.isDebugEnabled())
             logger.debug( "auto detect relative url [{}] from [{}]",relativeUrl, parentUrl);
         return relativeUrl;
+    }
+
+
+    public static String resolveBaseUrl( String linkUrl )
+    {
+        String baseUrl=null;
+        int lastIndexOfSlash=linkUrl.lastIndexOf( "/" );
+        if(lastIndexOfSlash==linkUrl.length()-1){
+            // sample http://localhost/
+            baseUrl=linkUrl;
+        }else{
+            String parentFile=linkUrl.substring( lastIndexOfSlash+1);
+            int formatSpliter=parentFile.lastIndexOf( "$" );
+            // sample http://localhost/about$[format]
+            if(formatSpliter<=0){
+                // sample http://localhost/about.html
+                formatSpliter=parentFile.lastIndexOf( "." );
+                if(formatSpliter<=0){
+                    throw new RuntimeException("cannot detect base url based ["+linkUrl+"]");
+                }
+            }
+            String format=parentFile.substring(formatSpliter);
+            parentFile=parentFile.substring(0,formatSpliter);
+            if(parentFile.equals( "index" )){
+                // sample http://localhost/index.html
+                baseUrl=linkUrl.substring( 0,lastIndexOfSlash+1);
+            }else{
+                // sample http://localhost/blog.html
+                baseUrl=linkUrl.substring( 0,lastIndexOfSlash+1)+parentFile+"/";
+            }
+        }
+        if(logger.isDebugEnabled())
+            logger.debug( "detect base url [{}] from [{}]",baseUrl, linkUrl);
+        return baseUrl;
     }
     
 

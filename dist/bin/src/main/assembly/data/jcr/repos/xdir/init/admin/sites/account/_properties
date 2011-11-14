@@ -1,6 +1,0 @@
-_type=account_home
-_site_url=${xdir.web.base.secureurl}/account/index$[format]
-_application_jcr_base_path=/admin/sites/account
-_application_bean=accountService
-_application_template_paths=/admin/resources/template/account/,/admin/resources/template/default/
-_site_metasite=true

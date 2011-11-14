@@ -116,16 +116,7 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
 
     public String getResourceUrl( ModelImpl model,String resourceName )
     {
-        StringBuilder resourceUrl = new StringBuilder();
-        if(model.getHostUrl()!=null){
-            resourceUrl.append( model.getHostUrl() );
-            resourceUrl.append( getBaseUri());
-        }else{
-            resourceUrl.append( getBaseUrl() );            
-        }
-        resourceUrl.append( "/" );
-        resourceUrl.append( resourceName );
-        return resourceUrl.toString();
+        return getSite().getBaseUrl()+resourceName;
     }
 
 
