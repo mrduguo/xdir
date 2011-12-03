@@ -1,0 +1,6 @@
+${app.jcr.editNode(model)}
+<#if status??>
+	"status":"${status?js_string}"
+<#else>
+	"status":0
+</#if>

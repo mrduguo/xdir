@@ -5,17 +5,8 @@
        http://www.springframework.org/schema/util  
        http://www.springframework.org/schema/util/spring-util.xsd">
 
-  <bean id="xdirServlet"  class="org.duguo.xdir.core.internal.servlet.VirtualHostAwareXdirServlet">
-    <property name="application" ref="rootApplication" />
-    <property name="alias" value="/"/>
-    <property name="defaultHostUrls">
-      <set>
-        <value>${xdir.web.virtualhost.defaulthttpurl}</value>
-        <value>${xdir.web.virtualhost.defaulthttpsurl}</value>
-        <value>http://${xdir.web.host}</value>
-        <value>https://${xdir.web.host}</value>
-      </set>
-    </property>
+  <bean id="xdirServlet"  class="org.duguo.xdir.core.internal.servlet.XdirServletImpl">
+    <property name="rootApplication" ref="rootApplication" />
   </bean>
   
   

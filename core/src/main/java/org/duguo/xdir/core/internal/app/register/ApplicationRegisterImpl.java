@@ -71,6 +71,9 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
 
     public void scanApps() throws Exception {
+        if(logger.isTraceEnabled())
+            logger.trace("> scanApps");
+
         RepoPath repoPath = JcrRepositoryUtils.parseRepoPath(appsRoot);
         Session session = jcrFactory.retriveSession(repoPath.getRepositoryName(), repoPath.getWorkspaceName());
         try {
@@ -91,6 +94,9 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         } finally {
             session.logout();
         }
+
+        if(logger.isTraceEnabled())
+            logger.trace("< scanApps");
     }
 
     private void printAppsTree(String appName,Application application, StringBuilder appsString, int level) {
@@ -117,6 +123,8 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
 
     protected Application registerApp(Node appNode, Application parentApp) throws Exception {
+        if(logger.isTraceEnabled())
+            logger.trace("> registerApp({})",appNode.getPath());
         Application application = null;
         if (appNode.hasProperty("_application_jcr_base_path")) {
             String applicationBeanName;
@@ -145,40 +153,10 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
             if(application instanceof SimplePathApplication)
                 ((SimplePathApplication)application).setParent(parentApp);
         }
+
+        if(logger.isTraceEnabled())
+            logger.trace("< registerApp with {}",application);
         return application;
     }
-
-    private void setupParentChildRelationship(Node siteNode, Site parentSite, Site childSite, boolean isRootSite) throws Exception {
-        if (parentSite != null) {
-            if (!isRootSite) {
-                childSite.setParent(parentSite);
-            }
-            if (!siteNode.hasProperty("_site_metasite")) {
-                Map<String, Site> siteChildren = parentSite.getChildren();
-                if (siteChildren == null) {
-                    siteChildren = new HashMap<String, Site>();
-                    parentSite.setChildren(siteChildren);
-                }
-                siteChildren.put(childSite.getName(), childSite);
-            }
-            List<Site> subSites = parentSite.getSubSites();
-            if (subSites == null) {
-                subSites = new ArrayList<Site>();
-                parentSite.setSubSites(subSites);
-            }
-            subSites.add(childSite);
-        }
-    }
-
-    protected void addSiteToParent(Site parentSite, Site site) {
-
-        Map<String, Site> siteChildren = parentSite.getChildren();
-        if (siteChildren == null) {
-            siteChildren = new HashMap<String, Site>();
-            parentSite.setChildren(siteChildren);
-        }
-        siteChildren.put(site.getName(), site);
-    }
-
 
 }

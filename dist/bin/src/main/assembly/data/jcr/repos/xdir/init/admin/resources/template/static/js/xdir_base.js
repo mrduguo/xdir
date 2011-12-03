@@ -1,5 +1,4 @@
 ${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawoutput>
-	var baseUrl="${app.site.baseUrl}";
 	<#include "jquery.js">
 	<#include "jquery_cookie.js">
 	<#include "jquery_inlineedit.js">

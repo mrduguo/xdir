@@ -1,0 +1,10 @@
+<#macro page_header>
+	<h2><a href="${pageContext}/index${format}">XDir Platform</a></h2>
+	<h3>Management Excellence</h3>
+	<form action="${pageContext}/about/search${format}">
+		<div class="search"><input type="hidden" name="action" value="search"/>
+		<input type="text" name="query" value=""/>
+		<button type="submit" name="submit">Search</button>
+		</div>
+	</form>
+</#macro>

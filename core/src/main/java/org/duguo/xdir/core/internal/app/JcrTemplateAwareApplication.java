@@ -199,16 +199,11 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
 
 
     public ResourceService getResource() {
-        System.out.println("getResource:" + resource.getClass()+":"+this);
-        //System.out.println("getSite:" + getSite().getUrl());
-        //System.out.println("getApp:" + getSite().getApp().getClass());
         return resource;
     }
 
 
     public void setResource(ResourceService resource) {
-        if (resource != null)
-            System.out.println("setResource:" + resource.getClass()+":"+this);
         this.resource = resource;
     }
 

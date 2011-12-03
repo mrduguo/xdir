@@ -30,14 +30,14 @@ public abstract class AbstractAliasSupportServlet implements Servlet
         }
         else
         {
-            Assert.notNull( alias );
+            Assert.notNull( getAlias() );
             Assert.notNull( servletConfig );
-            String servletAliasContextPath = HttpUtil.retriveContextPathFromServletAlias( alias );
+            String servletAliasContextPath = HttpUtil.retriveContextPathFromServletAlias( getAlias() );
             String contextPath = servletConfig.getServletContext().getContextPath();
             Assert.notNull( contextPath );
             basePathLength = contextPath.length() + servletAliasContextPath.length() + 1;
             if ( logger.isDebugEnabled() )
-                logger.debug( "appBasePathLength [" + basePathLength + "] parsed from servletAlias [" + alias
+                logger.debug( "appBasePathLength [" + basePathLength + "] parsed from servletAlias [" + getAlias()
                     + "] contextPath [" + contextPath + "]" );
         }
     }

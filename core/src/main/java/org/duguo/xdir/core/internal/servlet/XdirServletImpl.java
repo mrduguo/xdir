@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.duguo.xdir.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.app.Application;
@@ -18,77 +19,137 @@ import org.duguo.xdir.core.internal.model.PathInfoImpl;
 import org.duguo.xdir.http.support.AbstractAliasSupportServlet;
 
 
-public class XdirServletImpl  extends AbstractAliasSupportServlet implements XdirServlet
+public class XdirServletImpl  extends AbstractAliasSupportServlet
 {
     private static final Logger logger = LoggerFactory.getLogger( XdirServletImpl.class );
     
-    private Application application;
-    
+    protected Application rootApplication;
+
+
     public void service( ServletRequest req, ServletResponse res ) throws ServletException, IOException
     {
-        HttpServletRequest request = ( HttpServletRequest ) req;
+        if(logger.isTraceEnabled())
+            logger.trace("> service");
+
         HttpServletResponse response = ( HttpServletResponse ) res;
+        HttpServletRequest request = ( HttpServletRequest ) req;
         try{
-            ModelImpl model=buildModel( request, response );
-            if(model!=null){
-                handleRequest(model);
-            }         
-        }catch(Exception ex){
+            handleRequest( request, response );
+            if(logger.isTraceEnabled())
+                logger.trace("< service successfully");
+        }catch(Throwable ex){
             logger.error( "Failed to handle request", ex);
+            if(logger.isTraceEnabled())
+                logger.trace("< service with exception {}",ex.getMessage());
+
+            if(ex instanceof ServletException)
+                throw (ServletException)ex;
+            if(ex instanceof IOException)
+                throw (IOException)ex;
         }
     }
-    
-    protected  void handleRequest( ModelImpl model ) throws Exception{
+
+
+
+    protected int handleWithVirtualHostAware(ModelImpl model) throws Exception {
+        String scheme = model.getRequest().getScheme();
+        String serverName = model.getRequest().getServerName();
+        int port = resolveNoneStandardPort(model.getRequest(), scheme);
+
+        StringBuilder hostUrl = buildHostUrl(scheme, serverName, port);
+        String virtualHostKey = buildVirtualHostKey(scheme, serverName, port);
+
+        model.setPageContext(hostUrl);
+        setupPathInfo( model);
+
+        Application selectApp=rootApplication.getChildren().get(virtualHostKey);
+        if (selectApp==null) {
+           selectApp=rootApplication;
+        }
+        return selectApp.handle( model );
+    }
+
+    private int resolveNoneStandardPort(HttpServletRequest request, String scheme) {
+        int port = request.getServerPort();
+        if((scheme.equalsIgnoreCase(HttpUtil.HTTP) && port == 80) || (scheme.equalsIgnoreCase(HttpUtil.HTTPS) && port == 443)){
+             port=0;
+        }
+        return port;
+    }
+
+    private StringBuilder buildHostUrl(String scheme, String serverName, int port) {
+        StringBuilder hostUrl = new StringBuilder(48);
+        hostUrl.append(scheme);
+        hostUrl.append("://");
+        hostUrl.append(serverName);
+        if (port > 0) {
+            hostUrl.append(':');
+            hostUrl.append(port);
+        }
+        return hostUrl;
+    }
+
+    private String buildVirtualHostKey(String scheme, String serverName, int port) {
+        StringBuilder virtualHostKey = new StringBuilder(48);
+        virtualHostKey.append(scheme);
+        virtualHostKey.append("_");
+        virtualHostKey.append(serverName);
+        if (port > 0) {
+            virtualHostKey.append('_');
+            virtualHostKey.append(port);
+        }
         if(logger.isDebugEnabled())
-            logger.debug("servlet handleRequest with full path:"+model.getPathInfo().getFullPath());
-        int returnStatus=application.handle( model );
+            logger.debug("built virtual host key {}",virtualHostKey.toString());
+        return virtualHostKey.toString();
+    }
+
+
+    protected  void handleRequest(HttpServletRequest request, HttpServletResponse response ) throws Exception{
+        if(logger.isTraceEnabled())
+            logger.trace("> handleRequest ({} {})",request.getMethod(),request.getRequestURL());
+
+
+        ModelImpl model=new ModelImpl();
+
+        model.setRequest( request );
+        model.setResponse( response );
+
+        int returnStatus=handleWithVirtualHostAware( model );
+
         if(returnStatus<400){
             model.getResponse().flushBuffer();
         }else{
             if(!model.getResponse().isCommitted()){
                 model.getResponse().sendError( returnStatus );
-            }            
+            }
         }
-        if(logger.isDebugEnabled())
-            logger.debug("servlet handleRequest finished with status:"+returnStatus);
+
+        if(logger.isTraceEnabled())
+            logger.trace("< handleRequest finished with status {}",returnStatus);
     }
 
-    protected ModelImpl buildModel( HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        ModelImpl model=new ModelImpl();
-        String path = buildPath( request,model );
-        if(path==null){
-            response.sendError( 404 );
-            return null;
-        }else if(path.length()==0){
-            model.setPathInfo( new PathInfoImpl(new String[]{}));            
-        }else{
-            model.setPathInfo( new PathInfoImpl( path.split( "/" ) ));
-        }
-        if(logger.isDebugEnabled())
-            logger.debug( "buildModel with path ["+path+"]");
-        
-        model.setRequest( request );
-        model.setResponse( response );
-        return model;
-    }
     
-    protected String buildPath( HttpServletRequest request,ModelImpl model ) throws Exception
+    protected void setupPathInfo(ModelImpl model ) throws Exception
     {
-        String path=URLDecoder.decode(request.getRequestURI(),"UTF-8");
-        path=path.substring(getBasePathLength());
-        return path;
+        String path= URLDecoder.decode(model.getRequest().getRequestURI(),"UTF-8");
+        if(path.length()==1){ // e.g. http://localhost:8080/
+            model.setPathInfo( new PathInfoImpl(new String[]{}));
+        }else{
+            model.setPathInfo( new PathInfoImpl( path.substring(1).split( "/" ) ));
+        }
     }
 
-    public Application getApplication()
-    {
-        return application;
+    /**
+     * Can only register as root servlet
+     */
+    @Override
+    public String getAlias() {
+        return "/";
     }
 
-
-    public void setApplication( Application application )
+    public void setRootApplication( Application rootApplication )
     {
-        this.application = application;
+        this.rootApplication = rootApplication;
     }
 
 }

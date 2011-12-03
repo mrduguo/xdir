@@ -39,7 +39,6 @@
         xdir.port.http=8080
         xdir.port.https=8443
         xdir.web.host=localhost
-        xdir.web.context.path=
         xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
         xdir.jcr.default.repository=xdir
         xdir.jcr.default.workspace=default
@@ -49,8 +48,8 @@
 
         xdir.web.virtualhost.defaulthttpurl=http://${xdir.web.host}:${xdir.port.http}
         xdir.web.virtualhost.defaulthttpsurl=https://${xdir.web.host}:${xdir.port.https}
-        xdir.web.base.url=http://${xdir.web.host}:${xdir.port.http}${xdir.web.context.path}
-        xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}${xdir.web.context.path}
+        xdir.web.base.url=http://${xdir.web.host}:${xdir.port.http}
+        xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}
         xdir.web.template.defaultpath=/admin/resources/template/default/
         xdir.web.template.staticresource=/admin/resources/template/static/
         

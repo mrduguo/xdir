@@ -6,7 +6,6 @@
        http://www.springframework.org/schema/util/spring-util.xsd">
 
   <bean id="jettyHttpServiceServletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
-    <property name="contextPath" value="${xdir.web.context.path}" />
     <property name="sessionHandler" ref="jettySessionHandler"/>
   </bean>
 

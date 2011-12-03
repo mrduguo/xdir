@@ -32,7 +32,7 @@ public class PageHelper {
 			if (PLACEHOLDER_PAGE_PATH.equals(match)) {
 				matcher.appendReplacement(output, model.getPagePath());
 			}else if (PLACEHOLDER_PAGE_CONTEXT.equals(match)) {
-					matcher.appendReplacement(output, model.getPageContext());
+					matcher.appendReplacement(output, model.getPageContext().toString());
 			}else if (PLACEHOLDER_FORMAT.equals(match)) {
 				matcher.appendReplacement(output, model.getFormat());
 			}

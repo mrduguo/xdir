@@ -1,0 +1,4 @@
+_application_jcr_base_path=/websites/admin/pages
+_application_base_url=${xdir.web.base.secureurl}/admin
+_application_bean=defaultAdminApplicationPrototype
+_application_template_paths=/websites/admin/templates/,${xdir.web.template.defaultpath}

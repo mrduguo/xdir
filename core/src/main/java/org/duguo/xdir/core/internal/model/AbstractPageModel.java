@@ -25,7 +25,7 @@ import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 public abstract class AbstractPageModel extends AbstractJcrModel {
     private String hostUrl;
     private String virtualHostPath;
-    private String pageContext;
+    private StringBuilder pageContext;
 
     private String pagePath;
     private String pageUrl;
@@ -45,12 +45,6 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
      * Modified getter/setter
      * *****************************************************
      */
-    public String getPageContext() {
-        if (pageContext == null) {
-            pageContext = hostUrl + getApp().getBaseUri();
-        }
-        return pageContext;
-    }
 
     /**
      * ****************************************************
@@ -294,6 +288,15 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
      * Setters and getters
      * *****************************************************
      */
+
+    public StringBuilder getPageContext() {
+        return pageContext;
+    }
+
+    public void setPageContext(StringBuilder pageContext) {
+        this.pageContext = pageContext;
+    }
+
     public void setPageTitle(String pageTitle) {
         this.pageTitle = pageTitle;
     }

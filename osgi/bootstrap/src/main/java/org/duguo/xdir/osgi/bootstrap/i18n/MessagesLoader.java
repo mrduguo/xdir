@@ -57,7 +57,7 @@ public class MessagesLoader
             return;
         }
         FileInputStream fileInputStream = new FileInputStream( messagesInputFile );
-        InputStreamReader inputStreamReader = new InputStreamReader( fileInputStream, System.getProperty( "xdir.file.encoding","utf-8") );
+        InputStreamReader inputStreamReader = new InputStreamReader( fileInputStream, System.getProperty( "xdir.file.encoding","UTF-8") );
         char[] convtBuf = new char[1024];
         LineReader lr = new LineReader( inputStreamReader );
 
