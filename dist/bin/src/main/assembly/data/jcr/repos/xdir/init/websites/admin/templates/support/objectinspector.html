@@ -1,0 +1,134 @@
+<#macro inspect_object_root objectName>
+	isPrimitiveType={varType, varValue->
+		return varType.isPrimitive() || varValue instanceof String || varValue instanceof Long || varValue instanceof Boolean || varValue instanceof Integer || varValue instanceof Double || varValue instanceof Float
+	}
+		displayArrayValue={arrayValues, fieldName->
+			ouputstring="$ouputstring<ul>"
+			i=0
+			arrayValues.toList().each(){arrayValue ->
+				ouputstring="$ouputstring<li>"
+				if(arrayValue==null){
+					ouputstring=ouputstring+"<span class=\"fieldvalue\">null</span>"
+				}else if(isPrimitiveType(arrayValue.getClass(),arrayValue)){
+					ouputstring="$ouputstring<span class=\"fieldvalue\">"+arrayValue+"</span> (<span class=\"classname\">"+arrayValue.getClass().simpleName+"</span>)"
+				}else{
+					<#if (linkbase??)>
+						if(fieldName==""){
+							ouputstring="$ouputstring<a href=\"${linkbase}[$i]\">"
+						}else{
+							ouputstring="$ouputstring<a href=\"${linkbase}.$fieldName[$i]\">"
+						}
+						ouputstring=ouputstring+arrayValue.getClass().simpleName+"@"+arrayValue.hashCode()+"</a>"	
+						if(arrayValue instanceof Class){
+							ouputstring="$ouputstring <span class=\"classname\">$arrayValue.name</span>"
+						}
+					<#else>
+						ouputstring="$ouputstring<span class=\"classname\">"+arrayValue.getClass().simpleName+"@"+arrayValue.hashCode()+"</span>"
+					</#if>
+				}
+				ouputstring="$ouputstring</li>"
+				i++
+			}
+			ouputstring=ouputstring+"</ul>"
+		}
+		ouputstring="$ouputstring<ul class=\"inspector\"><li>"
+		ouputstring="$ouputstring"+${objectName}.getClass().name+"@"+${objectName}.hashCode()
+		ouputstring="$ouputstring</span><ul>"
+		if(isPrimitiveType(${objectName}.getClass(),${objectName})){
+			ouputstring="$ouputstring<li><span class=\"fieldvalue\">$${objectName}</span></li>"
+		}else if(${objectName}.getClass().isArray()){
+			displayArrayValue(${objectName},"")
+		}else{
+			allFields=BeanUtil.retriveAllFields(${objectName})
+			allFields.each(){key,value->
+				ouputstring=ouputstring+"<li><span class=\"fieldname\">$key</span>:"
+				<@inspect_object_field "key","value[0]","value[1]",""/>
+				ouputstring=ouputstring+"</li>"
+			}
+		}
+		ouputstring="$ouputstring</ul></li></ul>"
+</#macro>
+<#macro inspect_object_field fieldVarName,fieldType,fieldValue,keyLink>
+		if(${fieldValue}==null){
+			ouputstring="$ouputstring<span class=\"fieldvalue\">null</span>"+" (<span class=\"classname\">"+${fieldType}.simpleName+"</span>)"
+		}else if(isPrimitiveType(${fieldType},${fieldValue})){
+			ouputstring="$ouputstring<span class=\"fieldvalue\">"+${fieldValue}+"</span> (<span class=\"classname\">"+${fieldType}.simpleName+"</span>)"
+		<#if (keyLink=="")>
+			}else if(${fieldType}.isArray()){
+				ouputstring="$ouputstring"+" (<span class=\"classname\">"+${fieldType}.simpleName+"</span>)"
+				displayArrayValue(${fieldValue},key)
+			}else if(${fieldValue} instanceof java.util.Set){
+				ouputstring="$ouputstring<span class=\"classname\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</span><ul>"
+				arrayindex=0
+				${fieldValue}.toArray().each(){entry->
+					ouputstring="$ouputstring<li>"
+					<@inspect_object_field "entry","entry.getClass()","entry",".toArray()[$arrayindex]"/>
+					ouputstring="$ouputstring</li>"
+					arrayindex++
+				}
+				ouputstring="$ouputstring</ul>"
+			}else if(${fieldValue} instanceof java.util.Map){
+				try{
+					${fieldValue}.entrySet()
+					ouputstring="$ouputstring<span class=\"classname\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</span><ul>"
+					arrayindex=0
+					${fieldValue}.entrySet().toArray().each(){mapentry->
+						ouputstring="$ouputstring<li>"
+						<@inspect_object_field "mapentry.key","mapentry.key.getClass()","mapentry.key",".entrySet().toArray()[$arrayindex].key"/>
+						ouputstring="$ouputstring:"
+						<@inspect_object_field "mapentry.value","mapentry.value.getClass()","mapentry.value",".entrySet().toArray()[$arrayindex].value"/>
+						ouputstring="$ouputstring</li>"
+						arrayindex++
+					}
+					ouputstring="$ouputstring</ul>"
+				}catch(Exception igonre){
+					<#if (linkbase??)>
+						ouputstring="$ouputstring<a href=\"${linkbase}."+key+"${keyLink}\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</a>"
+					<#else>
+						ouputstring="$ouputstring<span class=\"classname\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</span>"
+					</#if>	
+				}
+			}else if(${fieldValue} instanceof java.util.List){
+				ouputstring="$ouputstring"+" (<span class=\"classname\">"+${fieldType}.simpleName+"</span>)"
+				displayArrayValue(${fieldValue},key)
+			}else{					
+				<#if (linkbase??)>
+					ouputstring="$ouputstring<a href=\"${linkbase}."+${fieldVarName}+"\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</a>"
+				<#else>
+					ouputstring="$ouputstring<span class=\"classname\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</span>"
+				</#if>			
+		<#else>
+			}else{				
+				<#if (linkbase??)>
+					ouputstring="$ouputstring<a href=\"${linkbase}."+key+"${keyLink}\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</a>"
+				<#else>
+					ouputstring="$ouputstring<span class=\"classname\">"+${fieldType}.simpleName+"@"+${fieldValue}.hashCode()+"</span>"
+				</#if>	
+		</#if>
+		}	
+</#macro>
+<#macro inspect_object_methods objectName>		
+		ouputstring="$ouputstring<h4>Public Methods</h4><ul class=\"inspector\">"
+		sortedList=${objectName}.getClass().getMethods().toList()
+		sortById = [
+		compare: {a, b -> a.name.compareTo(b.name)}
+		] as Comparator
+		sortedList.sort(sortById)
+		first=true
+		sortedList.each{method->
+			if(method.declaringClass!=Object.class){
+				ouputstring="$ouputstring<li><span class=\"methodreturn\">$method.returnType.simpleName</span> <span class=\"methodname\">$method.name</span>("
+				first=true
+				method.parameterTypes.each(){
+					if(first){
+						first=false						
+					}else{
+						ouputstring="$ouputstring,"
+					}
+					ouputstring="$ouputstring<span class=\"methodparam\">$it.simpleName</span>"	
+				}
+				ouputstring="$ouputstring) <span class=\"classname\">$method.declaringClass.simpleName</span></li>"
+			}
+		}
+		ouputstring="$ouputstring</ul>"
+</#macro>

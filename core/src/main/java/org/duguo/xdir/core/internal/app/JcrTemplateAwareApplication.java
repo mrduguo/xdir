@@ -64,6 +64,8 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
 
 
     public int execute(ModelImpl model) throws Exception {
+        if (logger.isTraceEnabled())
+            logger.trace("> execute {} {}", model.getPathInfo().getCurrentAppPath(), model.getPathInfo().getCurrentPath());
         model.setApp(this);
         int handleStatus = STATUS_PAGE_NOT_FOUND;
         try {
@@ -78,6 +80,7 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
             }
             closeSessionIfAlreadyOpen(model);
         }
+        if (logger.isTraceEnabled()) logger.trace("< execute {}", handleStatus);
         return handleStatus;
     }
 
@@ -98,11 +101,13 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
     }
 
     protected int handleInSession(ModelImpl model, int handleStatus) throws Exception {
+        if (logger.isTraceEnabled()) logger.trace("> handleInSession");
         format.resolveFormat(model);
         if (resolveNode(model) != null) {
             setupAction(model);
             handleStatus = processTemplate(model);
         }
+        if (logger.isTraceEnabled()) logger.trace("< handleInSession {}", handleStatus);
         return handleStatus;
     }
 
@@ -199,6 +204,17 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
 
 
     public ResourceService getResource() {
+        if (resource == null) {
+            Application parent = getParent();
+            while (true) {
+                if (parent instanceof JcrTemplateAwareApplication) {
+                    resource = ((JcrTemplateAwareApplication) parent).getResource();
+                    break;
+                }else{
+                    parent=parent.getParent();
+                }
+            }
+        }
         return resource;
     }
 
@@ -237,9 +253,9 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
 
 
     public void setTemplatePaths(String[] templatePaths) {
+        ensureEndWithSlashForTemplatePaths(templatePaths);
         this.templatePaths = templatePaths;
     }
-
 
     public Map<String, String[]> getFormats() {
         return formats;
@@ -270,10 +286,10 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
         this.jcrWorkspace = jcrWorkspace;
     }
 
+
     public String getJcrBasePath() {
         return jcrBasePath;
     }
-
 
     public void setJcrBasePath(String jcrBasePath) {
         this.jcrBasePath = jcrBasePath;
@@ -304,12 +320,23 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
         this.security = security;
     }
 
+
     public HttpClientService getHttpClient() {
         return httpClient;
     }
 
     public void setHttpClient(HttpClientService httpClient) {
         this.httpClient = httpClient;
+    }
+
+    private void ensureEndWithSlashForTemplatePaths(String[] templatePaths) {
+        for (int i = 0; i < templatePaths.length; i++) {
+            String templatePath = templatePaths[i].trim();
+            if (!templatePath.endsWith("/")) {
+                templatePath = templatePath + "/";
+            }
+            templatePaths[i] = templatePath;
+        }
     }
 
 }

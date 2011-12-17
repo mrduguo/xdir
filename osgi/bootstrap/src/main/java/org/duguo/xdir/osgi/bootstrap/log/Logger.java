@@ -34,7 +34,7 @@ public abstract class Logger
 
     public static void init(OsgiProperties configuration)
     {
-        File logFile = new File( configuration.retriveXdirDirLogs(), "system.log" );
+        File logFile = new File( configuration.retriveXdirDirLogs(), "osgi-console.log" );
         boolean consoleEnabled=configuration.isConsoleEnabled();
         verifyLogsFolder( logFile );
         consoleDataOutput = new ConsoleDataOutput( logFile, ( debugEnabled || consoleEnabled ) );

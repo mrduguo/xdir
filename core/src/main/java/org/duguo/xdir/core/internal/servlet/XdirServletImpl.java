@@ -56,17 +56,21 @@ public class XdirServletImpl  extends AbstractAliasSupportServlet
         String serverName = model.getRequest().getServerName();
         int port = resolveNoneStandardPort(model.getRequest(), scheme);
 
-        StringBuilder hostUrl = buildHostUrl(scheme, serverName, port);
         String virtualHostKey = buildVirtualHostKey(scheme, serverName, port);
-
-        model.setPageContext(hostUrl);
         setupPathInfo( model);
 
-        Application selectApp=rootApplication.getChildren().get(virtualHostKey);
-        if (selectApp==null) {
-           selectApp=rootApplication;
+        return pickUpApp(virtualHostKey).handle(model);
+    }
+
+    private Application pickUpApp(String virtualHostKey) {
+        Application selectedApp=rootApplication.getChildren().get(virtualHostKey);
+        if (selectedApp==null) {
+            selectedApp=rootApplication;
+            logger.debug("use default root app");
+        }else{
+            logger.debug("use virtual host app with key {}",virtualHostKey);
         }
-        return selectApp.handle( model );
+        return selectedApp;
     }
 
     private int resolveNoneStandardPort(HttpServletRequest request, String scheme) {
@@ -75,18 +79,6 @@ public class XdirServletImpl  extends AbstractAliasSupportServlet
              port=0;
         }
         return port;
-    }
-
-    private StringBuilder buildHostUrl(String scheme, String serverName, int port) {
-        StringBuilder hostUrl = new StringBuilder(48);
-        hostUrl.append(scheme);
-        hostUrl.append("://");
-        hostUrl.append(serverName);
-        if (port > 0) {
-            hostUrl.append(':');
-            hostUrl.append(port);
-        }
-        return hostUrl;
     }
 
     private String buildVirtualHostKey(String scheme, String serverName, int port) {

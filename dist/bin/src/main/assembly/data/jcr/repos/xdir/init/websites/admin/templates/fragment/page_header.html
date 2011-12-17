@@ -1,16 +1,12 @@
-<#include "../support/admin_base">
 <#macro page_header>
-	<h2 class="pagetitle"><a href="${displayPropertyValue(app.site.globalUrl)}">${app.site.globalPageTitle}</a></h2>
-	<h3 class="subtitle">${app.site.globalSubTitle}</h3>
+	<h2 class="pagetitle"><a href="/admin/index${format}">XDir Platform</a></h2>
+	<h3 class="subtitle">Admin Console</h3>
 	<form action="${pageContext}/about/search${format}">
 		<div class="search"><input type="hidden" name="action" value="search"/>
 		<input type="text" name="query" value=""/>
 		<button type="submit" name="submit">Search</button>
 		</div>
 	</form>
-	<#if app.site.globalSite.children??>
-		<@page_header_menu app.site.globalSite.children/>
-	</#if>
 </#macro>
 <#macro page_header_menu currentCollection>
 	<ul class="menu">

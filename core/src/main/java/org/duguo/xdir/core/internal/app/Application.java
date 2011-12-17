@@ -14,5 +14,5 @@ public interface Application
     public int execute( ModelImpl model ) throws Exception;
     public Map<String, Application> getChildren();
     public Application getParent();
-    
+
 }

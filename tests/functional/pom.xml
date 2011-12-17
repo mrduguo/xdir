@@ -22,39 +22,9 @@
     <name>XDir Platform tests (Functional)</name>
 
     <properties>
-        <testng>basic-status-check</testng>
-        <skipTests>true</skipTests>
+        <skipTests>false</skipTests>
         <test.web.driver.impl>org.openqa.selenium.htmlunit.HtmlUnitDriver</test.web.driver.impl>
     </properties>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.9</version>
-                    <executions>
-                        <execution>
-                            <phase>integration-test</phase>
-                            <goals>
-                                <goal>test</goal>
-                            </goals>
-                            <configuration>
-                                <suiteXmlFiles>
-                                    <suiteXmlFile>${basedir}/src/main/resources/testng/${testng}.xml</suiteXmlFile>
-                                </suiteXmlFiles>
-                                <systemPropertyVariables>
-                                    <log4j.configuration>ignore.css.warning.log4j.xml</log4j.configuration>
-                                    <test.web.driver.impl>${test.web.driver.impl}</test.web.driver.impl>
-                                </systemPropertyVariables>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
     <!-- ======================================= -->
     <!-- DEPENDENCIES                            -->
@@ -63,55 +33,132 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.6.0</version>
+            <version>2.15.0</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.2.1</version>
+            <version>6.3.1</version>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${lib.log4j.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${lib.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${lib.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${lib.slf4j.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
     <profiles>
         <profile>
-            <id>basic-status-check-it</id>
-            <properties>
-                <skipTests>false</skipTests>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>craw-links-it</id>
-            <properties>
-                <testng>craw-links</testng>
-                <skipTests>false</skipTests>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>firefox</id>
             <properties>
                 <test.web.driver.impl>org.openqa.selenium.firefox.FirefoxDriver</test.web.driver.impl>
             </properties>
+        </profile>
+        <profile>
+            <id>run-local-server-and-execute-tests</id>
+            <activation>
+                <property>
+                    <name>deploy-build</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.11</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>${basedir}/src/main/resources/testng/craw-links.xml</suiteXmlFile>
+                                <suiteXmlFile>${basedir}/src/main/resources/testng/basic-status-check.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                            <systemPropertyVariables>
+                                <test.web.driver.impl>${test.web.driver.impl}</test.web.driver.impl>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>groovy-maven-plugin</artifactId>
+                        <version>1.3</version>
+                        <executions>
+                            <execution>
+                                <id>start-xdir-server</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <source><![CDATA[
+                                        def serverStatus="STARTING"
+                                        Thread.start {
+                                            command = "/bin/sh ${basedir}/../../dist/bin/target/xdir-dist-bin-${project.version}/bin/xdir.sh start"
+                                            command = command.execute()
+                                            command.in.eachLine { line ->
+                                                println line
+                                                if(line.contains("FPBTE0005I"))
+                                                    serverStatus="STARTED"
+                                            }
+                                        }
+                                        long timeout=20000
+                                        while(true){
+                                            if(serverStatus.equals("STARTED")){
+                                                break
+                                            }else if(serverStatus.equals("FAILED")){
+                                                fail("server start failed")
+                                            }else if(timeout<0){
+                                                fail("server start timeout")
+                                            }else{
+                                                Thread.sleep(1000)
+                                                timeout=timeout-1000
+                                            }
+                                        }
+                                    ]]></source>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-xdir-server</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <source><![CDATA[
+                                        if("true".equals(System.properties['waitForStop'])) {
+                                            println "Press Enter to stop xdir server"; System.in.withReader { it.readLine() }
+                                        }
+
+                                        command = "/bin/sh ${basedir}/../../dist/bin/target/xdir-dist-bin-${project.version}/bin/xdir.sh stop"
+                                        command = command.execute()
+                                        command.in.eachLine { line ->
+                                            println line
+                                        }
+                                    ]]></source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 

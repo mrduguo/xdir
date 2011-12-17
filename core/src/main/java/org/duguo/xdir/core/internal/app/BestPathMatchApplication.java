@@ -15,8 +15,7 @@ public class BestPathMatchApplication extends JcrTemplateAwareApplication
     
     protected Node resolveNode( ModelImpl model ) throws Exception
     {
-        if(logger.isDebugEnabled())
-            logger.debug("resolveNode");
+        if(logger.isTraceEnabled()) logger.trace("= resolveNode {}",model.getPathInfo().getCurrentAppPath());
         return getJcrFactory().resolveBestNode( model );
     }
 

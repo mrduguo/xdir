@@ -1,0 +1,6 @@
+<#include "support/secureresource">
+<#assign nocompress="true"/>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+<#macro page_breadcrumb_paths_base>
+    <a href="${app.props.resolveStringValue("$"+"{xdir.web.base.url}/")}">Home</a> &raquo;
+</#macro>

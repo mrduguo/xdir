@@ -1,3 +1,0 @@
-<#macro page_nav_link nodeLink>
-	<a href="${internalBuildUrl(nodeLink.node.path)}" title="${nodeLink.title}">${nodeLink.title}</a>
-</#macro>

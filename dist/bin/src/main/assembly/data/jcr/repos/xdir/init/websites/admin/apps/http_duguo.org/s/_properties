@@ -1,0 +1,3 @@
+_application_jcr_base_path=/websites/duguo.org/static
+_application_bean=staticResourceServicePrototype
+_application_template_paths=/websites/duguo.org/static,/websites/default/static

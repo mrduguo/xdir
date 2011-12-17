@@ -1,5 +1,0 @@
-<@groovy>
-	model.get("file").write(model.getStringParameter("propertiesValue"))
-	return ""
-</@groovy>
-"status":0

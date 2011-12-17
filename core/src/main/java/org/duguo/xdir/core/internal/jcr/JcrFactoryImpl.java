@@ -77,6 +77,7 @@ public class JcrFactoryImpl implements JcrFactory
 
     public Node resolveBestNode( ModelImpl model ) throws RepositoryException
     {
+        if(logger.isTraceEnabled()) logger.trace("> resolveBestNode {}",model.getPathInfo());
         PathInfoImpl pathInfo = model.getPathInfo();
         Node node=model.getSession().getNode(model.getApp().getJcrBasePath());
         while(pathInfo.getCurrentPath()!=null){
@@ -94,9 +95,8 @@ public class JcrFactoryImpl implements JcrFactory
                 break;
             }            
         }
-        if ( logger.isDebugEnabled() )
-            logger.debug( "resolved best node with remain path [" + model.getPathInfo().getRemainPath() + "]" );
         model.setNode( node );
+        if(logger.isTraceEnabled()) logger.trace("< resolveBestNode {} {}",node.getPath());
         return node;
     }
 
@@ -119,6 +119,7 @@ public class JcrFactoryImpl implements JcrFactory
 
     public Session retriveSession( String repositoryName,String workspaceName ) throws RepositoryException, LoginException
     {
+        if(logger.isTraceEnabled()) logger.trace("> retriveSession {} {}",repositoryName,workspaceName);
         Repository repository = retriveRepository( repositoryName );
         Session session = repository.login(workspaceName);
         if(session==null){
@@ -128,8 +129,7 @@ public class JcrFactoryImpl implements JcrFactory
             session = repository.login(workspaceName);
             Assert.notNull( session );
         }
-        if ( logger.isDebugEnabled() )
-            logger.debug( "session retrived" );
+        if(logger.isTraceEnabled()) logger.trace("< retriveSession {}");
         return session;
     }
 

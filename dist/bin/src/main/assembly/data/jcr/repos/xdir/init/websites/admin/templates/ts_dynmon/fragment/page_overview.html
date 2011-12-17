@@ -1,0 +1,24 @@
+<#include "../support/bean.html">
+<@groovy>
+	def ouputstring=""
+    monitorService=model.app.children.get("platform").children.get("osgi").children.get("spring").retriveMonitorService()
+	if(monitorService!=null){
+		monitors=monitorService.listMonitors()
+		if(monitors.size()>0){
+			ouputstring="$ouputstring<h1><div><a href=\"${pageUrl}?action=reset\">Reset</a></div>${pageTitle}</h1>"
+			ouputstring="$ouputstring<table class=\"fullwidth sortable\"><thead><tr><th>Service</th><th>Registered Dependent</th></tr></thead><tbody>"
+			monitors.each(){key,value->
+				ouputstring="$ouputstring<tr><td>"+key.getClass().name+"</td><td><ul>"
+				value.each(){
+					ouputstring="$ouputstring<li>"+it[0]+"</li>"
+				}
+				ouputstring="$ouputstring</ul></td></tr>"
+			}
+			ouputstring="$ouputstring</tbody></table>"
+		}else{
+			ouputstring="$ouputstring<h1>${pageTitle}</h1><div class=\"info\">No dynamic monitors registered</div>"				
+		}
+	}	
+	return ouputstring
+</@groovy>
+<@page_overview_content/>

@@ -1,0 +1,87 @@
+<#macro bean_inspect_fields bean_name field_excludes field_orders>
+	import org.duguo.xdir.util.bean.BeanUtil
+	field_excludes=[<#list field_excludes?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
+	ouputstring="$ouputstring<table class=\"sortable\"><thead><tr><th>Name</th><th>Value</th></thead><tbody>"
+	<#if (field_orders?length>0)>
+		field_orders=[<#list field_orders?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
+		foundedFields=[]
+		${bean_name}.metaClass.properties.each{
+			if(!field_excludes.contains(it.name) && (it.type.isPrimitive() || it.type instanceof String)){
+				foundedFields.add(it.name)
+			}
+		}
+		field_orders.each{
+			ouputstring="$ouputstring<tr><td>"+BeanUtil.displayFieldName(it)+"</td><td>"+${bean_name}."$it"+"</td></tr>"
+		}
+		foundedFields.each{
+			if(!field_orders.contains(it)){
+				ouputstring="$ouputstring<tr><td>"+BeanUtil.displayFieldName(it)+"</td><td>"+${bean_name}."$it"+"</td></tr>"
+			}			
+		}
+	<#else>
+		${bean_name}.metaClass.properties.each{
+			if(!field_excludes.contains(it.name) && (it.type.isPrimitive() || it.type instanceof String)){
+				ouputstring="$ouputstring<tr><td>"+BeanUtil.displayFieldName(it.name)+"</td><td>"+it.getProperty(${bean_name})+"</td></tr>"
+			}
+		}
+	</#if>
+	ouputstring="$ouputstring</tbody></table>"
+</#macro>
+<#macro bean_inspect_list bean_list_name field_includes>
+	field_includes=[<#list field_includes?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
+	ouputstring="$ouputstring<table class=\"sortable\"><tr>"
+	field_includes.each{
+		ouputstring="$ouputstring<td>"+BeanUtil.displayFieldName(it)+"</td>"
+	}
+	ouputstring="$ouputstring</tr>"
+	${bean_list_name}.each{ field ->
+		ouputstring="$ouputstring<tr>"
+		field_includes.each{
+			ouputstring="$ouputstring<td>"+field."$it"+"</td>"
+		}
+		ouputstring="$ouputstring</tr>"
+	}
+	ouputstring="$ouputstring</table>"
+</#macro>
+<#macro list_services servicesVarName, servicesTitle>
+	if(${servicesVarName}!=null && ${servicesVarName}.size()>0){
+		ouputstring="$ouputstring<tr><td>${servicesTitle}</td><td><ul>"
+		if(${servicesVarName}!=null){
+			${servicesVarName}.each{ serviceReference ->
+				ouputstring="$ouputstring<li><a href=\"../services/"+serviceReference.getProperty("service.id")+"${format}\">"+
+					serviceReference.getProperty("service.id")
+				if(serviceReference.getProperty("org.springframework.osgi.bean.name")!=null){
+					ouputstring="$ouputstring : "+serviceReference.getProperty("org.springframework.osgi.bean.name")
+				}else{
+					ouputstring="$ouputstring : "+serviceReference.getProperty("objectClass")[0]
+				}
+				ouputstring="$ouputstring</a></li>"
+			}
+		}
+		ouputstring="$ouputstring</ul></td></tr>"	
+	}
+</#macro>
+<#macro list_bundles bundlesVarName>
+				ouputstring="$ouputstring"
+	if(${bundlesVarName}!=null && ${bundlesVarName}.size()>0){
+		sortedList=${bundlesVarName}.toList()
+		sortById = [
+		compare: {a, b -> a.bundleId-b.bundleId>0?1:(a.bundleId-b.bundleId<0?-1:0)}
+		] as Comparator
+		sortedList.sort(sortById)
+		ouputstring="$ouputstring<ul>"
+		sortedList.each{
+			ouputstring="$ouputstring<li><a href=\"../bundles/"+it.bundleId+"${format}\">"+it.bundleId+" : "+it.symbolicName+"</a></li>"
+		}
+		ouputstring="$ouputstring</ul>"
+	}	
+</#macro>
+<#macro list_bundles_in_tr bundlesVarName, sectionTitle>
+	if(${bundlesVarName}!=null && ${bundlesVarName}.size()>0){
+		ouputstring="$ouputstring<tr><td>${sectionTitle}</td><td><ul>"
+		${bundlesVarName}.each(){
+			ouputstring="$ouputstring<li><a href=\"${pagePath}/../"+it.bundleId+"${format}\">"+it.bundleId+" : "+it.symbolicName+"</a></li>"
+		}
+		ouputstring="$ouputstring</ul></td></tr>"
+	}	
+</#macro>

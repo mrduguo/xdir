@@ -1,0 +1,14 @@
+<@page_overview_title/>
+${app.saveResource(getStringParameter("file_location"),getStringParameter("file_content"))}
+<#if status??>
+	<div class="error">
+		<div class="title">Conf file edit failed</div>
+		<p>${status}</p>
+		<a href="${pageUrl}" class="button">Finish</a>
+	</div>
+<#else>
+	<div class="info">
+		<div class="title">Config save, you need restart related bundles to pick the changes.</div>
+		<a href="${pageUrl}" class="button">Finish</a>
+	</div>
+</#if>

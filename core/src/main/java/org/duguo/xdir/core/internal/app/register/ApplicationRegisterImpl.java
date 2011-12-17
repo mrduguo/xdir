@@ -5,15 +5,16 @@ import java.util.*;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.duguo.xdir.core.internal.app.SimplePathApplication;
+import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
-import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils;
 import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils.RepoPath;
 
@@ -126,21 +127,25 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         if(logger.isTraceEnabled())
             logger.trace("> registerApp({})",appNode.getPath());
         Application application = null;
-        if (appNode.hasProperty("_application_jcr_base_path")) {
-            String applicationBeanName;
-            if (appNode.hasProperty("_application_bean")) {
-                applicationBeanName = appNode.getProperty("_application_bean").getString();
-            } else {
-                applicationBeanName = defaultApplicationPrototypeBeanName;
-            }
+        if (appNode.hasProperty("_application_bean")) {
+            String applicationBeanName=appNode.getProperty("_application_bean").getString();
             application = beanFactory.getBean(applicationBeanName, Application.class);
             jcrFactory.bindValueToObject(appNode, application, "_application_");
+
+            if (application instanceof ResourceApplication && parentApp instanceof JcrTemplateAwareApplication) {
+                ResourceApplication resourceApplication = (ResourceApplication) application;
+                resourceApplication.setName(appNode.getName());
+                if(!appNode.hasProperty("_application_skip_register_as_parent_resource")){
+                    ((JcrTemplateAwareApplication) parentApp).setResource(resourceApplication);
+                }
+            }
 
             if (application instanceof JcrTemplateAwareApplication) {
                 JcrTemplateAwareApplication nearestJcrTemplateAwareApplication = retrieveNearestJcrTemplateAwareApplication(parentApp);
                 JcrTemplateAwareApplication jcrTemplateAwareApplication = (JcrTemplateAwareApplication) application;
                 copyRequiredField(nearestJcrTemplateAwareApplication, jcrTemplateAwareApplication,
-                        "formats", "format", "resource", "template", "jcrRepository", "jcrWorkspace", "templatePaths");
+                        "formats", "format", "template", "jcrRepository", "jcrWorkspace", "templatePaths");
+                setupJcrBasePath(appNode, parentApp, jcrTemplateAwareApplication);
             }
             invokeInitIfExist(application);
             if (logger.isDebugEnabled())
@@ -157,6 +162,28 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         if(logger.isTraceEnabled())
             logger.trace("< registerApp with {}",application);
         return application;
+    }
+
+    private void setupJcrBasePath(Node appNode, Application parentApp, JcrTemplateAwareApplication jcrTemplateAwareApplication) throws RepositoryException {
+        if(jcrTemplateAwareApplication.getJcrBasePath()==null){
+            StringBuilder appJcrBasePath=new StringBuilder();
+            Node parentNode=appNode;
+            while(true){
+                appJcrBasePath.insert(0,parentNode.getName());
+                appJcrBasePath.insert(0,"/");
+                if(parentApp instanceof JcrTemplateAwareApplication){
+                    appJcrBasePath.insert(0,((JcrTemplateAwareApplication)parentApp).getJcrBasePath());
+                    break;
+                }
+                parentApp=parentApp.getParent();
+                parentNode=parentNode.getParent();
+            }
+            //
+            // /websites/admin/apps/admin/platform/jvm/console
+            // /websites/admin/pages/jvm/jvm
+            jcrTemplateAwareApplication.setJcrBasePath(appJcrBasePath.toString());
+            if(logger.isDebugEnabled()) logger.debug("setup app {} jcr base path as {}",appNode.getPath(),appJcrBasePath.toString());
+        }
     }
 
 }

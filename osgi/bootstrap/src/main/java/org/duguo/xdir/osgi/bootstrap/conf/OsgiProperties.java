@@ -46,6 +46,10 @@ public class OsgiProperties extends AbstractProperties
         if(dir==null){
             dir=retriveXdirDirVar()+"/logs";
             System.setProperty( KEY_XDIR_DIR_LOGS, dir );
+            // setup default derby.log location
+            if(System.getProperty("derby.stream.error.file")==null){
+                System.setProperty("derby.stream.error.file",dir+"/derby.log");
+            }
         }
         return dir;
     }

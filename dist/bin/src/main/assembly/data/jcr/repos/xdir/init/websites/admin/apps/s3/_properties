@@ -1,0 +1,5 @@
+_application_jcr_base_path=/sites/default/s3
+_application_base_url=${xdir.web.base.url}/s3
+_application_bean=staticS3ResourceService
+_application_skip_register_as_parent_resource=true
+_application_template_paths=/websites/default/static

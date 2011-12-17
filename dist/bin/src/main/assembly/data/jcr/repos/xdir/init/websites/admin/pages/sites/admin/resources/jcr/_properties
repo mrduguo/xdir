@@ -1,0 +1,4 @@
+_url=${xdir.web.base.secureurl}/admin/resources/jcr/index$[format]
+_application_jcr_base_path=/admin/resources/jcr
+_application_bean=jcrManagerApplication
+_application_template_paths=/admin/resources/template/resources/jcr/,/admin/resources/template/admin/,/admin/resources/template/default/

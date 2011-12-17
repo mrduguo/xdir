@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/util  
        http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/osgi  
-       http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd">
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0.xsd">
 
   <osgi:list id="bundleListeners" interface="org.osgi.framework.BundleListener" />
 

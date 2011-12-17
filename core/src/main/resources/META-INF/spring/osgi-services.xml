@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/util  
        http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/osgi  
-       http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd">
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0.xsd">
 
   <osgi:service ref="applicationService" interface="org.duguo.xdir.core.internal.app.register.ApplicationService" depends-on="applicationService" />
   
@@ -42,7 +42,7 @@
         xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
         xdir.jcr.default.repository=xdir
         xdir.jcr.default.workspace=default
-        xdir.jcr.apps.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/admin/apps
+        xdir.jcr.apps.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/websites/admin/apps
         xdir.jcr.root=${xdir.dir.data}/jcr/repos
         xdir.web.default.contenttype=text/html;charset=UTF-8
 
@@ -50,9 +50,8 @@
         xdir.web.virtualhost.defaulthttpsurl=https://${xdir.web.host}:${xdir.port.https}
         xdir.web.base.url=http://${xdir.web.host}:${xdir.port.http}
         xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}
-        xdir.web.template.defaultpath=/admin/resources/template/default/
-        xdir.web.template.staticresource=/admin/resources/template/static/
-        
+        xdir.web.template.defaultpath=/websites/default/templates
+
         xdir.css.article.text.font=14
         xdir.css.nav.header.height=70
         xdir.css.nav.sidebar.width=150

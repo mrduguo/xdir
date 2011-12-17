@@ -1,0 +1,5 @@
+_type=profiles_home
+_application_jcr_base_path=/admin/sites/profiles
+_application_bean=profilesApplication
+_application_template_paths=/admin/resources/template/profiles/,/admin/resources/template/default/
+_site_metasite=true

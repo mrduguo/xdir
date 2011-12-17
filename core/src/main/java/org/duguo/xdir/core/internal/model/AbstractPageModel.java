@@ -11,6 +11,9 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 
+import org.apache.commons.lang.StringUtils;
+import org.duguo.xdir.core.internal.app.Application;
+import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
 import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
 import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
@@ -25,7 +28,7 @@ import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 public abstract class AbstractPageModel extends AbstractJcrModel {
     private String hostUrl;
     private String virtualHostPath;
-    private StringBuilder pageContext;
+    private StringBuilder pageContext = new StringBuilder();
 
     private String pagePath;
     private String pageUrl;
@@ -132,17 +135,42 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
     }
 
     public String internalBuildUrl(String jcrPath) {
-        int basePathLength = getApp().getJcrBasePath().length();
+        // /websites/admin/pages/platform/osgi/bundles   /admin/platform/osgi/bundles
+        // /websites/admin/pages/platform/troubleshooting
+        //
         StringBuilder urlPath = new StringBuilder();
         urlPath.append(getPageContext());
-        urlPath.append("/");
-        if (jcrPath.length() > basePathLength) {
-            urlPath.append(jcrPath.substring(basePathLength + 1));
+        String appJcrBasePath = getApp().getJcrBasePath();
+        if (jcrPath.startsWith(appJcrBasePath)) {
+            urlPath.append("/");
+            int basePathLength = appJcrBasePath.length();
+            int charLengthToAdd = jcrPath.length() - basePathLength;
+            if (charLengthToAdd != 0) {
+                urlPath.append(jcrPath.substring(basePathLength + 1));
+            } else {
+                urlPath.append(TemplateEngine.TEMPLATE_DEFAULT);
+            }
         } else {
-            urlPath.append(TemplateEngine.TEMPLATE_DEFAULT);
+            String jcrPrefix=greatestCommonPrefix(jcrPath, appJcrBasePath);
+            if(jcrPrefix.length()<appJcrBasePath.length()){
+                urlPath.delete(urlPath.length()-(appJcrBasePath.length() - jcrPrefix.length()), urlPath.length());
+            }
+            if(jcrPrefix.length()<jcrPath.length()){
+                urlPath.append(jcrPath.substring(jcrPrefix.length()));
+            }
         }
         urlPath.append(getFormat());
         return urlPath.toString();
+    }
+
+    private String greatestCommonPrefix(String a, String b) {
+        int minLength = Math.min(a.length(), b.length());
+        for (int i = 0; i < minLength; i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                return a.substring(0, i);
+            }
+        }
+        return a.substring(0, minLength);
     }
 
     /**
@@ -190,16 +218,13 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
         if (pagePaths == null) {
             pagePaths = new ArrayList<Object>();
             Node currentNode = getNode();
-            int basePathLength = getApp().getJcrBasePath().length();
-            String currentNodePath = currentNode.getPath();
             while (true) {
-                TextNode link = createTextLinkFromNode(currentNode, currentNodePath);
+                TextNode link = createTextLinkFromNode(currentNode, currentNode.getPath());
                 pagePaths.add(0, link);
-                currentNode = currentNode.getParent();
-                currentNodePath = currentNode.getPath();
-                if (currentNodePath.length() < basePathLength) {
+                if ("home".equals(JcrNodeUtils.getNodeType(currentNode))) {
                     break;
                 }
+                currentNode = currentNode.getParent();
             }
         }
         return pagePaths;
@@ -291,10 +316,6 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
 
     public StringBuilder getPageContext() {
         return pageContext;
-    }
-
-    public void setPageContext(StringBuilder pageContext) {
-        this.pageContext = pageContext;
     }
 
     public void setPageTitle(String pageTitle) {

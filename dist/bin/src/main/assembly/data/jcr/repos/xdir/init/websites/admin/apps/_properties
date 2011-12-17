@@ -1,0 +1,4 @@
+_application_jcr_base_path=/websites/default/pages
+_application_base_url=${xdir.web.base.url}
+_application_bean=rootApplication
+_application_template_paths=/websites/default/templates

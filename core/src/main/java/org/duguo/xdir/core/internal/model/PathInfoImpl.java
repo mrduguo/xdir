@@ -47,6 +47,10 @@ public class PathInfoImpl implements PathInfo
         return getPath(processIndex);
     }
 
+    public String getCurrentAppPath() {
+        return getSubsetPaths(0,processIndex,null);
+    }
+
     public String getRemainPath() {
         return getSubsetPaths(processIndex,paths.length,null);
     }
@@ -76,10 +80,11 @@ public class PathInfoImpl implements PathInfo
                 remainPaths.append("/");
                 remainPaths.append(paths[i]);
             }
-            return remainPaths.toString();
-        }else{
-            return prefix;
+            if(remainPaths!=null){
+                return remainPaths.toString();
+            }
         }
+        return prefix;
     }
     
 }

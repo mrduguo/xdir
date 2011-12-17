@@ -5,12 +5,15 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.io.File;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -24,7 +27,9 @@ public abstract class AbstractUIIT {
 
     @BeforeSuite
     @Parameters({"test.web.driver.impl", "test.web.base.url", "test.web.think.time"})
-    public void initWebDriver(@Optional("org.openqa.selenium.htmlunit.HtmlUnitDriver") String webDriverImpl, @Optional("http://localhost:8080/xdir") String webBaseUrl, @Optional("0") long thinkTime) throws Exception {
+    public void initWebDriver(@Optional("org.openqa.selenium.htmlunit.HtmlUnitDriver") String webDriverImpl, @Optional("http://localhost:8080") String webBaseUrl, @Optional("0") long thinkTime) throws Exception {
+        redirectJulToSlf4j();
+
         _webBaseUrl = webBaseUrl;
         _thinkTime = thinkTime;
         _webDriver = (WebDriver) Class.forName(webDriverImpl).newInstance();
@@ -80,5 +85,15 @@ public abstract class AbstractUIIT {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private void redirectJulToSlf4j() {
+        //http://blog.cn-consult.dk/2009/03/bridging-javautillogging-to-slf4j.html
+        java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            rootLogger.removeHandler(handlers[i]);
+        }
+        SLF4JBridgeHandler.install();
     }
 }

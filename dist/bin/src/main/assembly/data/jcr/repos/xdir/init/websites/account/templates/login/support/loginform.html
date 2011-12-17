@@ -1,26 +1,26 @@
 <form method="post">
-	<#if (getStringParameter("go")??)>
-		<input type="hidden" name="go" value="${getStringParameter("go")?html}"/>
-		<#if (request.getHeader("referer")??)>
-			<#if (request.getHeader("referer")?index_of("/log")<0 && request.getHeader("referer")!=getStringParameter("go"))>
-				<div class="warn">
-					<div class="title">Access Denied</div>
-					You are trying to access protected resources, please login first!
-				</div>
-			</#if>
-		</#if>
-	<#elseif (request.getHeader("referer")?? && request.getHeader("referer")?index_of("/log")<0)>
-		<input type="hidden" name="go" value="${request.getHeader("referer")?html}"/>
-	</#if>
-	<table class="fullwidth">
-		<tr><th class="width100px">Username</th><td><input type="text" name="username" value=""/></td></tr>
-		<tr><th>Password</th><td><input type="password" name="password" value=""/></td></tr>
-		<tr><th>Remember Me</th><td><input type="checkbox" name="rememberme" value="true"/></td></tr>
-		<tr>
-			<td colspan="2">
-				<button type="submit" class="button">Login</button>&nbsp;
-				<a href="${displayPropertyValue(app.site.globalUrl)}" class="button">Cancel</a>
-			</td>
-		</tr>
-	</table>
+<#if (getStringParameter("go")??)>
+    <input type="hidden" name="go" value="${getStringParameter("go")?html}"/>
+    <#if (request.getHeader("referer")??)>
+        <#if (request.getHeader("referer")?index_of("/log")<0 && request.getHeader("referer")!=getStringParameter("go"))>
+            <div class="warn">
+                <div class="title">Access Denied</div>
+                You are trying to access protected resources, please login first!
+            </div>
+        </#if>
+    </#if>
+<#elseif (request.getHeader("referer")?? && request.getHeader("referer")?index_of("/log")<0)>
+    <input type="hidden" name="go" value="${request.getHeader("referer")?html}"/>
+</#if>
+    <table class="fullwidth">
+        <tr><th class="width100px">Username</th><td><input type="text" name="username" value=""/></td></tr>
+        <tr><th>Password</th><td><input type="password" name="password" value=""/></td></tr>
+        <tr><th>Remember Me</th><td><input type="checkbox" name="rememberme" value="true"/></td></tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" class="button">Login</button>&nbsp;
+                <a href="${app.props.resolveStringValue("$"+"{xdir.web.base.url}/")}" class="button">Cancel</a>
+            </td>
+        </tr>
+    </table>
 </form>

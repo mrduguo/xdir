@@ -1,0 +1,10 @@
+<#include "../support/bean.html">
+<@groovy>
+	def ouputstring=""
+
+	java.lang.management.ManagementFactory.memoryMXBean.gc()
+
+	return ouputstring
+</@groovy>
+<#include "../fragment/page_overview">
+

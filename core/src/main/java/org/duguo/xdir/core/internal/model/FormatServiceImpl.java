@@ -17,6 +17,7 @@ public class FormatServiceImpl implements FormatService
     Map<String,String> binaryContentTypes;
 
     public void resolveFormat(ModelImpl model) throws IOException{
+        if(logger.isTraceEnabled()) logger.trace("> resolveFormat {}",model.getPathInfo());
         int dotPosition=-1;
         String format=null;
         String[] paths=model.getPathInfo().getPaths();
@@ -44,8 +45,7 @@ public class FormatServiceImpl implements FormatService
             format=format.substring( dotPosition );
             model.setFormat( format );
         }
-        if(logger.isDebugEnabled())
-            logger.debug( "resovled format [{}]",format);
+        if(logger.isTraceEnabled()) logger.trace("< resolveFormat {}",format);
     }
 
     public String autoDetectFormat( ModelImpl model)

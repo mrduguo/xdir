@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="basic-status-check" verbose="1" >
+<suite name="craw-links" verbose="1" >
   <test name="CrawLinksIT" >
     <classes>
        <class name="org.duguo.xdir.tests.functional.statuscheck.CrawLinksIT" />

@@ -36,7 +36,6 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware, I
     protected JcrFactory jcrFactory;
 
     protected JcrTemplateAwareApplication rootApplication;
-    protected String defaultApplicationPrototypeBeanName = "defaultApplicationPrototype";
 
     protected String appsRoot;
 
@@ -199,10 +198,6 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware, I
 
     public void setJcrFactory(JcrFactory jcrFactory) {
         this.jcrFactory = jcrFactory;
-    }
-
-    public void setDefaultApplicationPrototypeBeanName(String defaultApplicationPrototypeBeanName) {
-        this.defaultApplicationPrototypeBeanName = defaultApplicationPrototypeBeanName;
     }
 
 

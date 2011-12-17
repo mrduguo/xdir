@@ -1,0 +1,23 @@
+<@page_overview_title/>
+<@groovy>
+def ouputstring=""
+
+ouputstring="$ouputstring<table class=\"sortable fullwidth\"><thead><tr><th class=\"nosort\">ID</th><th>Symbolic Name</th><th>From Bundle</th></thead><tbody>"
+model.app.listServiceReferences().each(){serviceId,serviceReference ->
+	ouputstring="$ouputstring<tr>"
+	ouputstring="$ouputstring<td>$serviceId</td>"
+	ouputstring="$ouputstring<td><a href=\"${pagePath}/"+serviceId+"${format}\">"
+	beanName=serviceReference.getProperty( "org.springframework.osgi.bean.name" );
+	if(beanName!=null){
+		ouputstring="$ouputstring$beanName"
+	}else{
+		ouputstring="$ouputstring"+serviceReference.getProperty("objectClass")[0]
+	}
+	ouputstring="$ouputstring<td><a href=\"../bundles/"+serviceReference.bundle.bundleId+"${format}\">"+serviceReference.bundle.bundleId+" : "+serviceReference.bundle.symbolicName+"</a></td>"
+	ouputstring="$ouputstring</td></tr>"
+}
+
+ouputstring="$ouputstring</tbody></table>"
+
+return ouputstring
+</@groovy>

@@ -13,7 +13,7 @@ import org.duguo.xdir.core.internal.model.ModelImpl;
 public class SimplePathApplication extends AbstractGetAndPut implements Application
 {
     private static final Logger logger = LoggerFactory.getLogger( SimplePathApplication.class );
-    
+
     private Map<String, Application> children=new HashMap<String, Application>();
     private Application parent;
 
@@ -21,6 +21,8 @@ public class SimplePathApplication extends AbstractGetAndPut implements Applicat
     {
         Application application=children.get( model.getPathInfo().getCurrentPath() );
         if(application!=null){
+            model.getPageContext().append("/");
+            model.getPageContext().append(model.getPathInfo().getCurrentPath());
             model.getPathInfo().moveToNextPath();
             return application.handle( model );
         }else{
@@ -30,7 +32,9 @@ public class SimplePathApplication extends AbstractGetAndPut implements Applicat
 
     public int execute( ModelImpl model ) throws Exception
     {
-        return STATUS_PAGE_NOT_FOUND;
+        model.getPathInfo().moveToPreviousPath();
+        model.getPageContext().delete(model.getPageContext().lastIndexOf("/"),model.getPageContext().length());
+        return getParent().execute(model);
     }
 
     protected int handleInternalException( ModelImpl model, int handleStatus,Throwable rawException )

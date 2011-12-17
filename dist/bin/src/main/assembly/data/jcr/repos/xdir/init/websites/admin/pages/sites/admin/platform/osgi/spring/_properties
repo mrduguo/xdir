@@ -1,0 +1,3 @@
+_url=${xdir.web.base.secureurl}/admin/platform/osgi/spring/index$[format]
+_application_jcr_base_path=/admin/platform/osgi/spring
+_application_bean=osgiSpringManagerApplication

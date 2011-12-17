@@ -10,7 +10,6 @@
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="rootApplication" ref="rootApplication"/>
     <property name="appsRoot" value="${xdir.jcr.apps.root}" />
-    <property name="defaultApplicationPrototypeBeanName" value="defaultApplicationPrototype"/>
   </bean>
   
   <bean id="rootApplication" scope="singleton" parent="defaultApplicationPrototype">
@@ -19,7 +18,7 @@
 
   <!--
   <util:map id="rootSites">
-    <entry key="s" value-ref="staticResourceService"/>
+    <entry key="s" value-ref="  1staticResourceService"/>
   </util:map>
    -->
   
@@ -33,7 +32,6 @@
     <property name="jcrRepository" value="${xdir.jcr.default.repository}"/>
     <property name="jcrWorkspace" value="${xdir.jcr.default.workspace}"/>
     <property name="props" ref="propertiesService"/>
-    <property name="resource" ref="staticResourceService"/>
     <property name="httpClient" ref="defaultHttpClientService"/>
   </bean>
   
@@ -43,8 +41,7 @@
   <bean id="defaultAdminApplicationPrototype" class="org.duguo.xdir.core.internal.server.DefaultAdminApplication" scope="prototype" parent="bestPathMatchApplicationPrototype">
   </bean>
   
-  <bean id="staticResourceService" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" scope="singleton" parent="defaultApplicationPrototype">
-    <property name="resource"><null/></property>
+  <bean id="staticResourceServicePrototype" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" scope="prototype" parent="defaultApplicationPrototype">
     <property name="resourceLoader" ref="resourceLoader"/>
     <property name="templateFormats">
       <list>
