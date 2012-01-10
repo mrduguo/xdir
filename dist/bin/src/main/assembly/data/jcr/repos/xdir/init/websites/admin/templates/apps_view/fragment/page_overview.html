@@ -1,0 +1,24 @@
+<h1><div><a href="${pageUrl}?action=clearPageCache" class="button">Clear Page Cache</a></div>${pageTitle}</h1>
+<#assign rootApplicationLink>jvm/inspector/services${format}?action=inspect&objectpath=getService(${app.retriveSpringServiceReference("(Bundle-SymbolicName=xdir-core)").getProperty("service.id")}).m_svcObj.getBean(%22rootApplication%22)</#assign>
+<@listAppNode session.getNode(node.getProperty("_apps_jcr_root").getString())/>
+<#macro listAppNode currentNode>
+    <ul>
+	    <@listAppNodeWithChildren currentNode  listChildren(currentNode) rootApplicationLink/>
+    </ul>
+</#macro>
+<#macro listAppNodeWithChildren currentNode currentChildren nodeLink>
+    <li><@rendAppNodeDetail currentNode nodeLink/></li>
+    <#if (currentChildren?size>0)>
+    <ul>
+        <#list currentChildren?keys?sort as child>
+            <@listAppNodeWithChildren currentChildren[child].node listChildren(currentChildren[child].node) nodeLink+".children.get(%22"+child+"%22)"/>
+        </#list>
+    </ul>
+    </#if>
+</#macro>
+<#macro rendAppNodeDetail currentNode nodeLink>
+    ${currentNode.name}
+    <#if (currentNode.hasProperty("_application_bean"))>
+        [<a href="${nodeLink}">${currentNode.getProperty("_application_bean").getString()}</a>]
+    </#if>
+</#macro>

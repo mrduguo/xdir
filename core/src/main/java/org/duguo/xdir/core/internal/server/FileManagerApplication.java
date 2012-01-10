@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -14,7 +15,6 @@ import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 import org.duguo.xdir.core.internal.utils.RequestUtils;
 
 public class FileManagerApplication extends DefaultAdminApplication
@@ -25,7 +25,7 @@ public class FileManagerApplication extends DefaultAdminApplication
 
     protected int processTemplate( ModelImpl model ) throws Exception
     {
-        String basePath=JcrNodeUtils.getPropertyIfExist( model.getNode(), "_fs_path" );
+        String basePath= JcrNodeUtils.getPropertyIfExist(model.getNode(), "_fs_path");
         if(basePath!=null){
             basePath=getProps().resolveStringValue( basePath );
             File baseFolder=new File(basePath);

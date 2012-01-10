@@ -7,9 +7,16 @@
 
   <bean id="xdirServlet"  class="org.duguo.xdir.core.internal.servlet.XdirServletImpl">
     <property name="rootApplication" ref="rootApplication" />
+    <property name="cacheService" ref="cacheService" />
   </bean>
   
   
+
+  <bean id="cacheService" class="org.duguo.xdir.core.internal.cache.CacheServiceImpl" init-method="init">
+    <property name="baseDir" value="${xdir.dir.var}/cache/pages" />
+  </bean>
+
+
 
   <bean id="multipartRequestResolver" class="org.duguo.xdir.core.internal.resource.MultipartRequestResolverImpl">
     <property name="tempDir" value="${xdir.dir.var}/upload" />
@@ -25,7 +32,6 @@
 
 
   <util:map id="defaultFormatMatchers">
-    <entry key=".webkit" value=".*Android.*|.*iPhone.*" />
     <entry key=".xhtml" value=".*Windows CE.*|.*mobile.*" />
   </util:map>
 
@@ -99,21 +105,8 @@
   <bean id="defaultFormats" class="org.duguo.xdir.core.internal.model.FormatsMap">
     <property name="formats">
       <map>
-        <entry key=".print">
-          <list>
-            <value>.print</value>
-            <value>.html</value>
-          </list>
-        </entry>
         <entry key=".xhtml">
           <list>
-            <value>.xhtml</value>
-            <value>.html</value>
-          </list>
-        </entry>
-        <entry key=".webkit">
-          <list>
-            <value>.webkit</value>
             <value>.xhtml</value>
             <value>.html</value>
           </list>

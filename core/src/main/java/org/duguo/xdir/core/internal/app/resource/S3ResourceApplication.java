@@ -13,23 +13,8 @@ public class S3ResourceApplication extends ResourceApplication {
     private static final Logger logger = LoggerFactory.getLogger(S3ResourceApplication.class);
 
     private String awsS3BaseUrl;
-
-    private String cacheTimestamp;
     private boolean isS3Connected = false;
     private boolean isS3Verified = false;
-
-    public S3ResourceApplication() {
-        resetCacheTimestamp();
-    }
-
-    public void resetCacheTimestamp() {
-        cacheTimestamp = new SimpleDateFormat("MMddHHmmss").format(new Date());
-    }
-
-    protected int handleInSession(ModelImpl model, int handleStatus) throws Exception {
-        model.getPathInfo().moveToNextPath(); // skip timestamp in the path
-        return super.handleInSession(model, handleStatus);
-    }
 
 
     public String getResourceUrl(ModelImpl model, String resourceName) {
@@ -47,14 +32,14 @@ public class S3ResourceApplication extends ResourceApplication {
                 logger.warn("s3 not connected");
             }
         }
-        return super.getResourceUrl(model, cacheTimestamp+"/"+resourceName);
+        return super.getResourceUrl(model, resourceName);
     }
 
     private String buildS3ResourceUrl(String resourceName) {
         StringBuilder resourceUrl = new StringBuilder();
         resourceUrl.append(awsS3BaseUrl);
         resourceUrl.append("/");
-        resourceUrl.append(cacheTimestamp);
+        appendCacheTimestamp(resourceUrl);
         resourceUrl.append("/");
         resourceUrl.append(resourceName);
         return resourceUrl.toString();

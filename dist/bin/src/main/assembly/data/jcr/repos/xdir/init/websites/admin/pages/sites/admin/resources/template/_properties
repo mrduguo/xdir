@@ -1,3 +1,0 @@
-_url=${xdir.web.base.secureurl}/admin/resources/template/index$[format]
-_application_jcr_base_path=/admin/resources/template
-_application_template_paths=/admin/resources/template/resources/template/,/admin/resources/template/admin/,/admin/resources/template/default/

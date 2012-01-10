@@ -20,10 +20,10 @@
 	try{
 		ouputstring="$ouputstring<h3>Object Information</h3>"
 		selectedObject=model
-		<#list objectpath?split(".") as key>
+		<#list objectpath?split("[.]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)","r") as key>
 			<#if (linkbase??)>
 				<#assign linkbase=linkbase+"."+(key?url("utf-8"))>
-				ouputstring="$ouputstring"+".<a href=\"${linkbase}\">${key?j_string}</a>"
+				ouputstring="$ouputstring"+'.<a href=\"${linkbase}\">${key?j_string}</a>'
 				<#if (key?index_of("(")>0)>
 					selectedObject=selectedObject.${key}
 				<#elseif (key?index_of("[")>0)>

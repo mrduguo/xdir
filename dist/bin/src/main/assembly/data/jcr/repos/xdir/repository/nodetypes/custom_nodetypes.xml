@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodeTypes  xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0">
+	<nodeType name="nt:xfile"
+		  isMixin="false"
+		  hasOrderableChildNodes="false"
+		  primaryItemName="jcr:content">
+	    <supertypes>
+		<supertype>nt:unstructured</supertype>
+	    </supertypes>
+	    <childNodeDefinition name="jcr:content"
+		          defaultPrimaryType="nt:xresource" sameNameSiblings="false"
+		          autoCreated="false" mandatory="true"
+		          onParentVersion="COPY" protected="false"/>
+	</nodeType>
+	<nodeType name="nt:xresource"
+		  isMixin="false"
+		  hasOrderableChildNodes="false"
+		  primaryItemName="jcr:data">
+	    <supertypes>
+		<supertype>nt:unstructured</supertype>
+	    </supertypes>
+	    <propertyDefinition name="jcr:data"
+		                requiredType="Binary"
+		                autoCreated="false"
+		                mandatory="true"
+		                onParentVersion="COPY"
+		                protected="false"
+		                multiple="false"/>
+	</nodeType>
+	<nodeType name="nt:xunstructured"
+		  isMixin="false"
+		  hasOrderableChildNodes="true">
+	    <supertypes>
+		<supertype>nt:base</supertype>
+	    </supertypes>
+	    <childNodeDefinition name="*"
+		          defaultPrimaryType="nt:xunstructured" sameNameSiblings="false"
+		          autoCreated="false" mandatory="true"
+		          onParentVersion="IGNORE" protected="false"/>
+	    <propertyDefinition name="*"
+		                requiredType="undefined"
+		                autoCreated="false"
+		                mandatory="false"
+		                onParentVersion="COPY"
+		                protected="false"
+		                multiple="false"/>
+	    <propertyDefinition name="*"
+		                requiredType="undefined"
+		                autoCreated="false"
+		                mandatory="false"
+		                onParentVersion="COPY"
+		                protected="false"
+		                multiple="true"/>
+	</nodeType>
+</nodeTypes>

@@ -42,7 +42,13 @@
 </div-->
     <div class="pagecopyright">
         <div class="col">
-            <a href="http://duguo.org/">&copy; 2011 duguo.org</a>
+            <#if (pagePaths?size>1)>
+                <#if (format!=".html")><a href="${pagePath}.html">Desktop View</a></#if>
+                <#if (format!=".xhtml")><a href="${pagePath}.xhtml">Mobile View</a></#if>
+                <#else>
+                    <#if (format!=".html")><a href="${pagePath}/index.html">Desktop View</a></#if>
+                    <#if (format!=".xhtml")><a href="${pagePath}/index.xhtml">Mobile View</a></#if>
+            </#if>
         </div>
         <div class="col col-right">
             <a href="http://xdir.duguo.org/">Powered by XDir</a>

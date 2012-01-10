@@ -27,6 +27,7 @@
     <property name="formats" ref="defaultFormats"/>
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="jcr" ref="jcrService"/>
+    <property name="cache" ref="cacheService"/>
     <property name="security" ref="securityService"/>
     <property name="template" ref="freeMarkerTemplateEngine"/>
     <property name="jcrRepository" value="${xdir.jcr.default.repository}"/>
@@ -43,6 +44,7 @@
   
   <bean id="staticResourceServicePrototype" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" scope="prototype" parent="defaultApplicationPrototype">
     <property name="resourceLoader" ref="resourceLoader"/>
+      <property name="cacheService" ref="cacheService"/>
     <property name="templateFormats">
       <list>
         <value>.js</value>

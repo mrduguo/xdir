@@ -12,7 +12,7 @@ html {min-width:800px;}
 .pagefooter
 {
 	height:${nav_header_height}px;
-	margin:0px ${nav_sidebar_width}px 0px ${nav_sidebar_width}px;
+	margin:0px ${nav_aside_width}px 0px ${nav_sidebar_width}px;
 }
 
 .place_holder {	clear:both; height:1px; overflow:hidden; }
@@ -24,9 +24,9 @@ html {min-width:800px;}
 ***********************************************************************************/
 
 
-.pageheader h2 {font-size:2em;padding:${nav_text_padding*2}px 0 0 0;margin: 0;}
-.pageheader h3{font-weight: normal; padding:0 0 0 ${nav_text_padding}px;margin:0;}
-.pageheader form{position:absolute;right:${nav_sidebar_width}px;top:${nav_text_padding*2}px;}
+.pageheader h2 {font-size:1.5em;padding:${nav_text_padding*2}px 0 0 0;margin: 0;}
+.pageheader h3{font-weight: normal; padding:0 0 0 ${nav_text_padding}px;margin:0;font-size:100%;}
+.pageheader form{position:absolute;right:${nav_aside_width}px;top:${nav_text_padding*2}px;}
 .pageheader input{border:1px solid ${nav_text_color};background:${nav_text_color};color:${nav_background_color};}
 .pageheader input[type="text"]:focus {background:${article_background_color};color:${article_text_color};}
 .pageheader button{background:${nav_background_color};border:0 none;color:${nav_text_color};font-weight:normal;}
@@ -43,9 +43,8 @@ html {min-width:800px;}
 	position:absolute;
 	top:${nav_header_height}px;	
 	width:${nav_sidebar_width-nav_text_padding*2}px;
-	margin-right:${nav_text_padding}px;
 	overflow:hidden;
-	padding-left:${nav_text_padding}px;
+    padding-left:${nav_text_padding}px;
 }
 .pagenav { left:0;}
 .pageaside { right:0;}
@@ -99,7 +98,7 @@ html {min-width:800px;}
 {
 	background:${article_background_color};
 	margin-left:${nav_sidebar_width}px;
-	margin-right:${nav_sidebar_width}px;
+	margin-right:${nav_aside_width}px;
 	min-width:400px;
 	min-height:400px;
 	clear:both;

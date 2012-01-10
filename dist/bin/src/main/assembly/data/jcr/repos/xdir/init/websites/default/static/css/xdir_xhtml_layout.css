@@ -9,6 +9,11 @@ body {margin:${nav_text_padding}px;}
 /**********************************************************************************
 *	PAGE HEADER
 ***********************************************************************************/
+
+.pagemenubar {
+    height:36px;
+}
+
 .pageheader {text-align:center;}
 .pageheader input{
 width:90%;
@@ -36,8 +41,6 @@ cursor:pointer;
 /**********************************************************************************
 *	PAGE NAV
 ***********************************************************************************/
-.pagenav {float:left;width:60%;}
-.pageaside {float:right;width:35%;}
 
 .pagemenu h3{padding-left:${nav_text_padding*2}px}
 
@@ -56,8 +59,8 @@ cursor:pointer;
 	background-position:right center;background-repeat:no-repeat;
 }
 
-.button, div.button, .pagesection a {	
-	margin:2px;border-width:0 5px;padding:0 3px;width:auto;height:30px;line-height:30px;
+.button, div.button, .pagesection a.button{
+    margin:2px 5px 2px 5px;border-width:0 5px;padding:0 3px;width:auto;height:30px;line-height:30px;
 	font-family:inherit;font-size:${article_text_font}px;font-weight:normal;color:#fff;
 	text-shadow:rgba(0,0,0,0.5) 0 -1px 0;text-overflow:ellipsis;
 	text-decoration:none;white-space:nowrap;
@@ -65,16 +68,18 @@ cursor:pointer;
 	border-radius: 4em;
 	cursor:pointer;
 	display:inline-block;
-	background:${nav_background_color};
 }
 
+.pagesection a{
+           margin:2px;border-width:0 5px;padding:0 3px;width:auto;height:30px;line-height:30px;
+}
 a.backbutton {
 	-webkit-border-image: url(${getResourceUrl("images/mobile/back_button.png")}) 0 5 0 5;
-	float:left;
-	padding:0 3px 0 10px;
+	padding:0 3px 0 10px; margin:2px 5px 2px 5px;
 	color:${article_background_color};
 	text-decoration: none;
 }
+
 .pagetitle .button, .pagefooter .button {
 	background:${nav_text_color};
 }
@@ -116,19 +121,6 @@ h1.pagetitle
 }
 
 
-.pagetitle .button,
-.pagefooter .button
-{
-	float:right;
-}
-
-.pagetitle .backbutton,
-.pagefooter .backbutton
-{
-	float:left;
-}
-
-
 /**********************************************************************************
 *	NAV LOOK AND FEEL
 ***********************************************************************************/
@@ -142,9 +134,6 @@ h1.pagetitle
 	text-decoration: none;
 }
 
-.button{
-
-}
 
 
 /**********************************************************************************

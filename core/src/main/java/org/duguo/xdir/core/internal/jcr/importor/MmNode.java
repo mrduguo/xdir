@@ -3,7 +3,7 @@ package org.duguo.xdir.core.internal.jcr.importor;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.duguo.xdir.core.internal.utils.JcrPathUtils;
+import org.duguo.xdir.jcr.utils.JcrPathUtils;
 
 public class MmNode {
 	private String name;
@@ -26,7 +26,7 @@ public class MmNode {
 			this.path=nameAndPath[1];
 		}else{
 			this.name = name;
-			this.path=JcrPathUtils.normalizePathName(name);
+			this.path= JcrPathUtils.normalizePathName(name);
 		}
 	}
 	public String getPath() {

@@ -1,0 +1,39 @@
+<h1>${pageTitle} : Delete Entry</h1>
+<div class="notice"><div class="title">Please confirm to delete</div>
+<#if (pageNavLevel3?size>0)>
+	<div class="text">Children:</div>
+	<ul>
+		<#list pageNavLevel3?keys?sort as child>
+		  <li><a href="${pageNavLevel3[child].url}">${pageNavLevel3[child].title}</a></li>
+		</#list>
+	</ul>
+	<table class="noborder"><tr>
+		<td>
+			<form method="post" action="<#if (pagePaths?size>1)>${pagePaths[pagePaths?size-2].url}<#else>${displayPropertyValue(app.site.parent.url)}</#if>">
+				<input type="hidden" name="action" value="delete"/>
+				<input type="hidden" name="_path" value="${node.name}"/>
+				<button type="submit" id="buttonDeleteAll">Delete All</button>
+			</form>
+		</td>
+		<td>
+			<form method="post" action="${pageUrl}">
+				<input type="hidden" name="action" value="delete"/>
+				<input type="hidden" name="childrenonly" value="true"/>
+				<button type="submit" id="buttonDeleteChildOnly">Delete children only</button>
+			</form>
+		</td>
+		<td>
+				<a href="${pageUrl}" class="button">Cancel</a>
+		</td>
+		</tr></table>
+		
+<#else>
+			<form method="post" action="<#if (pagePaths?size>1)>${pagePaths[pagePaths?size-2].url}<#else>${displayPropertyValue(app.site.parent.url)}</#if>">
+				<input type="hidden" name="action" value="delete"/>
+				<input type="hidden" name="_path" value="${model.get("file").name}"/>
+				<button type="submit" class="button" id="buttonDelete">Delete</button>
+				<a href="${pageUrl}" class="button">Cancel</a>
+			</form>
+</#if>
+				
+</div>

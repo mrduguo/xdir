@@ -1,0 +1,15 @@
+<h1>${pageTitle} : Move entry</h1>
+<form method="post" action="${pagePath?substring(0,pagePath?last_index_of("/"))}.html">
+	<input type="hidden" name="action" value="move"/>
+	<input type="hidden" name="oldPathName" value="${pagePath?substring(pagePath?last_index_of("/")+1)}"/>
+	
+	<table class="fullwidth">
+		<tr><th>New Path</th><td><input class="fullwidth" type="text" name="_path" value=""/></td></tr>
+		<tr>
+			<td colspan="2">
+				<button type="submit" class="button" id="buttonMove">Submit</button>&nbsp;
+				<a href="${pageUrl}" class="button">Cancel</a>
+			</td>
+		</tr>
+	</table>
+</form>

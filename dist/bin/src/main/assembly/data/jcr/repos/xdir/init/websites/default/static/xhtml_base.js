@@ -1,42 +1,34 @@
 <#macro script_init>
 		$('table.sortable').tablesorter();
-				
-		var pageArticle=$('.pagearticle');
-		var pageMenu=$('.pagemenu');
-		var pageHeader=$('.pageheader h2');
-		var pageTitle=$('h1:first').addClass("pagetitle").prependTo($("body"));
-		var pageFooter=$(".pagefooter");
-		var menuButton=$("<div class=\"button\">menu</div>");
-		menuButton.click(function(){
-			pageArticle.toggle();
-			pageMenu.toggle();
-			if(menuButton.hasClass("opened")){
-				menuButton.html("menu");
+
+		$(".pagemenubutton").click(function(){
+            $('.pagearticle').toggle();
+            $('.pagemenu').toggle();
+			if($(this).hasClass("opened")){
+                $(this).html("menu");
 			}else{
-				menuButton.html("close");
+                $(this).html("close");
 			}
-			menuButton.toggleClass("opened");
-				
+            $(this).toggleClass("opened");
 		});
-		pageTitle.prepend(menuButton);
-		pageFooter.prepend(menuButton.clone(true));
-		
+
 		var upButton=$(".breadcrumb a:last");
 		if(upButton.length>0){
 			upButton=upButton.clone(true);
-			upButton.addClass("backbutton button");
+			upButton.addClass("backbutton button floatleft");
 			upButton.html("up");
-			pageTitle.prepend(upButton);
-			pageFooter.prepend(upButton.clone(true));
-			
+            $('.pagemenubar').prepend(upButton);
+
 			var pagePaths="<h3 class=\"breadcrumb\">Where you are</h3><ul>";
-			$(".breadcrumb a").each(function(){
+            $(".breadcrumb a").each(function(){
 				pagePaths+="<li><a href=\""+$(this).attr("href")+"\">"+$(this).html()+"</a></li>";
 				$(this).replaceWith("<span>"+$(this).html()+"</span>");
 			});
 			pagePaths+="</ul>";
 			$('.pagenav').prepend(pagePaths);
-		}
-		pageMenu.hide();
+		}else{
+            $('.pagemenubar').prepend("<a href='/index.html' style='float:left;' class=\"button\">Desktop View</div>");
+        }
+        $('.pagemenu').hide();
 </#macro>
 <#include "js/xdir_base.js">

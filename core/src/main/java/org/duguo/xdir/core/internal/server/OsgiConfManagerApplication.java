@@ -2,6 +2,8 @@ package org.duguo.xdir.core.internal.server;
 
 
 import java.io.File;
+
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.osgi.framework.Constants;
 import java.io.IOException;
 import java.net.URL;
@@ -30,7 +32,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 import org.duguo.xdir.util.bean.BeanUtil;
 import org.duguo.xdir.util.bean.BundleUtil;
 import org.duguo.xdir.util.datetime.DateTimeUtil;
@@ -240,7 +241,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
         Object bundleName=bundle.getHeaders().get( "Bundle-Name" );
         if(bundleName!=null){
             JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/_title", bundleName.toString() );
-            JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/_search", bundle.getSymbolicName()+" "+bundleName );
+            JcrNodeUtils.setNodeProperty(baseNode, bundleStorageBase + "/_search", bundle.getSymbolicName() + " " + bundleName);
         }else{
             JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/_search", bundle.getSymbolicName());
         }

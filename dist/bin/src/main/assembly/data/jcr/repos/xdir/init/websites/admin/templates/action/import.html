@@ -1,0 +1,10 @@
+${app.jcr.resolveMultipart(model)}
+${app.jcr.importFile(model,"uploadedfile")}
+<@page_overview_title/>
+<div class="name">Import from xml file</div>
+<#if status??>
+	<div class="error">${status}</div>
+<#else>
+	<div class="text">Imported!</div>
+	<div class="text"><a href="${pagePath}.html" accesskey="0">Finish</a></div>
+</#if>	

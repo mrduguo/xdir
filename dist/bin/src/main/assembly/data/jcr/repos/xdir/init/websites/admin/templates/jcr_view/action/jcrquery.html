@@ -1,0 +1,84 @@
+<h1>${pageTitle}: Jcr Query</h1>
+<div>
+		<form method="post" action="${pageUrl}">
+			<input type="hidden" name="action" value="jcrquery"/>
+			<div>
+				Language: <input type="text" name="language" value="<#if getStringParameter("language")??>${getStringParameter("language")?html}<#else>JCR-SQL2</#if>"/>
+				xpath, sql, JCR-SQL2, JCR-JQOM 
+			</div>
+			<div>
+				<textarea class="multiautoresize" name="query"><#if getStringParameter("query")??>${getStringParameter("query")?html}</#if></textarea>
+			</div>
+			<div>
+				<button type="submit" class="button">Execute</button>
+				<a class="button" href="${pageUrl}">Cancel</a>
+				<a href="http://www.day.com/specs/jcr/2.0/6_Query.html">Spec</a>
+				<a href="http://svn.apache.org/viewvc/jackrabbit/trunk/jackrabbit-spi-commons/src/test/resources/org/apache/jackrabbit/spi/commons/query/sql2/test.sql2.txt?view=markup">Samples 1</a>
+                <a href="http://docs.jboss.org/jbossdna/0.7/manuals/reference/html/jcr-query-and-search.html">Samples 2</a> :
+                <ul>
+                    <li>SELECT * FROM [nt:base] </li>
+                    <li>SELECT * FROM [nt:base] where _title='Home'</li>
+                </ul>
+            </div>
+			<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+		</form>
+</div>
+<#if getStringParameter("query")??>
+	<h3>Result</h3>
+<@groovy>
+        def ouputstring="<table class=\"sortable\">"
+        statusStr=""
+        queryStr="""${getStringParameter("query")}"""
+        def result = model.getSession().getWorkspace().getQueryManager().createQuery(queryStr, model.getStringParameter("language")).execute()
+
+        long timespend=System.currentTimeMillis();
+        int maxRecord=100;
+        int i=0;
+        if(result.getColumnNames().length==1 && result.getColumnNames()[0]=="nt:base.jcr:primaryType"){
+            ouputstring="$ouputstring<thead><tr><th>Node</th></tr></thead><tbody>"
+            nodeIterator=result.getNodes();
+            while(nodeIterator.hasNext()){
+                i++;
+                if(i>maxRecord){
+                    timespend=System.currentTimeMillis()-timespend;
+                    statusStr="<div>Found more than $maxRecord records in $timespend milliseconds</div>"
+                    break;
+                }
+                nodePath=nodeIterator.nextNode().getPath()
+                ouputstring="$ouputstring<tr><td><a href=\"${pagePath}"+nodePath+"${format}\">$nodePath</a></td></tr>"
+            }
+        }else{
+            ouputstring="$ouputstring<thead><tr>"
+            result.getColumnNames().each{
+                ouputstring="$ouputstring<th>$it</th>"
+            }
+            ouputstring="$ouputstring</tr></thead><tbody>"
+            rowIterator=result.getRows();
+            while(rowIterator.hasNext()){
+                i++;
+                rowValues = rowIterator.nextRow().getValues();
+                if(i>maxRecord){
+                    timespend=System.currentTimeMillis()-timespend;
+                    statusStr="<div>Found more than $maxRecord records in $timespend milliseconds</div>"
+                    break;
+                }
+                ouputstring="$ouputstring<tr>"
+                rowValues.each{
+                    if(it!=null){
+                        ouputstring="$ouputstring<td>"+it.string+"</td>"
+                    }else{
+                        ouputstring="$ouputstring<td>null</td>"
+                    }
+                }
+                ouputstring="$ouputstring</tr>"
+            }
+        }
+        ouputstring="$ouputstring</tbody></table>"
+        if(i<=maxRecord){
+            timespend=System.currentTimeMillis()-timespend;
+            statusStr="$statusStr<div>Found $i records in $timespend milliseconds</div>"
+        }
+        return statusStr+ouputstring
+</@groovy>
+	
+</#if>

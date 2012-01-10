@@ -21,11 +21,11 @@ import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.model.PathInfoImpl;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.duguo.xdir.util.bean.BeanUtil;
 
 
-public class JcrFactoryImpl implements JcrFactory
+public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
 {
     private static final Logger logger = LoggerFactory.getLogger( JcrFactoryImpl.class );
 

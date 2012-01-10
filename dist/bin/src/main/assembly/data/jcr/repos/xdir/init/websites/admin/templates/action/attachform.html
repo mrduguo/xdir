@@ -1,0 +1,21 @@
+<h1>${pageTitle} : Attach file</h1>
+<form method="post" action="${pageUrl}?action=attach"  enctype="multipart/form-data">
+	<input type="hidden" name="action" value="attach"/>
+	
+	<table class="fullwidth">
+		<tr><th class="width100px">File</th><td><input class="fullwidth" type="file" name="uploadedfile" value=""/></td></tr>
+		<tr><th class="width100px">Title</th><td><input class="fullwidth" type="text" name="_title" value=""/></td></tr>
+		<tr><th>Path</th><td><input class="fullwidth" type="text" name="_path" value=""/></td></tr>	
+	
+		<tr><th>Key/Value</th><td><input class="fullwidth" type="text" name="propertiesnew1_name" value=""/></td></tr>
+		<tr><td colspan="2"><textarea  class="multiautoresize" name="propertiesnew1_value"></textarea></td></tr>		
+		<tr>
+			<td colspan="2">
+				<button type="submit" class="button" id="buttonSave">Save</button>&nbsp;
+				<a href="${pageUrl}" class="button">Cancel</a>&nbsp;
+				<span class="a" onclick="addKeyValuePairField(this)">Add key/value pair</span>
+			</td>
+		</tr>
+	</table>
+	<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+</form>

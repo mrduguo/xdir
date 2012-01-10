@@ -1,0 +1,24 @@
+<#macro page_aside>
+	<@page_aside_actions/>
+</#macro>
+<#macro page_aside_actions>
+	<h3>Actions</h3>
+	<div class="list">
+		<ul>
+			<#if page_actions??>
+				<@page_actions/>
+			<#else>
+				<@page_aside_default_actions/>
+			</#if>
+		</ul>
+	</div>
+</#macro>
+<#macro page_aside_default_actions>
+    <li><a href="${pageUrl}?action=adv">Adv</a></li>
+    <li><a href="${pageUrl}?action=postform">New</a></li>
+    <li><a href="${pageUrl}?action=putform">Edit</a></li>
+    <li><a href="${pageUrl}?action=deleteform">Delete</a></li>
+    <li><a href="${pageUrl}?action=attachform">Attach</a></li>
+    <li><a href="${pageUrl}?action=copyform">Copy</a></li>
+    <li><a href="${pageUrl}?action=moveform">Move</a></li>
+</#macro>

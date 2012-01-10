@@ -31,9 +31,9 @@ public class RepositoryListAction extends AbstractJackrabbitAction
     {
         Map repositories=new HashMap();
         parameters.put( "repositories", repositories );
-        File templateFolder = new File( getRepositoriesHolder().getRepositoriesBase(), "../template");
-        parameters.put( "repositoryTemplateFolder", templateFolder.getPath() );
-        
+//        File templateFolder = new File( getRepositoriesHolder().getRepositoriesBase(), "../template");
+//        parameters.put( "repositoryTemplateFolder", templateFolder.getPath() );
+//
         File repositoriesFolder = new File( getRepositoriesHolder().getRepositoriesBase());        
         if(!repositoriesFolder.exists() || !repositoriesFolder.isDirectory()){
             Assert.state( false,"invalid repositories base ["+ repositoriesFolder.getPath()+"]");

@@ -1,5 +1,6 @@
 package org.duguo.xdir.core.internal.app;
 
+import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,16 +13,13 @@ public class Tester
      */
     public static void main( String[] args )throws Exception
     {
-        System.out.println("a.jar".matches( ".*jar" ));
-        Map<String, String> map=new TreeMap<String, String>();
-        map.put("a", "1");
-        map.put("c", "3");
-        map.put("b", "2");
-        System.out.println(map);
-        for(Map.Entry<String, String> en:map.entrySet()){
-        	System.out.println(en.getKey());
+        String path="http://localhost:8080/s/html_print.css";
+        path=path.replaceAll(":", "/");
+        File file=new File("/Users/gdu",path);
+        if(!file.exists()){
+        System.out.println("make:"+path);
         }
-
+        System.out.println("make:"+path);
     }
 
 

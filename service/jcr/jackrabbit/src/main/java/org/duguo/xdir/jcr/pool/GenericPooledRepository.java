@@ -30,7 +30,7 @@ public class GenericPooledRepository implements Repository{
     public void initRepository() throws Exception  {
         File workspacesFolder=new File( repositoryBase, "workspaces");
         if(!workspacesFolder.exists()){
-            FileUtils.copyDirectory( new File( repositoryBase, "../../template"), repositoryBase, false );
+            //FileUtils.copyDirectory( new File( repositoryBase, "../../template"), repositoryBase, false );
             Session session=null;
             try {
                 session = login();

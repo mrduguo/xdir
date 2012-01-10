@@ -13,4 +13,4 @@ ${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawou
 		</#if>
 	});
 </#assign>
-${model.app.template.compress("javascript",rawoutput)}
+        ${rawoutput}

@@ -40,7 +40,7 @@ limitations under the License.
                 <configuration>
                     <instructions>
                         <DynamicImport-Package>*</DynamicImport-Package>
-                        <Export-Package>org.duguo.xdir.core*;version=${pom.version}</Export-Package>
+                        <Export-Package>org.duguo.xdir.core*;version=${project.version}</Export-Package>
                         <Import-Package>
                             javax.servlet*;version="[2.4.0, 4.0.0)";resolution:=optional,
                             org.slf4j*;version="[1.5.6, 2.0.0)",
@@ -93,7 +93,12 @@ limitations under the License.
         <dependency>
             <groupId>org.duguo.xdir.service.http</groupId>
             <artifactId>xdir-service-http-jetty</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.duguo.xdir.service.jcr</groupId>
+            <artifactId>xdir-service-jcr-jackrabbit</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jamonapi</groupId>
@@ -150,7 +155,7 @@ limitations under the License.
         <!--<dependency>-->
         <!--<groupId>org.duguo.xdir.jcr</groupId>-->
         <!--<artifactId>xdir-jcr-service</artifactId>-->
-        <!--<version>${pom.version}</version>-->
+        <!--<version>${project.version}</version>-->
         <!--</dependency>-->
         <!---->
         <!--&lt;!&ndash; Spring Dependencies &ndash;&gt;-->

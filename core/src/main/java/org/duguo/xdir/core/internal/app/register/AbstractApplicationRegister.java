@@ -8,6 +8,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.duguo.xdir.jcr.utils.JcrRepositoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -20,8 +21,7 @@ import org.duguo.xdir.core.internal.app.ParentAwareApplication;
 import org.duguo.xdir.core.internal.jcr.JcrFactory;
 import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils;
-import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils.RepoPath;
+import org.duguo.xdir.jcr.utils.JcrRepositoryUtils.RepoPath;
 import org.duguo.xdir.http.service.ServletService;
 import org.duguo.xdir.util.bean.BeanUtil;
 import org.duguo.xdir.util.bean.BeanUtil.GetterSetterCallback;

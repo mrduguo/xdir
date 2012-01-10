@@ -1,0 +1,12 @@
+<#include "support/secureresource">
+	<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+	<@groovy>
+	 	if("download".equals(model.request.getParameter("action"))){
+            fileName=model.getPageTitle()+"-"+new java.text.SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())
+            response=model.getResponse()
+			response.setContentType("application/x-download;charset=UTF-8")
+			response.setHeader("Content-Disposition","attachment; filename="+fileName+"-jcr.xml")
+		}
+	 return ""
+	</@groovy>
+${model.node.session.exportSystemView(model.node.path,model.responseOutputStream,false,false)}

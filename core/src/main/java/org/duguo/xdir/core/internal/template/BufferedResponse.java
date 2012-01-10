@@ -46,7 +46,7 @@ public class BufferedResponse implements HttpServletResponse
 
     public void flushBuffer() throws IOException
     {
-        if(stringWriter!=null){
+        if(stringWriter!=null && stringWriter.getBuffer().length()>0){
             if(!rawResponse.isCommitted()){
                 rawResponse.getWriter().write( stringWriter.toString() );
                 stringWriter=null;                

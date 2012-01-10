@@ -1,28 +1,33 @@
 package org.duguo.xdir.core.internal.app.resource;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.duguo.xdir.core.internal.app.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
+import org.duguo.xdir.core.internal.cache.CacheService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.Resource;
 import org.duguo.xdir.core.internal.resource.ResourceLoader;
 import org.duguo.xdir.util.io.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class ResourceApplication extends JcrTemplateAwareApplication implements ResourceService {
     private static final Logger logger = LoggerFactory.getLogger(ResourceApplication.class);
 
-    private static final String CSS_KEY_PREFIX = "xdir.css.";
     private List<String> allResources;
     private ResourceLoader resourceLoader;
     private List<String> templateFormats;
     private String name;
+    private CacheService cacheService;
+    private String cacheTimestamp;
+    private long cacheAgeInHours =8760; // 1 year
 
     @Override
     public ResourceService getResource() {
@@ -31,6 +36,8 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
 
 
     protected int handleInSession(ModelImpl model, int handleStatus) throws Exception {
+        model.getPathInfo().moveToNextPath(); // skip timestamp in the path
+        setupExpireHeader(model);
         String resourcePath = model.getPathInfo().getRemainPath().substring(1);
         String format = null;
         int dotPosition = resourcePath.lastIndexOf('.');
@@ -56,6 +63,10 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
         return handleStatus;
     }
 
+    private void setupExpireHeader(ModelImpl model) {
+        model.getResponse().setHeader("Cache-Control", "public, max-age=" + (cacheAgeInHours * 3600));
+    }
+
 
     protected int handleRawResource(ModelImpl model, int handleStatus, String resourcePath) throws Exception {
         Resource resource = resourceLoader.loadResource(model, resourcePath);
@@ -74,35 +85,6 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
         return handleStatus;
     }
 
-
-    public void loadCssConf(ModelImpl model) throws Exception {
-        loadCssConfFromProperties(model, getProps().getProperties());
-        loadCssConfFromProperties(model, System.getProperties());
-    }
-
-
-    protected void loadCssConfFromProperties(ModelImpl model, Map<Object, Object> properties) throws Exception {
-        for (Entry<Object, Object> currentEntry : properties.entrySet()) {
-            String key = (String) currentEntry.getKey();
-            if (key.startsWith(CSS_KEY_PREFIX)) {
-                key = key.substring(CSS_KEY_PREFIX.length());
-                key = key.replaceAll("\\.", "_");
-
-                String value = (String) currentEntry.getValue();
-                value = getProps().resolveStringValue(value);
-                try {
-                    int intValue = Integer.parseInt(value);
-                    model.put(key, intValue);
-                } catch (NumberFormatException ex) {
-                    model.put(key, value);
-                }
-                if (logger.isDebugEnabled())
-                    logger.debug("loaded css conf [{}={}]", key, value);
-            }
-        }
-    }
-
-
     public String getResourceUrl(ModelImpl model, String resourceName) {
         StringBuilder resourceUrl = new StringBuilder(model.getPageContext());
         Application appToLookForResource = model.getApp();
@@ -111,14 +93,35 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
                 break;
             }
             appToLookForResource = appToLookForResource.getParent();
-            resourceUrl.append("/..");
+            moveUrlToUpperLevel(resourceUrl);
         }
         while (true);
         resourceUrl.append("/");
         resourceUrl.append(getName());
         resourceUrl.append("/");
+        appendCacheTimestamp(resourceUrl);
+        resourceUrl.append("/");
         resourceUrl.append(resourceName);
         return resourceUrl.toString();
+    }
+
+    protected void appendCacheTimestamp(StringBuilder resourceUrl) {
+        if(cacheTimestamp!=null){
+            resourceUrl.append(cacheTimestamp);
+            if(cacheService.isCacheExists(resourceUrl.toString())){
+                return;
+            }else{
+                moveUrlToUpperLevel(resourceUrl);
+                resourceUrl.append("/");
+            }
+        }
+        cacheTimestamp = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
+        resourceUrl.append(cacheTimestamp);
+        cacheService.initCache(resourceUrl.toString());
+    }
+
+    private void moveUrlToUpperLevel(StringBuilder resourceUrl) {
+        resourceUrl.delete(resourceUrl.lastIndexOf("/"),resourceUrl.length());
     }
 
 
@@ -136,6 +139,9 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
         return resourceLoader;
     }
 
+    public void setCacheService(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -144,6 +150,10 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
 
     public void setTemplateFormats(List<String> templateFormats) {
         this.templateFormats = templateFormats;
+    }
+
+    public void setCacheAgeInHours(long cacheAgeInHours) {
+        this.cacheAgeInHours = cacheAgeInHours;
     }
 
     public String getName() {

@@ -1,4 +1,0 @@
-_url=${xdir.web.base.secureurl}/admin/resources/fs/index$[format]
-_application_jcr_base_path=/admin/resources/fs
-_application_bean=fileManagerApplication
-_application_template_paths=/admin/resources/template/resources/fs/,/admin/resources/template/admin/,/admin/resources/template/default/

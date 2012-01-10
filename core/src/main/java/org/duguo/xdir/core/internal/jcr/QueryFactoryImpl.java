@@ -1,7 +1,9 @@
 package org.duguo.xdir.core.internal.jcr;
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
@@ -42,7 +44,6 @@ public class QueryFactoryImpl implements QueryFactory{
 		return sqlQuery(model,queryStr,maxSize);
 	}
 
-	@SuppressWarnings("deprecation")
     public Map<String,String[]> sqlQuery(ModelImpl model,String queryStr,int maxSize)throws Exception{
 		Map<String,String[]> results=new LinkedHashMap<String,String[]>();
 		QueryManager aueryManager=model.getSession().getWorkspace().getQueryManager();
@@ -76,6 +77,43 @@ public class QueryFactoryImpl implements QueryFactory{
 	public Map<String,TextNode> xpathQuery(ModelImpl model,String queryStr)throws Exception{
 		return xpathQuery(model,queryStr,maxSize);
 	}
+
+    public List<String[]> sqlQuery(ModelImpl model,String queryStr,int start,int maxSize)throws Exception{
+        List<String[]> results=new ArrayList<String[]> ();
+        QueryManager aueryManager=model.getSession().getWorkspace().getQueryManager();
+        Query query=aueryManager.createQuery(queryStr, Query.JCR_SQL2);
+        RowIterator rows = query.execute().getRows();
+        if(start>0){
+            for (int i = 0; i < start; i++) {
+                if(!rows.hasNext()){
+                    break;
+                }
+                rows.nextRow();
+            }
+        }
+        for(int i=0;i<maxSize;i++){
+            if(rows.hasNext()){
+                Row row=(Row)rows.next();
+                Value[] values=row.getValues();
+                int rowLenthg=values.length;
+                String[] rowStrings=new String[rowLenthg];
+                for(int j=0;j<rowLenthg;j++){
+                    Value value=values[j];
+                    if(value!=null){
+                        try{
+                            rowStrings[j]=value.getString();
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+                results.add(rowStrings);
+            }else{
+                break;
+            }
+        }
+        return results;
+    }
 
     @SuppressWarnings("deprecation")
 	public Map<String,TextNode> xpathQuery(ModelImpl model,String queryStr,int maxSize)throws Exception{

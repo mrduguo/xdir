@@ -1,24 +1,17 @@
 package org.duguo.xdir.jcr.utils;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.jcr.Binary;
-import javax.jcr.ItemExistsException;
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
+import javax.jcr.*;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 
+import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +20,9 @@ public class JcrImportUtils
 {
     
     private static final String PROPERTIES_FILE_PREFIX="_properties";
+    private static final String JCR_XML_FILE_SUFFIX="-jcr.xml";
 
     private static final Logger logger=LoggerFactory.getLogger(JcrImportUtils.class);
-    
-
 
     public static void importFolder( Node parentNode, File parentFolder ) throws Exception
     {
@@ -40,12 +32,15 @@ public class JcrImportUtils
             for ( String fileName : parentFolder.list() )
             {
                 File childFile = new File( parentFolder, fileName );
-                if ( childFile.isFile() && fileName.startsWith(PROPERTIES_FILE_PREFIX) )
+                if ( childFile.isFile() && fileName.equals(PROPERTIES_FILE_PREFIX) )
                 {
                     hasPropertiesFile=true;
-                }
-                else if ( !parentNode.hasNode( fileName ) )
-                {
+                }else if(childFile.isFile() && fileName.endsWith(JCR_XML_FILE_SUFFIX)){
+                    fileName=fileName.substring(0,fileName.length()-JCR_XML_FILE_SUFFIX.length());
+                    if(!parentNode.hasNode( fileName )){
+                        importJcrSystemViewXml(parentNode, childFile);
+                    }
+                }else if ( !parentNode.hasNode( fileName ) ){
                     if ( childFile.isDirectory() )
                     {
                         Node childNode = parentNode.addNode( fileName,"nt:xunstructured" );
@@ -64,7 +59,7 @@ public class JcrImportUtils
                 Map<String, String> nodeProperties = loadPropertiesFromFile( parentFolder );
                 for ( Map.Entry<String, String> entry : nodeProperties.entrySet() )
                 {
-                    parentNode.setProperty( entry.getKey(), entry.getValue() );
+                    JcrNodeUtils.setNodeProperty(parentNode,entry.getKey(), entry.getValue() );
                 }
             }
             if ( parentNode.getSession().hasPendingChanges() )
@@ -72,6 +67,11 @@ public class JcrImportUtils
                 parentNode.getSession().save();
             }
         }
+    }
+
+    private static void importJcrSystemViewXml(Node parentNode, File xmlFile) throws Exception{
+        InputStream fileInputStream=new FileInputStream(xmlFile);
+        parentNode.getSession().importXML(parentNode.getPath(), fileInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
     }
 
 

@@ -52,18 +52,6 @@
         xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}
         xdir.web.template.defaultpath=/websites/default/templates
 
-        xdir.css.article.text.font=14
-        xdir.css.nav.header.height=70
-        xdir.css.nav.sidebar.width=150
-        xdir.css.nav.text.padding=5
-        xdir.css.nav.background.color=#3D3D3D
-        xdir.css.nav.text.color=#8E9181
-        xdir.css.article.background.color=#FFF
-        xdir.css.article.text.color=#000
-        xdir.css.article.link.color=#2200CC
-        xdir.css.article.box.border.color=${xdir.css.nav.text.color}
-        xdir.css.article.box.background.color=#EEEEEE
-
         xdir.s3.aws.bucket.name=s3.duguo.org
         xdir.s3.aws.base.url=http://${xdir.s3.aws.bucket.name}
       </value>

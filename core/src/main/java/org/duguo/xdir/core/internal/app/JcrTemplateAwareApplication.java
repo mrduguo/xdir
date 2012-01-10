@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.duguo.xdir.core.internal.cache.CacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -36,6 +37,7 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
     private TemplateEngine template;
     private FormatService format;
     private JcrFactory jcrFactory;
+    private CacheService cache;
 
     /**
      * ****************************************************
@@ -271,6 +273,13 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
         return jcrRepository;
     }
 
+    public CacheService getCache() {
+        return cache;
+    }
+
+    public void setCache(CacheService cache) {
+        this.cache = cache;
+    }
 
     public void setJcrRepository(String jcrRepository) {
         this.jcrRepository = jcrRepository;

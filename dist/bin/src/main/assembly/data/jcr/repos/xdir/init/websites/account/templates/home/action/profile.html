@@ -2,7 +2,7 @@
 ${app.loadAccount(model)}
 <#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
 <@groovy>
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.duguo.xdir.core.internal.utils.RequestUtils;
 	account=model.get("account")
 	if(model.getStringParameter("_title")!=null){

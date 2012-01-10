@@ -1,2 +1,3 @@
 _application_jcr_base_path=/websites/duguo.org/pages
+_application_bean=defaultApplicationPrototype
 _application_template_paths=/websites/duguo.org/templates, /websites/default/templates

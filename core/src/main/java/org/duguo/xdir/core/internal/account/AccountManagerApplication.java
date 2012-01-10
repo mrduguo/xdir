@@ -14,6 +14,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.RowIterator;
 
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.spi.security.AccountService;
@@ -23,7 +24,6 @@ import org.duguo.xdir.spi.security.User;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.core.internal.jcr.SessionCallback;
 import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
 import org.duguo.xdir.util.bean.BeanUtil;
 import org.duguo.xdir.util.bean.BeanUtil.GetterSetterCallback;
 import org.duguo.xdir.util.codec.IdUtil;

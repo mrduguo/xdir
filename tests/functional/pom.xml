@@ -23,7 +23,6 @@
 
     <properties>
         <skipTests>false</skipTests>
-        <test.web.driver.impl>org.openqa.selenium.htmlunit.HtmlUnitDriver</test.web.driver.impl>
     </properties>
 
     <!-- ======================================= -->
@@ -58,6 +57,15 @@
         </dependency>
     </dependencies>
 
+    <!-- Sample commands:
+
+    mvn clean install -Ddeploy-build
+
+    mvn clean install -Ddeploy-build -DwaitForStop
+
+    mvn clean install -Ddeploy-build -Pfirefox
+
+    -->
     <profiles>
         <profile>
             <id>firefox</id>
@@ -88,8 +96,7 @@
                         </executions>
                         <configuration>
                             <suiteXmlFiles>
-                                <suiteXmlFile>${basedir}/src/main/resources/testng/craw-links.xml</suiteXmlFile>
-                                <suiteXmlFile>${basedir}/src/main/resources/testng/basic-status-check.xml</suiteXmlFile>
+                                <suiteXmlFile>${basedir}/src/main/resources/testng/xdir-functional-test.xml</suiteXmlFile>
                             </suiteXmlFiles>
                             <systemPropertyVariables>
                                 <test.web.driver.impl>${test.web.driver.impl}</test.web.driver.impl>
@@ -109,9 +116,20 @@
                                 </goals>
                                 <configuration>
                                     <source><![CDATA[
+
+                                        command = "/bin/sh ${basedir}/../../dist/bin/target/xdir-dist-bin-${project.version}/bin/xdir.sh stop"
+                                        command = command.execute()
+                                        command.in.eachLine { line ->
+                                            if(line.contains("FPBTC0001I"))
+                                                Thread.sleep(500)
+                                        }
+
                                         def serverStatus="STARTING"
                                         Thread.start {
                                             command = "/bin/sh ${basedir}/../../dist/bin/target/xdir-dist-bin-${project.version}/bin/xdir.sh start"
+                                            if("true".equals(System.properties['waitForStop'])) {
+                                                command=command+" -console"
+                                            }
                                             command = command.execute()
                                             command.in.eachLine { line ->
                                                 println line
@@ -119,6 +137,7 @@
                                                     serverStatus="STARTED"
                                             }
                                         }
+
                                         long timeout=20000
                                         while(true){
                                             if(serverStatus.equals("STARTED")){
@@ -132,6 +151,7 @@
                                                 timeout=timeout-1000
                                             }
                                         }
+
                                     ]]></source>
                                 </configuration>
                             </execution>

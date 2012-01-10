@@ -12,44 +12,42 @@
 		{"pageUrl":"${pageUrl}",<#nested>}
 	</#if>
 </#macro>
-<#macro render_paths>"paths":[<#list paths?reverse as n>
-	<#if (n_index>0)>,</#if>{"path":"${n.url}","childcount":${n.childcount},"pathname":"${n.text?js_string}"}
+<#macro render_paths>"paths":[<#list pagePaths?reverse as n>
+	<#if (n_index>0)>,</#if>{"path":"${n.url}","childcount":${n.childcount},"pathname":"${n.title?js_string}"}
 </#list>
-<#if (paths?size>0)>,</#if>{"path":"${pagePath}","childcount":0,"pathname":"${pageTitle?js_string}"}
+<#if (pagePaths?size>0)>,</#if>{"path":"${pagePath}","childcount":0,"pathname":"${pageTitle?js_string}"}
 ],</#macro>
 <#macro render_properties>
-"properties":{<#list properties?keys?sort as n>
-	<#if (n_index>0)>,</#if>"${n?js_string}":"${properties[n].displayableValue?js_string}"
+"properties":{<#list pageProperties?keys?sort as n>
+	<#if (n_index>0)>,</#if>"${n?js_string}":"${pageProperties[n].displayableValue?js_string}"
 </#list>},</#macro>
 <#macro render_adv_properties>
-"properties":{<#list properties?keys?sort as n>
-	<#if (n_index>0)>,</#if>"${n?js_string}":"${properties[n].rawValue?js_string}"
+"properties":{<#list pageProperties?keys?sort as n>
+	<#if (n_index>0)>,</#if>"${n?js_string}":"${pageProperties[n].rawValue?js_string}"
 </#list>},</#macro>
 <#macro render_sibling>
 <#if (!node.isNodeType("rep:root"))>
-<@internal_render_all_children listAllChildren(node.getParent()) "sibling"/>
+<@internal_render_all_children pageNavLevel2 "sibling"/>
 </#if>
 </#macro>
-<#macro render_children><@internal_render_all_children listAllChildren(node) "children"/></#macro>
+<#macro render_children><@internal_render_all_children pageNavLevel3 "children"/></#macro>
 <#macro internal_render_all_children allchildren jsonkey>
 <#if (allchildren?size>0)>
 "${jsonkey}":[<#list allchildren?keys?sort as n>
-	<#if (n_index>0)>,</#if>{"path":"${allchildren[n].url}","n":"${n}","childcount":${allchildren[n].childcount},"pathname":"${allchildren[n].text?js_string}"}
+	<#if (n_index>0)>,</#if>{"path":"${allchildren[n].url}","n":"${n}","childcount":${allchildren[n].childcount},"pathname":"${allchildren[n].title?js_string}"}
 </#list>],</#if></#macro>
 <#macro render_overview>
 	"pageTitle":"${pageTitle?js_string}",
 	<@render_paths/>
 	<@render_adv_properties/>
 	<@render_children/>
-	<#if path?index_of("jcr:")<0>
-		<@render_template plugins.template.render(model,nodeTypeAwareTemplate("overview"),"json")/>
+	<#if pageUrl?index_of("jcr:")<0>
+		<!--@render_template model.app.template.render(model,nodeTypeAwareTemplate("overview"),"json")/-->
 	</#if>
 	"status":0
 </#macro>
 <#macro render_template templateString>
 	<#if templateString!="">
 		"overview":"${templateString?js_string}",
-	<#else>
-		${enableCache(32)}
 	</#if>
 </#macro>

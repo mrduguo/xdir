@@ -22,7 +22,7 @@
 </#macro>
 <#macro page_overview_children>
 	<#assign overviewDispalyChildren=false/>
-	<#if (pageNavLevel3?size>0)>
+	<#if (pageNavLevel3?size>0 && !node.hasProperty("_overview_no_child"))>
 		<ul>
 			<#list pageNavLevel3?keys?sort as key>
 			  <li>

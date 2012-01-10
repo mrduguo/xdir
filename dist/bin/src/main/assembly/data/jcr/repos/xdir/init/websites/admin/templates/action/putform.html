@@ -1,0 +1,32 @@
+<h1>${pageTitle} : Edit entry</h1>
+<form method="post" action="${pageUrl}">
+	<input type="hidden" name="action" value="put"/>
+	<table class="fullwidth">
+		<tr><th class="width100px">Title</th><td><input class="fullwidth" type="text" name="_title" value="<#if (pageProperties["_title"]??)>${pageProperties["_title"].rawValue}</#if>"/></td></tr>
+		<#if (pageProperties["_description"]??)>
+			<tr><th>Description</th><td title="_description"><input type="hidden" name="propertiesexist_description_name" value="_description"/></td></tr>
+			<tr><td colspan="2"><textarea class="multiautoresize" name="propertiesexist_description_value">${pageProperties["_description"].rawValue}</textarea></td></tr>
+		</#if>
+		<#if (pageProperties["_overview"]??)>
+			<tr><th>Overview</th><td title="_overview"><input type="hidden" name="propertiesexist_overview_name" value="_overview"/></td></tr>
+			<tr><td colspan="2"><textarea class="multiautoresize" name="propertiesexist_overview_value">${pageProperties["_overview"].rawValue}</textarea></td></tr>
+		</#if>
+		<#list pageProperties?keys?sort as p>
+			<#if !(p?starts_with("jcr:") || p?starts_with("_"))>
+				<tr><th>Key/Value</th><td title="${p}">${pageProperties[p].name}<input type="hidden" name="propertiesexist${p}_name" value="${p}"/></td></tr>
+				<tr><td colspan="2"><textarea class="multiautoresize" name="propertiesexist${p}_value">${pageProperties[p].rawValue}</textarea></td></tr>
+			</#if>
+		</#list>
+	
+		<tr><th>Key/Value</th><td><input class="fullwidth" type="text" name="propertiesnew1_name" value=""/></td></tr>
+		<tr><td colspan="2"><textarea  class="multiautoresize" name="propertiesnew1_value"></textarea></td></tr>
+		<tr>
+			<td colspan="2">
+				<button type="submit" class="button" id="buttonSave">Save</button>&nbsp;
+				<a href="${pageUrl}" class="button">Cancel</a>&nbsp;
+				<span class="a" onclick="addKeyValuePairField(this)">Add key/value pair</span>
+			</td>
+		</tr>
+	</table>
+	<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+</form>

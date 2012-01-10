@@ -5,7 +5,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 public abstract class AbstractJcrModel extends AbstractServletModel
 {

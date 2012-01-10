@@ -42,6 +42,17 @@ public class AssemblyMojo extends AbstractMojo {
      */
     protected File rootResourceFolder;
 
+
+    /**
+     * @parameter expression="${rootResourceInclude}" default-value="**"
+     */
+    protected String rootResourceInclude;
+
+    /**
+     * @parameter expression="${rootResourceInclude}" default-value=".*,**\/.*"
+     */
+    protected String rootResourceExclude;
+
     /**
      * Output file name, support zip and tar.gz extension
      *
@@ -188,7 +199,16 @@ public class AssemblyMojo extends AbstractMojo {
 
     private void copyProjectAssemblyResources() throws Exception {
         if (rootResourceFolder.exists()) {
-            FileUtils.copyDirectoryStructure(rootResourceFolder, workingDir);
+            List<File> filesToCopy = FileUtils.getFiles(rootResourceFolder, rootResourceInclude, rootResourceExclude);
+            for (File sourceFile : filesToCopy) {
+                getLog().error("rootResourceExclude: "+rootResourceExclude+" copy file:\n"+sourceFile.getAbsolutePath());
+                File destFile=new File(workingDir,sourceFile.getAbsolutePath().substring(rootResourceFolder.getAbsolutePath().length()));
+                if(!destFile.getParentFile().exists()){
+                    destFile.getParentFile().mkdirs();
+                }
+                FileUtils.copyFile(sourceFile,destFile);
+
+            }
         }
     }
 

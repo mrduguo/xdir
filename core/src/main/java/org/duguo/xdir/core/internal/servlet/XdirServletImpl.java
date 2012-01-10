@@ -10,6 +10,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.duguo.xdir.core.internal.cache.CacheService;
+import org.duguo.xdir.core.internal.cache.CacheableResponse;
 import org.duguo.xdir.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,36 +21,78 @@ import org.duguo.xdir.core.internal.model.PathInfoImpl;
 import org.duguo.xdir.http.support.AbstractAliasSupportServlet;
 
 
-public class XdirServletImpl  extends AbstractAliasSupportServlet
-{
-    private static final Logger logger = LoggerFactory.getLogger( XdirServletImpl.class );
-    
+public class XdirServletImpl extends AbstractAliasSupportServlet {
+    private static final Logger logger = LoggerFactory.getLogger(XdirServletImpl.class);
+
     protected Application rootApplication;
 
+    protected CacheService cacheService;
 
-    public void service( ServletRequest req, ServletResponse res ) throws ServletException, IOException
-    {
-        if(logger.isTraceEnabled())
-            logger.trace("> service");
 
-        HttpServletResponse response = ( HttpServletResponse ) res;
-        HttpServletRequest request = ( HttpServletRequest ) req;
-        try{
-            handleRequest( request, response );
-            if(logger.isTraceEnabled())
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        if (logger.isTraceEnabled())
+            logger.trace("> service {}", ((HttpServletRequest) req).getRequestURL());
+
+        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletRequest request = (HttpServletRequest) req;
+        try {
+            handleRequest(request, response);
+            if (logger.isTraceEnabled())
                 logger.trace("< service successfully");
-        }catch(Throwable ex){
-            logger.error( "Failed to handle request", ex);
-            if(logger.isTraceEnabled())
-                logger.trace("< service with exception {}",ex.getMessage());
+        } catch (Throwable ex) {
+            logger.error("Failed to handle request", ex);
+            if (logger.isTraceEnabled())
+                logger.trace("< service with exception {}", ex.getMessage());
 
-            if(ex instanceof ServletException)
-                throw (ServletException)ex;
-            if(ex instanceof IOException)
-                throw (IOException)ex;
+            if (ex instanceof ServletException)
+                throw (ServletException) ex;
+            if (ex instanceof IOException)
+                throw (IOException) ex;
         }
     }
 
+
+    protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response = cacheService.handleRequest(request, response);
+        if (response != null) {
+            try {
+                handleRequestWithEmptyCache(request, response);
+            } finally {
+                if (response instanceof CacheableResponse) {
+                    CacheableResponse cacheableResponse = (CacheableResponse) response;
+                    cacheableResponse.flushBuffer();
+                    if (!cacheableResponse.isRequestProcessed()) {
+                        cacheService.cacheResponse(request, cacheableResponse);
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void handleRequestWithEmptyCache(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (logger.isTraceEnabled())
+            logger.trace("> handleRequestWithEmptyCache ({} {})", request.getMethod(), request.getRequestURL());
+
+
+        ModelImpl model = new ModelImpl();
+
+        model.setRequest(request);
+        model.setResponse(response);
+
+        int returnStatus = handleWithVirtualHostAware(model);
+
+        if (returnStatus < 400) {
+            model.getResponse().flushBuffer();
+        } else {
+            if (!model.getResponse().isCommitted()) {
+                model.getResponse().sendError(returnStatus);
+            }
+        }
+
+        if (logger.isTraceEnabled())
+            logger.trace("< handleRequestWithEmptyCache finished with status {}", returnStatus);
+    }
 
 
     protected int handleWithVirtualHostAware(ModelImpl model) throws Exception {
@@ -57,26 +101,26 @@ public class XdirServletImpl  extends AbstractAliasSupportServlet
         int port = resolveNoneStandardPort(model.getRequest(), scheme);
 
         String virtualHostKey = buildVirtualHostKey(scheme, serverName, port);
-        setupPathInfo( model);
+        setupPathInfo(model);
 
         return pickUpApp(virtualHostKey).handle(model);
     }
 
     private Application pickUpApp(String virtualHostKey) {
-        Application selectedApp=rootApplication.getChildren().get(virtualHostKey);
-        if (selectedApp==null) {
-            selectedApp=rootApplication;
+        Application selectedApp = rootApplication.getChildren().get(virtualHostKey);
+        if (selectedApp == null) {
+            selectedApp = rootApplication;
             logger.debug("use default root app");
-        }else{
-            logger.debug("use virtual host app with key {}",virtualHostKey);
+        } else {
+            logger.debug("use virtual host app with key {}", virtualHostKey);
         }
         return selectedApp;
     }
 
     private int resolveNoneStandardPort(HttpServletRequest request, String scheme) {
         int port = request.getServerPort();
-        if((scheme.equalsIgnoreCase(HttpUtil.HTTP) && port == 80) || (scheme.equalsIgnoreCase(HttpUtil.HTTPS) && port == 443)){
-             port=0;
+        if ((scheme.equalsIgnoreCase(HttpUtil.HTTP) && port == 80) || (scheme.equalsIgnoreCase(HttpUtil.HTTPS) && port == 443)) {
+            port = 0;
         }
         return port;
     }
@@ -90,45 +134,21 @@ public class XdirServletImpl  extends AbstractAliasSupportServlet
             virtualHostKey.append('_');
             virtualHostKey.append(port);
         }
-        if(logger.isDebugEnabled())
-            logger.debug("built virtual host key {}",virtualHostKey.toString());
+        if (logger.isDebugEnabled())
+            logger.debug("built virtual host key {}", virtualHostKey.toString());
         return virtualHostKey.toString();
     }
 
 
-    protected  void handleRequest(HttpServletRequest request, HttpServletResponse response ) throws Exception{
-        if(logger.isTraceEnabled())
-            logger.trace("> handleRequest ({} {})",request.getMethod(),request.getRequestURL());
-
-
-        ModelImpl model=new ModelImpl();
-
-        model.setRequest( request );
-        model.setResponse( response );
-
-        int returnStatus=handleWithVirtualHostAware( model );
-
-        if(returnStatus<400){
-            model.getResponse().flushBuffer();
-        }else{
-            if(!model.getResponse().isCommitted()){
-                model.getResponse().sendError( returnStatus );
-            }
+    protected void setupPathInfo(ModelImpl model) throws Exception {
+        String path = URLDecoder.decode(model.getRequest().getRequestURI(), "UTF-8");
+        if (path.length() == 1) { // e.g. http://localhost:8080/
+            model.setPathInfo(new PathInfoImpl(new String[]{}));
+        } else {
+            model.setPathInfo(new PathInfoImpl(path.substring(1).split("/")));
         }
-
-        if(logger.isTraceEnabled())
-            logger.trace("< handleRequest finished with status {}",returnStatus);
-    }
-
-    
-    protected void setupPathInfo(ModelImpl model ) throws Exception
-    {
-        String path= URLDecoder.decode(model.getRequest().getRequestURI(),"UTF-8");
-        if(path.length()==1){ // e.g. http://localhost:8080/
-            model.setPathInfo( new PathInfoImpl(new String[]{}));
-        }else{
-            model.setPathInfo( new PathInfoImpl( path.substring(1).split( "/" ) ));
-        }
+        StringBuffer requestURL = model.getRequest().getRequestURL();
+        model.getPageContext().append(requestURL.substring(0, requestURL.indexOf("/", 8)));
     }
 
     /**
@@ -139,9 +159,13 @@ public class XdirServletImpl  extends AbstractAliasSupportServlet
         return "/";
     }
 
-    public void setRootApplication( Application rootApplication )
-    {
+    public void setRootApplication(Application rootApplication) {
         this.rootApplication = rootApplication;
+    }
+
+
+    public void setCacheService(CacheService cacheService) {
+        this.cacheService = cacheService;
     }
 
 }

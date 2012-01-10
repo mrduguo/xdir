@@ -1,3 +1,2 @@
-_application_jcr_base_path=/websites/admin/pages/resources/fs
 _application_bean=fileManagerApplication
-_application_template_paths=/admin/resources/template/resources/fs/,/admin/resources/template/admin/,/admin/resources/template/default/
+_application_template_paths=/websites/admin/templates/fs_view,/websites/admin/templates,/websites/default/templates

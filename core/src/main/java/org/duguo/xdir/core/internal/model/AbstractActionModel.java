@@ -4,7 +4,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.core.internal.cache.CacheableResponse;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.duguo.xdir.util.datetime.DateTimeUtil;
 
 public abstract class AbstractActionModel extends AbstractPageModel
@@ -12,8 +13,13 @@ public abstract class AbstractActionModel extends AbstractPageModel
     private String action;
     private String status;
     private Map<String,String> updates;
-    
 
+
+    public void disableCache(){
+        if(getResponse() instanceof CacheableResponse){
+            ((CacheableResponse)getResponse()).disableCache();
+        }
+    }
 
     /*******************************************************
      * Helper methods
@@ -25,7 +31,7 @@ public abstract class AbstractActionModel extends AbstractPageModel
     }
 
     public void addStringUpdateIfChanged(String key,String value) {
-        String oldValue=JcrNodeUtils.getPropertyIfExist(getNode(), key);
+        String oldValue= JcrNodeUtils.getPropertyIfExist(getNode(), key);
         if(oldValue==null || !oldValue.equals(value)){
             getUpdates().put(key, value);
         }

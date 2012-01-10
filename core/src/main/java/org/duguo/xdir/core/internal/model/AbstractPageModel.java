@@ -11,12 +11,9 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 
-import org.apache.commons.lang.StringUtils;
-import org.duguo.xdir.core.internal.app.Application;
-import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
 import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 
 /**
@@ -98,7 +95,9 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
         Map<String, Object> childrenMap = new HashMap<String, Object>();
         while (nodeIterator.hasNext()) {
             Node childNode = (Node) nodeIterator.next();
-            addTextLinkFromNode(childrenMap, childNode, true);
+            if(!childNode.hasProperty("_hidden_node")){
+                addTextLinkFromNode(childrenMap, childNode, true);
+            }
         }
         return childrenMap;
     }

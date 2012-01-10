@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import javax.jcr.Property;
 
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 public class JcrResource implements Resource
 {

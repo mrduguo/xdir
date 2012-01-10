@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.duguo.xdir.jcr.utils.JcrPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.model.ModelImpl;

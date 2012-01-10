@@ -1,4 +1,4 @@
-html{ background:#fff;}
+${model.response.setContentType("text/css; charset=utf-8")}html{ background:#fff;}
 .pagearticle { margin:0; }
 
 .pageheader,

@@ -1,9 +1,7 @@
 package org.duguo.xdir.core.internal.jcr;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.jcr.NoSuchWorkspaceException;
@@ -20,7 +18,7 @@ import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.model.TextNode;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.core.internal.utils.JcrNodeUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 public class JcrManagerApplication extends JcrTemplateAwareApplication
 {
@@ -75,6 +73,7 @@ public class JcrManagerApplication extends JcrTemplateAwareApplication
         if(repositoryName==null){
             model.setPageNavLevel3( listRepositories( model ) );
         }else{
+            model.setPageNavLevel1(model.getPageNavLevel2());
             model.setPageNavLevel2( listRepositories( model ) );
             model.setPageNavLevel3( listWorkspaces( model,repositoryName ) );
         }
@@ -153,7 +152,7 @@ public class JcrManagerApplication extends JcrTemplateAwareApplication
 
     protected void setupTargetJcrNodeNavLinks( ModelImpl model, Node jcrNode, String repositoryName, String workspaceName ) throws Exception
     {
-        String jcrBasePath = model.getApp().getBaseUrl() + "/" + repositoryName+"/"+workspaceName;        
+        String jcrBasePath = model.getPageContext() + "/" + repositoryName+"/"+workspaceName;
         if ( JcrNodeUtils.isRootNode( jcrNode ) )
         {
             model.setPageNavLevel1( listRepositories( model ) );
@@ -187,11 +186,8 @@ public class JcrManagerApplication extends JcrTemplateAwareApplication
 
     private void setupPagePaths( ModelImpl model, String repositoryName,String workspaceName ) throws Exception
     {
-        List<Object> paths =new ArrayList<Object>();
-        model.setPagePaths(paths);
-        addPathsLink( model, null, model.displayPropertyValue( model.getApp().getSite().getUrl()),model.getApp().getSite().getTitle());
         if(repositoryName!=null){
-            String jcrBasePath = model.getApp().getBaseUrl() + "/" + repositoryName;
+            String jcrBasePath = model.getPageContext() + "/" + repositoryName;
             addPathsLink( model, null, jcrBasePath+model.getFormat(),repositoryName);
             if(workspaceName!=null){
                 jcrBasePath = jcrBasePath+"/"+workspaceName;
@@ -255,7 +251,7 @@ public class JcrManagerApplication extends JcrTemplateAwareApplication
         for ( Object repositoryObj : repositories.keySet())
         {
             String repositoryName=(String)repositoryObj;
-            String nodeLink = model.getApp().getBaseUrl() + "/" + repositoryName + model.getFormat();
+            String nodeLink = model.getPageContext() + "/" + repositoryName + model.getFormat();
             TextNode textLink = new TextNode( null, nodeLink, repositoryName );
             childrenMap.put( repositoryName, textLink );
         }
@@ -277,7 +273,7 @@ public class JcrManagerApplication extends JcrTemplateAwareApplication
         for ( Object workspaceObj : workspaces.keySet())
         {
             String workspaceName=(String)workspaceObj;
-            String nodeLink = model.getApp().getBaseUrl() + "/" + repositoryName + "/" + workspaceName + model.getFormat();
+            String nodeLink = model.getPageContext() + "/" + repositoryName + "/" + workspaceName + model.getFormat();
             TextNode textLink = new TextNode( null, nodeLink, workspaceName );
             childrenMap.put( workspaceName, textLink );
         }

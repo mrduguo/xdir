@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
-import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils;
-import org.duguo.xdir.core.internal.utils.JcrRepositoryUtils.RepoPath;
+import org.duguo.xdir.jcr.utils.JcrRepositoryUtils;
+import org.duguo.xdir.jcr.utils.JcrRepositoryUtils.RepoPath;
 
 
 public class ApplicationRegisterImpl extends AbstractApplicationRegister {

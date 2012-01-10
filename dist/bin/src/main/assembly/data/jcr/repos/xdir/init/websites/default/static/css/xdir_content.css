@@ -93,6 +93,9 @@
 .pagearticle h2 div { line-height:1.5em; }
 .pagearticle h3 div { line-height:1.5em; }
 
+.floatright { float:right; }
+.floatleft { float:left; }
+
 /**********************************************************************************
 *	TABLE
 ***********************************************************************************/
