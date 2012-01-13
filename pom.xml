@@ -128,4 +128,20 @@ limitations under the License.
         </repository>
     </repositories>
 
+
+    <!-- ======================================= -->
+    <!-- SCM / DIST CONFIGURATION                -->
+    <!-- ======================================= -->
+    <scm>
+        <connection>scm:git:git@github.com:mrduguo/xdir.git</connection>
+        <url>scm:git:git@github.com:mrduguo/xdir.git</url>
+        <developerConnection>scm:git:git@github.com:mrduguo/xdir.git</developerConnection>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>file:///Users/gdu/projects/github/mrduguo/mrduguo.github.com/maven/repos/release</url>
+        </repository>
+    </distributionManagement>
+
 </project>
