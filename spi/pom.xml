@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir</groupId>
         <artifactId>xdir</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir</groupId>
     <artifactId>xdir-spi</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>XDir Platform (SPI)</name>
     <description>XDir Platform Service Provider Interface (SPI) and support classes</description>
