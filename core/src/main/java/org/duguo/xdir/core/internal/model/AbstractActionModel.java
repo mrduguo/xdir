@@ -20,6 +20,9 @@ public abstract class AbstractActionModel extends AbstractPageModel
             ((CacheableResponse)getResponse()).disableCache();
         }
     }
+    public boolean isCacheableResponse(){
+        return getResponse() instanceof CacheableResponse;
+    }
 
     /*******************************************************
      * Helper methods

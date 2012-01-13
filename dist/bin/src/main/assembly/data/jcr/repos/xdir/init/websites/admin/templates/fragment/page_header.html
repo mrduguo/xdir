@@ -1,7 +1,10 @@
+<#macro page_header_title>
+    <title>${pageTitle} - XDir Admin Console</title>
+</#macro>
 <#macro page_header>
 	<h2 class="pagetitle"><a href="/admin/index${format}">XDir Platform</a></h2>
 	<h3 class="subtitle">Admin Console</h3>
-	<form action="${pageContext}/about/search${format}">
+	<form action="${pageContext}/search${format}">
 		<div class="search"><input type="hidden" name="action" value="search"/>
 		<input type="text" name="query" value=""/>
 		<button type="submit" name="submit">Search</button>

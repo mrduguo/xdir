@@ -13,4 +13,4 @@ ${model.response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
 		${custom_css}
 	</#if>
 </#assign>
-${model.app.template.compress("css",rawoutput)}
+<#if isCacheableResponse()>${model.app.template.compress("css",rawoutput)}<#else>${rawoutput}</#if>

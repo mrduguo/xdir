@@ -1,9 +1,9 @@
-${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawoutput>
-	<#include "jquery.js">
+${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawoutput><#include "jquery.js">
 	<#include "jquery_cookie.js">
 	<#include "jquery_inlineedit.js">
 	<#include "jquery_tablesorter.js">
 	<#include "xdir_account.js">
+	<#include "xdir_detect_view_on_first_visit.js">
 	<#if (script_files??)>
 		<@script_files/>
 	</#if>
@@ -13,4 +13,4 @@ ${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawou
 		</#if>
 	});
 </#assign>
-        ${rawoutput}
+<#if isCacheableResponse()>${model.app.template.compress("javascript",rawoutput)}<#else>${rawoutput}</#if>

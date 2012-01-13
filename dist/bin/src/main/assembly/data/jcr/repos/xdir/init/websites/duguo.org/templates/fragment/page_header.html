@@ -1,10 +1,13 @@
+<#macro page_header_title>
+    <title>${pageTitle} - duguo.org</title>
+</#macro>
 <#macro page_header>
 	<h2><a href="${pageContext}/index${format}">Family · Community · Technology · Future</a></h2>
 	<h3>Guo Du's personal homepage</h3>
-	<form action="${pageContext}/about/search${format}">
+	<form action="${pageContext}/search${format}">
 		<div class="search"><input type="hidden" name="action" value="search"/>
 		<input type="text" name="query" value=""/>
-		<button type="submit" name="submit">Search</button>
+		<button type="submit">Search</button>
 		</div>
 	</form>
 </#macro>

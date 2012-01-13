@@ -1,0 +1,36 @@
+<@page_overview_title/>
+<form method="get" action="${pageUrl}">
+	<input type="hidden" name="action" value="search"/>
+	<input type="text" name="query" value="${getStringParameter("query")}"/>
+	<button type="submit" class="button">Search</button>
+</form>
+<#assign searchBaseJcrPath>${node.parent.path}</#assign>
+
+<@render_search_list app.jcrFactory.sqlQuery(model,"SELECT [_title],[_modified],[jcr:path] from [nt:base] WHERE ISDESCENDANTNODE(['"+searchBaseJcrPath+"']) AND ( LOCALNAME() LIKE '%"+getStringParameter("query")+"%' OR CONTAINS(_title,'*"+getStringParameter("query")+"*') OR CONTAINS(_overview,'*"+getStringParameter("query")+"*'))",0,100)/>
+<#macro render_search_list search_list>
+    <#if (search_list?size>0)>
+        <h3>Results ( ${search_list?size}<#if (search_list?size==100)>+</#if> )</h3>
+        <table class="sortable fullwidth"><thead><tr><th>Title</th><th>Path</th><th>Updated Date</th></tr></thead><tbody>
+        <#list search_list as row>
+            <tr>
+                <td><a href="${internalBuildUrl(row[2])}">
+                    <#if (row[0]??)>
+                        ${row[0]}
+                        <#else>
+                        ${displayPropertyName(row[2]?substring(row[2]?last_index_of("/")+1))}
+                    </#if>
+                </a></td>
+                <td>${row[2]?substring(searchBaseJcrPath?length)}</td>
+                <td><#if (row[1]??)>${row[1]?substring(0,10)} ${row[1]?substring(11,19)}</#if></td>
+            </tr>
+            </div>
+        </#list>
+        </tbody></table>
+
+    <#else>
+        <div class="warn">
+            <div class="title">Nothing found!</div>
+            Please review your search term and use less restriction.
+        </div>
+    </#if>
+</#macro>

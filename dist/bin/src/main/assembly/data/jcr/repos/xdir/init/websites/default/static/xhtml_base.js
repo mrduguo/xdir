@@ -27,7 +27,7 @@
 			pagePaths+="</ul>";
 			$('.pagenav').prepend(pagePaths);
 		}else{
-            $('.pagemenubar').prepend("<a href='/index.html' style='float:left;' class=\"button\">Desktop View</div>");
+            $('.pagemenubar').prepend("<a href='"+$(".desktopviewlink a").attr("href")+"' class='button floatleft'>Desktop View</div>");
         }
         $('.pagemenu').hide();
 </#macro>

@@ -33,9 +33,11 @@ public class FreeMarkerTemplateEngine extends AbstractTemplateEngine {
             configuration.setObjectWrapper(objectWrapper);
             configuration.setTemplateLoader(new FreeMarkerJcrTemplateLoader(getTemplateStringLoader(),model,nodeType));
             Template template = configuration.getTemplate(templateName);
-            BufferedResponse bufferedResponse=new BufferedResponse( model.getResponse() );
-            model.setResponse( bufferedResponse );
-            template.process(model, bufferedResponse.getWriter());
+            if(!model.isCacheableResponse()){
+                BufferedResponse bufferedResponse=new BufferedResponse( model.getResponse() );
+                model.setResponse( bufferedResponse );
+            }
+            template.process(model, model.getResponse().getWriter());
             return Application.STATUS_SUCCESS;
         }catch(ResourceNotFoundException ex) {
             throw ex;

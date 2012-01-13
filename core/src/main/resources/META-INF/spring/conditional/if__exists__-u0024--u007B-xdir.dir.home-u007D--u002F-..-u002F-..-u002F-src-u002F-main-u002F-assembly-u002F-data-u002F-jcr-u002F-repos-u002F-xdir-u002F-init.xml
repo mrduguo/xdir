@@ -15,11 +15,4 @@
     <property name="resourceBase" value="${xdir.dir.home}/../../src/main/assembly/data/jcr/repos/xdir/init" />
   </bean>
 
-
-    <bean id="cacheService" class="org.duguo.xdir.core.internal.cache.CacheServiceImpl" init-method="init">
-        <property name="baseDir" value="${xdir.dir.var}/cache/pages" />
-        <property name="cacheEnabled" value="false" />
-    </bean>
-    
-
 </beans>

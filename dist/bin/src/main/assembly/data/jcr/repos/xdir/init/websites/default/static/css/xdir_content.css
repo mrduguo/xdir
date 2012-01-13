@@ -99,6 +99,7 @@
 /**********************************************************************************
 *	TABLE
 ***********************************************************************************/
+.pagearticle tr.even { background:${article_background_color};}
 .pagearticle tr.odd, .pagearticle th { background:${article_box_background_color};}
 .pagearticle td { vertical-align: top; }
 td.middlealign {vertical-align:middle;}
