@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.service.template</groupId>
         <artifactId>xdir-service-template</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.template</groupId>
     <artifactId>xdir-service-template-htmlcompressor</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>XDir Platform Service Template (Htmlcompressor)</name>
 
