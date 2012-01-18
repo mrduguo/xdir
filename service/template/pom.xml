@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir.service</groupId>
         <artifactId>xdir-service</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.template</groupId>
     <artifactId>xdir-service-template</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform Service Template (Parent)</name>
     <description>Modules to provide template service</description>

@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.service.http</groupId>
         <artifactId>xdir-service-http</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.http</groupId>
     <artifactId>xdir-service-http-group</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform Service HTTP (Group)</name>
 
