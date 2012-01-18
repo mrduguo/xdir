@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir</groupId>
         <artifactId>xdir</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>0.9.1</version>
     </parent>
     <groupId>org.duguo.xdir.service</groupId>
     <artifactId>xdir-service</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>pom</packaging>
     <name>XDir Platform Service (Parent)</name>
     <description>Modules to implement OSGi and XDir Platform services</description>

@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.dist</groupId>
         <artifactId>xdir-dist</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>0.9.1</version>
     </parent>
     <groupId>org.duguo.xdir.dist</groupId>
     <artifactId>xdir-dist-plugin</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>maven-plugin</packaging>
     <name>XDir Platform Distribution (Maven Plugin)</name>
     <description>Maven Plugin to assemble final binary distribution and interact with XDir deployment</description>

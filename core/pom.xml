@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir</groupId>
         <artifactId>xdir</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>0.9.1</version>
     </parent>
     <groupId>org.duguo.xdir</groupId>
     <artifactId>xdir-core</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>bundle</packaging>
     <name>XDir Platform (Core)</name>
 

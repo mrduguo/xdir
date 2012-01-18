@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.service.jcr</groupId>
         <artifactId>xdir-service-jcr</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>0.9.1</version>
     </parent>
     <groupId>org.duguo.xdir.service.jcr</groupId>
     <artifactId>xdir-service-jcr-jackrabbit</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>bundle</packaging>
     <name>XDir Platform Service JCR (Jackrabbit)</name>
 
