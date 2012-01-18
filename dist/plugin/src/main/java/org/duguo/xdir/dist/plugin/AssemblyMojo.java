@@ -201,7 +201,6 @@ public class AssemblyMojo extends AbstractMojo {
         if (rootResourceFolder.exists()) {
             List<File> filesToCopy = FileUtils.getFiles(rootResourceFolder, rootResourceInclude, rootResourceExclude);
             for (File sourceFile : filesToCopy) {
-                getLog().error("rootResourceExclude: "+rootResourceExclude+" copy file:\n"+sourceFile.getAbsolutePath());
                 File destFile=new File(workingDir,sourceFile.getAbsolutePath().substring(rootResourceFolder.getAbsolutePath().length()));
                 if(!destFile.getParentFile().exists()){
                     destFile.getParentFile().mkdirs();

@@ -60,7 +60,8 @@ limitations under the License.
         <skipTests>true</skipTests>
     </properties>
 
-    <!-- ======================================= -->
+    <!-- =====================================
+    == -->
     <!-- BUILD CONFIGURATIONS                    -->
     <!-- ======================================= -->
     <build>
