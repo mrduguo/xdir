@@ -5,15 +5,16 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.duguo.xdir.core.internal.template.freemarker.StringTemplateUtils;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 public class PageHelper {
 
 	public static final Pattern DIGITAL_PREFIX=Pattern.compile("\\d+_");
 	public static final Pattern PLACE_HOLDER_PATTERN = Pattern.compile("\\$\\[\\w+\\]");
-	public static String PLACEHOLDER_PAGE_PATH="$[pagePath]";
-	public static String PLACEHOLDER_PAGE_CONTEXT="$[pageContext]";
-	public static String PLACEHOLDER_FORMAT="$[format]";
+	public static String PLACEHOLDER_PAGE_PATH="${model.pagePath}";
+	public static String PLACEHOLDER_PAGE_CONTEXT="${model.pageContext}";
+	public static String PLACEHOLDER_FORMAT="${model.format}";
 	public static final String TRUE_VALUE="true";
 
 	public static String displayPropertyName(String propertyName) {
@@ -25,20 +26,11 @@ public class PageHelper {
 	}
 	
 	public static String displayPropertyValue(String inputString,ModelImpl model) {
-		Matcher matcher = PLACE_HOLDER_PATTERN.matcher(inputString);
-		StringBuffer output = new StringBuffer();
-		while (matcher.find()) {
-			String match = matcher.group();
-			if (PLACEHOLDER_PAGE_PATH.equals(match)) {
-				matcher.appendReplacement(output, model.getPagePath());
-			}else if (PLACEHOLDER_PAGE_CONTEXT.equals(match)) {
-					matcher.appendReplacement(output, model.getPageContext().toString());
-			}else if (PLACEHOLDER_FORMAT.equals(match)) {
-				matcher.appendReplacement(output, model.getFormat());
-			}
-		}
-		matcher.appendTail(output);
-		return output.toString();
+        if(inputString.indexOf("$")>=0){
+            return StringTemplateUtils.render(inputString,model);
+        } else{
+            return inputString;
+        }
 	}
 	
 	public static boolean isRequestTrue(HttpServletRequest request,String parameterName) {

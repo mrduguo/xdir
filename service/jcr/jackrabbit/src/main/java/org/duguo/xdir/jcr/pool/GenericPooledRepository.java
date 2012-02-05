@@ -1,22 +1,12 @@
 package org.duguo.xdir.jcr.pool;
 
-import java.io.File;
-
-import javax.jcr.Credentials;
-import javax.jcr.LoginException;
-import javax.jcr.NoSuchWorkspaceException;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.Value;
-
 import org.apache.commons.pool.KeyedObjectPool;
+import org.duguo.xdir.jcr.utils.JcrImportUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.jcr.pool.CredentialsWorkspaceKey;
-import org.duguo.xdir.jcr.pool.PooledSession;
-import org.duguo.xdir.jcr.utils.FileUtils;
-import org.duguo.xdir.jcr.utils.JcrImportUtils;
+
+import javax.jcr.*;
+import java.io.File;
 
 public class GenericPooledRepository implements Repository{
     private static final Logger logger=LoggerFactory.getLogger(GenericPooledRepository.class);

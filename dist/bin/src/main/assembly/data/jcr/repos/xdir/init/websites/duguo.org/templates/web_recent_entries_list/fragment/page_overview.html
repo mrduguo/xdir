@@ -1,0 +1,16 @@
+<@page_overview_title/>
+<@page_overview_description/>
+<#if (pageProperties["overview"]??)>
+    <div class="content_main_level_1">
+        <div class="text">${pageProperties["overview"].displayableValue}</div>
+    </div>
+</#if><div><@page_overview_children/>
+<@render_news_list app.jcrFactory.sqlQuery(model,"select [_created],[_title],[_description],[_overview],[jcr:path] from [nt:base] where _type = 'web_page' and ISDESCENDANTNODE(['"+node.path+"'])  order by [_created] DESC",0,30)/>
+<#macro render_news_list feed_data>
+    <h4>Recent Updates</h4>
+    <#if (feed_data?size>0)>
+<ul></div><div>            <#list feed_data as row>
+                <li><a href="${internalBuildUrl(row[4])}" >${row[1]}</a></li>
+            </#list></div><div></ul>
+    </#if>
+</#macro></div>

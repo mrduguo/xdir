@@ -66,7 +66,7 @@ public class CrawlPublicLinksIT extends AbstractUIIT {
     }
 
     private static boolean isLinkIncluded(String baseUrl, String linkHref,String[] supportedFormats) {
-        if(linkHref.startsWith(baseUrl) && linkHref.indexOf("?")<0){
+        if(linkHref!=null && linkHref.startsWith(baseUrl) && linkHref.indexOf("?")<0){
             for (String format : supportedFormats) {
                 if(linkHref.endsWith(format)){
                     return true;

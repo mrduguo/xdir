@@ -29,7 +29,7 @@ public abstract class AbstractUIIT {
     // -Dtest.web.driver.impl=org.openqa.selenium.htmlunit.HtmlUnitDriver
     @BeforeSuite
     @Parameters({"test.web.driver.impl", "test.web.home.url", "test.web.think.time"})
-    public void initWebDriver(@Optional("org.openqa.selenium.htmlunit.HtmlUnitDriver") String webDriverImpl, @Optional("http://localhost:8080") String webHomeUrl, @Optional("10") long thinkTime) throws Exception {
+    public void initWebDriver(@Optional("org.openqa.selenium.htmlunit.HtmlUnitDriver") String webDriverImpl, @Optional("http://localhost:8080/index.html") String webHomeUrl, @Optional("10") long thinkTime) throws Exception {
         redirectJulToSlf4j();
 
         _webHomeUrl = webHomeUrl;
@@ -130,13 +130,11 @@ public abstract class AbstractUIIT {
     protected static void assertXDirPageNormalStatus() {
         try {
             String pageSourceCode = _webDriver.getPageSource();
-            try {
-                _webDriver.findElement(By.linkText("Powered by XDir"));
-                if (pageSourceCode.contains("HTTP 500 - Internal Server Error")) {
-                    fail("HTTP 500 - Internal Server Error");
-                }
-            } catch (NoSuchElementException ex) {
-                fail("page source code  doesn't contain link [Powered by XDir]");
+            if (!pageSourceCode.contains("Powered by XDir")) {
+                fail("page source code  doesn't contain link [Powered by XDir]:"+pageSourceCode);
+            }
+            if (pageSourceCode.contains("HTTP 500 - Internal Server Error")) {
+                fail("HTTP 500 - Internal Server Error");
             }
             try {
                 Thread.sleep(_thinkTime);

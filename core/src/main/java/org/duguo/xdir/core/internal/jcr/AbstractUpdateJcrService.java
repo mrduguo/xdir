@@ -39,23 +39,6 @@ public abstract class AbstractUpdateJcrService extends AbstractQueryJcrService {
     private MultipartRequestResolver multipartRequestResolver;
     private CacheService cacheService;
 
-    public void exportToFile(ModelImpl model, String nodePath, String targetFolder) throws Exception {
-        File targetFile = new File(targetFolder);
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        targetFile = new File(targetFile, nodePath.substring(nodePath.lastIndexOf("/") + 1) + "-" + DateTimeUtil.currentTimestampKey() + ".xml");
-        FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
-        try {
-            model.getSession().exportSystemView(nodePath, fileOutputStream, false, false);
-        } finally {
-            try {
-                fileOutputStream.close();
-            } catch (Exception ignore) {
-            }
-        }
-    }
-
     // updates
     public void createNode(ModelImpl model) throws Exception {
         String path = RequestUtils.getPath(model);
@@ -217,43 +200,6 @@ public abstract class AbstractUpdateJcrService extends AbstractQueryJcrService {
     }
 
 
-    public void importFile(ModelImpl model, String fileFieldName) throws Exception {
-        String pathName = RequestUtils.getPath(model);
-        FileInputStream fileInputStream = null;
-        try {
-            File localFile;
-            boolean isMindMap = false;
-            if (pathName != null) {
-                localFile = new File(pathName);
-                if (pathName.toLowerCase().endsWith(".mm")) {
-                    isMindMap = true;
-                }
-            } else {
-                localFile = (File) model.getRequest().getParameterMap().get(fileFieldName);
-                String originalFileName = (String) model.getRequest().getParameterMap().get(fileFieldName + "fileName");
-                if (originalFileName.toLowerCase().endsWith(".mm")) {
-                    isMindMap = true;
-                }
-            }
-            if (!localFile.exists()) {
-                model.setStatus("file " + localFile.getAbsolutePath() + " doesn't exist");
-                return;
-            }
-            fileInputStream = new FileInputStream(localFile);
-            if (isMindMap) {
-                getMmImportor().importMm(model.getNode(), fileInputStream);
-            } else {
-                model.getSession().importXML(model.getNode().getPath(), fileInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
-            }
-        } finally {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        }
-        saveNode(model);
-    }
-
-
     public void storeFile(ModelImpl model, File file, boolean deleteAfterStore) throws Exception {
         Node contentNode = model.getNode();
         if (contentNode.hasNode("jcr:content")) {
@@ -360,7 +306,7 @@ public abstract class AbstractUpdateJcrService extends AbstractQueryJcrService {
         model.addUpdate(JcrNodeUtils.JCR_NODE_SEARCH, searchStrings);
     }
 
-    private void saveNode(ModelImpl model) throws Exception {
+    protected void saveNode(ModelImpl model) throws Exception {
         model.getNode().getSession().save();
         cacheService.clearCache(model.getPageContext().toString());
         if (logger.isDebugEnabled())

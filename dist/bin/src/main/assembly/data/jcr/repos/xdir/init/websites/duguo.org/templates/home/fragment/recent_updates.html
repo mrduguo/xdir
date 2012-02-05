@@ -1,0 +1,22 @@
+<#assign searchBaseJcrPath>${node.path}</#assign>
+<@render_search_list app.jcrFactory.sqlQuery(model,"SELECT [_title],[_created],[jcr:path] from [nt:base] WHERE ISDESCENDANTNODE(['"+searchBaseJcrPath+"']) AND _created is not null order by _created desc",0,10)/>
+<#macro render_search_list search_list>
+    <#if (search_list?size>0)>
+    <h1>duguo.org Recent Updates</h1>
+        <#list search_list as row>
+            <div>
+                <a href="${internalBuildUrl(row[2])}">
+                    <#if (row[0]??)>
+                        ${row[0]}
+                        <#else>
+                        ${displayPropertyName(row[2]?substring(row[2]?last_index_of("/")+1))}
+                    </#if>
+                </a>
+                <div style="color:#8E9181;padding:0 0 10px 0;">
+                	${row[1]?substring(0,10)} » 
+                	${row[2]?substring(searchBaseJcrPath?length,row[2]?last_index_of("/")+1)}
+                </div>
+            </div>
+        </#list>
+    </#if>
+</#macro>

@@ -1,0 +1,4 @@
+<#macro css_content>
+	<#include "css/xdir_html_layout.css">
+</#macro>
+<#include "css/xdir_base.css">

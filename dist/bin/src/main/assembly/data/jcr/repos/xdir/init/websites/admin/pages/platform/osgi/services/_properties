@@ -1,3 +1,0 @@
-_title=Services
-_type=osgi_service
-_url=${xdir.web.base.secureurl}/admin/platform/osgi/services/index$[format]

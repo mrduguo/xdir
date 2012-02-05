@@ -280,7 +280,6 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
         if (nodeLink == null) {
             nodeLink = internalBuildUrl(nodePath);
         } else {
-            nodeLink = getApp().getProps().resolveStringValue(nodeLink);
             nodeLink = PageHelper.displayPropertyValue(nodeLink, (ModelImpl) this);
         }
         return nodeLink;

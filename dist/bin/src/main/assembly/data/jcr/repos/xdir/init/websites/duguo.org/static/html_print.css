@@ -1,0 +1,11 @@
+${model.response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>html{ background:#fff;}
+.pagearticle { margin:0; }
+.pageheader,
+.pagenav,
+.pageaside,
+.pagefooter
+{
+    display:none;
+}
+</#assign>
+<#if isCacheableResponse()>${model.app.template.compress("css",rawoutput)}<#else>${rawoutput}</#if>

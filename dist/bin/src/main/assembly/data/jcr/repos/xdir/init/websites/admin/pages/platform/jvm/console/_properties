@@ -1,3 +1,0 @@
-_url=${xdir.web.base.secureurl}/admin/platform/jvm/console/index$[format]
-_title=Console
-_type=jvm_console

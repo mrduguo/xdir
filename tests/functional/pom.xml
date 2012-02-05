@@ -62,12 +62,17 @@
 
     mvn clean install -Ddeploy-build -DwaitForStop
 
-    mvn clean install -Ddeploy-build -Pfirefox
+    mvn clean install -Ddeploy-build -Dfirefox
 
     -->
     <profiles>
         <profile>
             <id>firefox</id>
+            <activation>
+                <property>
+                    <name>firefox</name>
+                </property>
+            </activation>
             <properties>
                 <test.web.driver.impl>org.openqa.selenium.firefox.FirefoxDriver</test.web.driver.impl>
             </properties>
@@ -137,13 +142,19 @@
                                             }
                                         }
 
+log.error("1")
                                         long timeout=20000
                                         while(true){
                                             if(serverStatus.equals("STARTED")){
                                                 break
                                             }else if(serverStatus.equals("FAILED")){
+log.error("2")
                                                 fail("server start failed")
-                                            }else if(timeout<0){ fail("server start timeout") }else{ Thread.sleep(1000) timeout=timeout-1000
+                                            }else if(timeout<0){
+                                                fail("server start timeout")
+                                            }else{
+                                                Thread.sleep(1000)
+                                                timeout=timeout-1000
                                             }
                                         }
 

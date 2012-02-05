@@ -40,7 +40,7 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware, I
     protected String appsRoot;
 
     protected String buildDefaultApplicationUrl(String baseUrl) {
-        return baseUrl + "/" + TemplateEngine.TEMPLATE_DEFAULT + "$[format]";
+        return baseUrl + "/" + TemplateEngine.TEMPLATE_DEFAULT + "${model.format}";
     }
 
 

@@ -120,6 +120,7 @@ public class JcrManagerIT extends AbstractAdminIT {
         clickOnLink("tmp.txt");
         String downloadUrl=findLinkByText("Export").getAttribute("href");
         downloadUrl=downloadUrl.substring(0,downloadUrl.indexOf("?"));
+        downloadUrl=downloadUrl+"?format=xml";
         LOG.info("going; {}",downloadUrl);
         _webDriver.navigate().to(downloadUrl);
 

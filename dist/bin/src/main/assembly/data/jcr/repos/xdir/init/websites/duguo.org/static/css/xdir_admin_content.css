@@ -1,0 +1,34 @@
+/**********************************************************************************
+*	CONSOLE
+***********************************************************************************/
+.console {border:10px solid #bbbbbb;margin:10px;}
+.console pre {margin:0px;display:inline-block;}
+
+.console .command, .console .result  {background:#dddddd;}
+.console .command pre, .console .result pre  {padding:5px;}
+.console .stout pre, .console .sterr pre {padding:5px 5px 20px 5px;   }
+.console .sterr {color:red;}
+
+.console .timestamp {float:right;padding:5px;}
+.console .prompt {float:left;padding:5px;}
+
+
+/**********************************************************************************
+*	INSPECTOR
+***********************************************************************************/
+.inspector .classname,
+.inspector .methodparam,
+.inspector .methodreturn
+{
+ color:${article_box_border_color};
+}
+
+.inspector .fieldvalue,
+.inspector .classvalue
+{
+ color:blue;
+}
+
+/**********************************************************************************
+*	TEXT
+***********************************************************************************/

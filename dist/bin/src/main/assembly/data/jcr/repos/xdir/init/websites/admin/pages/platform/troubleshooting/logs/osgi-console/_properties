@@ -1,4 +1,0 @@
-_title=osgi-console.log
-_type=ts_logfile
-_log_file=${xdir.dir.logs}/osgi-console.log
-

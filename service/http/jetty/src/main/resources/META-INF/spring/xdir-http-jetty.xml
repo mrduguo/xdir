@@ -17,12 +17,10 @@
 
   <bean id="jettyHttpConnector" class="org.eclipse.jetty.server.nio.SelectChannelConnector">
     <property name="port" value="${xdir.port.http}" />
-    <property name="host" value="${xdir.web.host}" />
   </bean>
 
   <bean id="jettyHttpsConnector" class="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
     <property name="port" value="${xdir.port.https}" />
-    <property name="host" value="${xdir.web.host}" />
     <property name="password" value="${xdir.web.https.keystorepassword}" />
     <property name="keystore" value="${xdir.web.https.keystorefile}" />
     <property name="keyPassword" value="${xdir.web.https.keystorepassword}" />

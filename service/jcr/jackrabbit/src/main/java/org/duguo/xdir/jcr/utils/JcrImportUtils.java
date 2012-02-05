@@ -11,6 +11,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,8 @@ import org.slf4j.LoggerFactory;
 public class JcrImportUtils
 {
     
-    private static final String PROPERTIES_FILE_PREFIX="_properties";
-    private static final String JCR_XML_FILE_SUFFIX="-jcr.xml";
+    public static final String PROPERTIES_FILE_PREFIX="jcr.properties";
+    public static final String JCR_XML_FILE_SUFFIX="-jcr.xml";
 
     private static final Logger logger=LoggerFactory.getLogger(JcrImportUtils.class);
 
@@ -114,8 +115,9 @@ public class JcrImportUtils
         for(String fileName:nodeBaseFolder.list()){
             if(fileName.startsWith( PROPERTIES_FILE_PREFIX )){
                 if(fileName.equals( PROPERTIES_FILE_PREFIX )){
-                    Map<String, String> tempProperties=MessagesLoader.load( nodeBaseFolder.getPath()+"/"+fileName );
-                    properties.putAll( tempProperties );
+                    Utf8SortedProperties utf8SortedProperties=new Utf8SortedProperties();
+                    utf8SortedProperties.load(new FileInputStream(nodeBaseFolder.getPath() + "/" + fileName));
+                    properties.putAll( utf8SortedProperties );
                 }else{
                     loadSingePropertyFromFile(properties,nodeBaseFolder,fileName);
                 }
@@ -128,32 +130,7 @@ public class JcrImportUtils
     private static void loadSingePropertyFromFile( Map<String, String> properties, File parentFolder, String fileName ) throws Exception
     {
         String key=fileName.substring( PROPERTIES_FILE_PREFIX.length() );
-        String value=readFileAsString(new File(parentFolder,fileName));
+        String value= FileUtils.readFileToString(new File(parentFolder,fileName),"utf-8");
         properties.put( key, value );
-    }
-    
-
-    
-    private static String readFileAsString( File sourceFile ) throws IOException
-    {
-        if ( sourceFile.exists() && sourceFile.isFile() && sourceFile.length() > 0 )
-        {
-            BufferedReader input = new BufferedReader( new FileReader( sourceFile ) );
-            try
-            {
-                StringBuilder fileString = new StringBuilder();
-                String textFromFile = null;
-                while((textFromFile = input.readLine())!=null){
-                    fileString.append( textFromFile );
-                    fileString.append( '\n' );
-                }
-                return fileString.toString();
-            }
-            finally
-            {
-                input.close();
-            }
-        }
-        return null;
     }
 }

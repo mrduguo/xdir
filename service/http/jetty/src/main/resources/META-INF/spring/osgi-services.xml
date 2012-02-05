@@ -18,7 +18,6 @@
       <value>
         xdir.port.http=8080
         xdir.port.https=8443
-        xdir.web.host=localhost
         xdir.web.log.file=${xdir.dir.logs}/access.log
         xdir.web.webroot=${xdir.dir.data}/webroot
         xdir.web.https.keystorefile=${xdir.dir.conf}/xdir-service-web/xdirplatform.org.selfcert.keystore

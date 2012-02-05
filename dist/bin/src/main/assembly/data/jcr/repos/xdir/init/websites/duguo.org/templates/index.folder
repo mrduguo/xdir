@@ -1,0 +1,21 @@
+<#if (pageProperties["jcr:primaryType"]?? && pageProperties["jcr:primaryType"].displayableValue=="nt:xfile")>
+	<#include "support/filestream.html">
+	<@file_stream "",false/>
+<#else>
+${model.response.setContentType("text/html;charset=UTF-8")}<script type="text/javascript">//<![CDATA[
+    var mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
+    var targetUrl=document.location.href;
+    if(targetUrl.substr(-1) === "/"){
+        targetUrl=targetUrl+"index";
+    }
+    if (mobile) {
+        targetUrl=targetUrl+".xhtml";
+    }else{
+        targetUrl=targetUrl+".html";
+    }
+    document.location = targetUrl;
+// ]]></script>
+<div>Redirecting ...</div>
+<#assign targetUrl>${pagePath}<#if (pagePaths?size>1)>.html<#else>/index.html</#if></#assign>
+<div>You may go <a href="${targetUrl}">${targetUrl}</a> directly.
+</#if>

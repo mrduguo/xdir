@@ -120,7 +120,7 @@ public class HttpUtil
         }else{
             String parentFile=parentUrl.substring( lastIndexOfSlash+1);
             int formatSpliter=parentFile.lastIndexOf( "$" );
-            // sample http://localhost/about$[format]
+            // sample http://localhost/about${model.format}
             if(formatSpliter<=0){
                 // sample http://localhost/about.html
                 formatSpliter=parentFile.lastIndexOf( "." );
@@ -154,7 +154,7 @@ public class HttpUtil
         }else{
             String parentFile=linkUrl.substring( lastIndexOfSlash+1);
             int formatSpliter=parentFile.lastIndexOf( "$" );
-            // sample http://localhost/about$[format]
+            // sample http://localhost/about${model.format}
             if(formatSpliter<=0){
                 // sample http://localhost/about.html
                 formatSpliter=parentFile.lastIndexOf( "." );
