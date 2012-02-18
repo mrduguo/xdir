@@ -33,7 +33,7 @@
                 <configuration>
                     <instructions>
                         <DynamicImport-Package>*</DynamicImport-Package>
-                        <Export-Package>com.yahoo.platform.yui*,org.mozilla.javascript*</Export-Package>
+                        <Export-Package>com.yahoo.platform.yui*</Export-Package>
                         <Import-Package>
                             *;resolution:=optional
                         </Import-Package>

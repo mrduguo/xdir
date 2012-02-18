@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/util  
        http://www.springframework.org/schema/util/spring-util.xsd">
   
-  <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl">
+  <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl" init-method="reload">
     <property name="servletService" ref="servletService"/>
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="rootApplication" ref="rootApplication"/>
@@ -36,13 +36,13 @@
     <property name="httpClient" ref="defaultHttpClientService"/>
   </bean>
   
-  <bean id="bestPathMatchApplicationPrototype" class="org.duguo.xdir.core.internal.app.BestPathMatchApplication" scope="prototype" parent="defaultApplicationPrototype">
+  <bean id="bestPathMatchApplicationPrototype" class="org.duguo.xdir.core.internal.app.BestPathMatchApplication" parent="defaultApplicationPrototype">
   </bean>
   
-  <bean id="defaultAdminApplicationPrototype" class="org.duguo.xdir.core.internal.server.DefaultAdminApplication" scope="prototype" parent="bestPathMatchApplicationPrototype">
+  <bean id="defaultAdminApplicationPrototype" class="org.duguo.xdir.core.internal.server.DefaultAdminApplication" parent="bestPathMatchApplicationPrototype">
   </bean>
   
-  <bean id="staticResourceServicePrototype" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" scope="prototype" parent="defaultApplicationPrototype">
+  <bean id="staticResourceServicePrototype" class="org.duguo.xdir.core.internal.app.resource.ResourceApplication" parent="defaultApplicationPrototype">
     <property name="resourceLoader" ref="resourceLoader"/>
       <property name="cacheService" ref="cacheService"/>
     <property name="templateFormats">
@@ -53,21 +53,20 @@
     </property>
   </bean>
   
-  
-  <bean id="fileManagerApplication" class="org.duguo.xdir.core.internal.server.FileManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="fileManagerApplication" class="org.duguo.xdir.core.internal.server.FileManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
   </bean>
   
   
-  <bean id="jcrManagerApplication" class="org.duguo.xdir.core.internal.jcr.JcrManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="jcrManagerApplication" class="org.duguo.xdir.core.internal.jcr.JcrManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="repositoryFactory" ref="jcrRepositoryFactory"/>
   </bean>
   
-  <bean id="jdbcManagerApplication" class="org.duguo.xdir.core.internal.resource.jdbc.JdbcManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="jdbcManagerApplication" class="org.duguo.xdir.core.internal.resource.jdbc.JdbcManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="repositoryFactory" ref="jcrRepositoryFactory"/>
   </bean>  
   
-  <bean id="osgiBundleManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiBundleManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="osgiBundleManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiBundleManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="osgiFrameworkAdaptor" ref="osgiFrameworkAdaptor" />
     <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
   </bean>
@@ -78,10 +77,10 @@
   
   
     
-  <bean id="osgiSpringManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiSpringManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="osgiSpringManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiSpringManagerApplication" parent="defaultAdminApplicationPrototype">
   </bean>
   
-  <bean id="osgiConfManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiConfManagerApplication" scope="singleton" parent="defaultAdminApplicationPrototype">
+  <bean id="osgiConfManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiConfManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="additionalConfigurations">
       <list>
         <value>${xdir.dir.data}/jcr/template/repository.xml</value>
@@ -93,13 +92,13 @@
     <property name="initDelay" value="-1"/>
   </bean>    
   
-  <bean id="jvmGroovyConsoleApplication" class="org.duguo.xdir.core.internal.server.JvmGroovyConsoleApplication" scope="singleton" parent="defaultAdminApplicationPrototype"/>
+  <bean id="jvmGroovyConsoleApplication" class="org.duguo.xdir.core.internal.server.JvmGroovyConsoleApplication" parent="defaultAdminApplicationPrototype"/>
 
   
-  <bean id="accountService" class="org.duguo.xdir.core.internal.account.AccountManagerApplication" scope="singleton" parent="defaultApplicationPrototype">
+  <bean id="accountService" class="org.duguo.xdir.core.internal.account.AccountManagerApplication" parent="defaultApplicationPrototype">
   </bean>  
   
-  <bean id="profilesApplication" class="org.duguo.xdir.core.internal.account.ProfilesApplication" scope="singleton" parent="defaultApplicationPrototype">
+  <bean id="profilesApplication" class="org.duguo.xdir.core.internal.account.ProfilesApplication" parent="defaultApplicationPrototype">
   </bean>
    
 </beans>

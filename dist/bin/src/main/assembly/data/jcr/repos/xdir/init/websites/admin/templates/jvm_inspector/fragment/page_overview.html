@@ -4,13 +4,13 @@
 	<#if (getStringParameter("objectpath")??)>
 		<#assign objectpath=getStringParameter("objectpath")>
 		<#if (pageProperties["_object_base"]??)>
-			<#assign object_base=pageProperties["_object_base"].displayableValue>
+			<#assign object_base=pageProperties["_object_base"].rawValue>
 		</#if>
 		<#include "../support/inspector">
 	<#elseif (pageProperties["_object_path"]??)>
-		<#assign objectpath=pageProperties["_object_path"].displayableValue>
+		<#assign objectpath=pageProperties["_object_path"].rawValue>
 		<#if (pageProperties["_object_base"]??)>
-			<#assign object_base=pageProperties["_object_base"].displayableValue>
+			<#assign object_base=pageProperties["_object_base"].rawValue>
 		</#if>
 		<#include "../support/inspector">
 	<#else>

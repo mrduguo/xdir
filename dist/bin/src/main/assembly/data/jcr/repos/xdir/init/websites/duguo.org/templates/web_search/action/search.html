@@ -6,7 +6,7 @@
 </form>
 <#assign searchBaseJcrPath>${node.parent.path}</#assign>
 
-<@render_search_list app.jcrFactory.sqlQuery(model,"SELECT [_title],[_modified],[jcr:path] from [nt:base] WHERE ISDESCENDANTNODE(['"+searchBaseJcrPath+"']) AND ( LOCALNAME() LIKE '%"+getStringParameter("query")+"%' OR CONTAINS(_title,'*"+getStringParameter("query")+"*') OR CONTAINS(_overview,'*"+getStringParameter("query")+"*'))",0,100)/>
+<@render_search_list app.jcrFactory.sqlQuery(model,"SELECT [_title],[_created],[jcr:path] from [nt:base] WHERE ISDESCENDANTNODE(['"+searchBaseJcrPath+"']) AND ( LOCALNAME() LIKE '%"+getStringParameter("query")+"%' OR CONTAINS(_title,'*"+getStringParameter("query")+"*') OR CONTAINS(_overview,'*"+getStringParameter("query")+"*'))",0,100)/>
 <#macro render_search_list search_list>
     <#if (search_list?size>0)>
         <h2>Results ( ${search_list?size}<#if (search_list?size==100)>+</#if> )</h2><div>        <div class="pagesection">

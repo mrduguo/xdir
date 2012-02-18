@@ -36,7 +36,11 @@ public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrServi
             } else {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 outputStream = zipOutputStream;
-                addNodeToStreamRecursively(model.getNode().getParent().getPath().length(), model.getNode(), zipOutputStream);
+                int parentPathLength=model.getNode().getParent().getPath().length();
+                if(parentPathLength>1){
+                    parentPathLength=parentPathLength+1;
+                }
+                addNodeToStreamRecursively(parentPathLength, model.getNode(), zipOutputStream);
             }
         } finally {
             IOUtils.closeQuietly(outputStream);

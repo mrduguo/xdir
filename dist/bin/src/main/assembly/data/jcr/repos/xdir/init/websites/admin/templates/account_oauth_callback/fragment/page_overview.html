@@ -1,0 +1,60 @@
+<@page_overview_title/>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+    <@groovy>
+    import org.expressme.openid.*;
+    import org.duguo.xdir.util.codec.IdUtil;
+    import org.duguo.xdir.spi.security.Role;
+    def result=""
+    def oauthParams=new HashMap()
+    model.listProperties(model.node.parent).each(){ key,value->
+    if(key.startsWith("_oauth_"))
+    oauthParams[key]=value.displayableValue
+    }
+    if(model.getStringParameter("code")!=null){
+        oauthParams["_oauth_callback_url"]=model.pagePath+model.format+"?go="+java.net.URLEncoder.encode(model.getStringParameter("go"), "UTF-8")
+    }
+
+    json=model.app.security.get("oauth").performRequest(model.request,oauthParams);
+    authProvider=model.node.parent.name;
+    model.put("json",json);
+
+    ${model.pageProperties["_user_info_mapping"].rawValue}
+
+    def loginName=authProvider+":"+userId;
+    loginNode=model.app.loadLogin(loginName);
+    if(loginNode!=null){
+    session=model.request.getSession(true)
+    session.setAttribute("loginName",loginName);
+    user=model.app.security.login(model)
+    model.response.sendRedirect(model.getStringParameter("go"))
+    }else{
+    userNode=model.app.loadUser(userName);
+    if(userNode!=null){
+    userName=userName+"_"+System.currentTimeMillis();
+    }
+    def userAttributes =new HashMap();
+
+    userAttributes.put("_title",userDisplayName);
+    userAttributes.put("_source", "oauth_"+authProvider);
+    userAttributes.put("_role", Role.USER+"");
+
+    userAttributes.put("logins/oauth_"+userName+"/_user_name", loginName);
+    userAttributes.put("logins/oauth_"+userName+"/_type", "login");
+    userAttributes.put("logins/oauth_"+userName+"/_icon", userIcon);
+    userAttributes.put("logins/oauth_"+userName+"/_link", userLink);
+    userAttributes.put("profile/_icon", userIcon);
+    userAttributes.put("profile/_email", userEmail);
+    userAttributes.put("profile/_link", userLink);
+
+    userNode=model.app.createUser(userName,userAttributes);
+    if(userNode!=null){
+    session=model.request.getSession(true)
+    session.setAttribute("loginName",loginName);
+    user=model.app.security.login(model)
+    model.response.sendRedirect(model.getStringParameter("go"))
+    }else{
+    result="$result<div>user create failed</div>"
+    }
+    }
+    return result;
+</@groovy>

@@ -63,8 +63,6 @@
       <version>1.4</version>
       <scope>xdir/30-common</scope>
     </dependency>
-	  
-
 
   
     <!-- XDir Core -->

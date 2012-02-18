@@ -12,7 +12,6 @@ import org.duguo.xdir.core.internal.app.SimplePathApplication;
 import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.jcr.utils.JcrRepositoryUtils;
@@ -23,57 +22,9 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationRegisterImpl.class);
 
-
-    public void afterPropertiesSet() throws Exception {
-        scanApps();
-    }
-
-    public void register(String path, Application application) throws Exception {
-//        String[] paths = path.split("/");
-//        Assert.state(paths.length < 2, "you are not allowed to register root application");
-//
-//        String rootApplicationName = ((JcrTemplateAwareApplication) application).getSite().getName();
-//        if (paths[0].equals(rootApplicationName)) {
-//            String[] subPaths = new String[paths.length - 1];
-//            System.arraycopy(paths, 0, subPaths, 0, paths.length - 1);
-//            registerApplication(application, subPaths);
-//            if (logger.isDebugEnabled())
-//                logger.debug("register application [{}] success", path);
-//            return;
-//        }
-//        if (logger.isDebugEnabled())
-//            logger.debug("register application [{}] can not found root", path);
-    }
-
-
-    public void unregister(String path) throws Exception {
-        String[] paths = path.split("/");
-        Assert.state(paths.length < 2, "you are not allowed to unregister root application, which could be unregisterd by unregister the servlet");
-
-        Application application = rootApplication;
-        String rootApplicationName = ((JcrTemplateAwareApplication) application).getSite().getName();
-        if (paths[0].equals(rootApplicationName)) {
-            for (int i = 1; i < paths.length; i++) {
-                application = application.getChildren().get(paths[i]);
-                if (application == null) {
-                    break;
-                }
-                if (i == paths.length - 1) {
-                    application.getParent().getChildren().remove(paths[i]);
-                    if (logger.isDebugEnabled())
-                        logger.debug("unregister application [{}] success", path);
-                    return;
-                }
-            }
-        }
-        if (logger.isDebugEnabled())
-            logger.debug("unregister application [{}] not found", path);
-    }
-
-
-    public void scanApps() throws Exception {
+    public void reload() throws Exception {
         if(logger.isTraceEnabled())
-            logger.trace("> scanApps");
+            logger.trace("> reload");
 
         RepoPath repoPath = JcrRepositoryUtils.parseRepoPath(appsRoot);
         Session session = jcrFactory.retriveSession(repoPath.getRepositoryName(), repoPath.getWorkspaceName());
@@ -97,7 +48,7 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         }
 
         if(logger.isTraceEnabled())
-            logger.trace("< scanApps");
+            logger.trace("< reload");
     }
 
     private void printAppsTree(String appName,Application application, StringBuilder appsString, int level) {
@@ -129,7 +80,11 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         Application application = null;
         if (appNode.hasProperty("_application_bean")) {
             String applicationBeanName=appNode.getProperty("_application_bean").getString();
-            application = beanFactory.getBean(applicationBeanName, Application.class);
+            if(applicationBeanName.indexOf(".")>0){
+                application=(Application)Class.forName(applicationBeanName).newInstance();
+            }else{
+                application = beanFactory.getBean(applicationBeanName, Application.class);
+            }
             jcrFactory.bindValueToObject(appNode, application, "_application_");
 
             if (application instanceof ResourceApplication && parentApp instanceof JcrTemplateAwareApplication) {

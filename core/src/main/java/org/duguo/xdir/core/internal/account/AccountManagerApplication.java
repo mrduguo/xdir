@@ -37,9 +37,9 @@ public class AccountManagerApplication extends JcrTemplateAwareApplication imple
 	public static final String NODE_TYPE_USER = "user";
     
     private String accountModelKey="account";
-    private String accountNewUserBase="/org/users/new";
-    private String accountSqlQuery="SELECT * FROM [nt:base] as n WHERE _user_id='%1$s' AND _type='user' AND ISDESCENDANTNODE(n,[/org/users])";
-    private String loginSqlQuery="SELECT * FROM [nt:base] as n WHERE _user_name='%1$s' AND _type='login' AND ISDESCENDANTNODE(n,[/org/users])";
+    private String accountNewUserBase="/websites/admin/org/users/new";
+    private String accountSqlQuery="SELECT * FROM [nt:base] as n WHERE _user_id='%1$s' AND _type='user' AND ISDESCENDANTNODE(n,[/websites/admin/org/users])";
+    private String loginSqlQuery="SELECT * FROM [nt:base] as n WHERE _user_name='%1$s' AND _type='login' AND ISDESCENDANTNODE(n,[/websites/admin/org/users])";
 	private String groupRoleQuery="SELECT _role FROM [nt:base] as n WHERE _user_id='%1$s' AND _type='member' AND ISDESCENDANTNODE(n,[%2$s])";
     
 	public int login(final LoginEvent loginEvent){
@@ -326,22 +326,8 @@ public class AccountManagerApplication extends JcrTemplateAwareApplication imple
 			}
 			userId=email.substring(0,email.indexOf("@"));
 		}
-    	if(userId.length()>4){
-			userPath.append("/");
-			userPath.append(userId.substring(0,2));
-			userPath.append("/");
-			userPath.append(userId.substring(2,4));
-			userPath.append("/");
-			userPath.append(userId);
-    	}else if(userId.length()>2){
-			userPath.append("/");
-			userPath.append(userId.substring(0,2));
-			userPath.append("/");
-			userPath.append(userId);
-    	}else{
-			userPath.append("/");
-			userPath.append(userId);		
-    	}
+        userPath.append("/");
+        userPath.append(userId);
 		if(logger.isDebugEnabled())
 			logger.debug("built user path [{}]",userPath.toString());
 		return userPath;

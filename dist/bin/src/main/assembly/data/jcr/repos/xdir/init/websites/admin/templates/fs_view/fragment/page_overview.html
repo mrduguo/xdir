@@ -19,6 +19,7 @@
 				<@groovy>
 					org.apache.commons.io.FileUtils.byteCountToDisplaySize(model.get("file").length())
 				</@groovy>
+                <a href="${pagePath}">raw</a>
 			</td></tr>
 			<#include "../support/filedisplay">
 			<tr><td colspan="2"><@file_display "${pagePath}.json","file"/></td></tr>

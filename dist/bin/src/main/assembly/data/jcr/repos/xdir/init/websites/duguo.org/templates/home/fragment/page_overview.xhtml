@@ -7,7 +7,7 @@
 	  <li>
 		<a href="${pageNavLevel3[key].url}">${pageNavLevel3[key].title}</a>
 		<#if (pageNavLevel3[key].node?? && pageNavLevel3[key].node.hasProperty("_description"))>
-			<span class="subtitle">${displayPropertyValue(pageNavLevel3[key].node.getProperty("_description").getString())}</span>
+			<br/><span class="subtitle">${displayPropertyValue(pageNavLevel3[key].node.getProperty("_description").getString())}</span>
 		</#if>
 	  </li>
 	</#list>

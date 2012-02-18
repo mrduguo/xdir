@@ -24,7 +24,7 @@ html {min-width:800px;}
 ***********************************************************************************/
 
 
-.pageheader h2 {font-size:1.5em;padding:${nav_text_padding*2}px 0 0 0;margin: 0;}
+.pageheader h2 {font-size:1.2em;padding:${nav_text_padding*2}px 0 0 0;margin: 0;}
 .pageheader h3{font-weight: normal; padding:0 0 0 ${nav_text_padding}px;margin:0;font-size:100%;}
 .pageheader form{position:absolute;right:${nav_aside_width}px;top:${nav_text_padding*2}px;}
 .pageheader input{border:1px solid ${nav_text_color};background:${nav_text_color};color:${nav_background_color};}

@@ -33,8 +33,8 @@ public class ConfFolderAwareSpringConfigurationScanner extends
 	}
 
 	protected List<String> scanAdditionalFiles(Bundle bundle, List<String> confFiles) {
-		ConfFolderAwareScannerUtils.scanLocalConfigurations(bundle, confFiles,
-				ConfFolderAwareScannerUtils.VALUE_XDIR_EXTENDER_CONF_XML);
+		ConfFolderAwareScannerUtils.scanOverrideConfigurations(bundle, confFiles,
+                ConfFolderAwareScannerUtils.VALUE_XDIR_EXTENDER_CONF_XML);
 		return confFiles;
 	}
 

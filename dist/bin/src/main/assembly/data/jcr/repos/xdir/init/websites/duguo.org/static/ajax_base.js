@@ -1,4 +1,4 @@
-${model.response.setContentType("text/javascript;charset=UTF-8")}<#include "ajax/js/jquery">
+${response.setContentType("text/javascript;charset=UTF-8")}<#include "ajax/js/jquery">
 var pageSessionId=new Date().getTime();
 $.xdir = $.xdir || {};
 $.xdir.plugins = $.xdir.plugins || {};

@@ -113,12 +113,12 @@ public class ConfFolderAwarePropertiesPostProcessor implements OsgiBeanFactoryPo
 
         appendBundleNameAndVersion( bundle, beanFactory, propertyValues );
 
-        appendLocalProperties( bundle, beanFactory, propertyValues );
+        appendOverrideProperties(bundle, beanFactory, propertyValues);
     }
 
 
-    private void appendLocalProperties( Bundle bundle, ConfigurableListableBeanFactory beanFactory,
-        MutablePropertyValues propertyValues )
+    private void appendOverrideProperties(Bundle bundle, ConfigurableListableBeanFactory beanFactory,
+                                          MutablePropertyValues propertyValues)
     {
         List<String> confFiles = new ArrayList<String>();
         PropertyValue locationPropertyValue = propertyValues.getPropertyValue( "location" );
@@ -176,8 +176,8 @@ public class ConfFolderAwarePropertiesPostProcessor implements OsgiBeanFactoryPo
                 }
             }
         }
-        ConfFolderAwareScannerUtils.scanLocalConfigurations( bundle, confFiles,
-            ConfFolderAwareScannerUtils.VALUE_XDIR_EXTENDER_CONF_PROP );
+        ConfFolderAwareScannerUtils.scanOverrideConfigurations(bundle, confFiles,
+                ConfFolderAwareScannerUtils.VALUE_XDIR_EXTENDER_CONF_PROP);
         if ( confFiles.size() > 0 )
         {
             String[] locations = new String[confFiles.size()];

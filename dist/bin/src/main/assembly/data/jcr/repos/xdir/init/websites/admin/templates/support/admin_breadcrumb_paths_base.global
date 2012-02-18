@@ -1,0 +1,3 @@
+<#macro page_breadcrumb_paths_base>
+    <a href="${app.props.resolveStringValue("$"+"{xdir.web.base.url}/index")}${format}">${app.props.resolveStringValue("$"+"{xdir.web.host}")}</a> &raquo;
+</#macro>

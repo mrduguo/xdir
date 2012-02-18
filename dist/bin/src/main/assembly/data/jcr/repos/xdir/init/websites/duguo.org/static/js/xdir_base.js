@@ -1,4 +1,4 @@
-${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawoutput><#include "jquery.js">
+${response.setContentType("text/javascript; charset=utf-8")}<#assign rawoutput><#include "jquery.js">
 	<#include "jquery_cookie.js">
 	<#include "jquery_inlineedit.js">
 	<#include "jquery_tablesorter.js">
@@ -13,4 +13,4 @@ ${model.response.setContentType("text/javascript; charset=utf-8")}<#assign rawou
 		</#if>
 	});
 </#assign>
-<#if isCacheableResponse()>${model.app.template.compress("javascript",rawoutput)}<#else>${rawoutput}</#if>
+<#if isCacheableResponse()>${app.template.compress("javascript",rawoutput)}<#else>${rawoutput}</#if>

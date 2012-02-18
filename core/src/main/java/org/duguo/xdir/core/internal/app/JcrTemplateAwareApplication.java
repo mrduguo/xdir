@@ -9,6 +9,9 @@ import javax.jcr.Session;
 import org.duguo.xdir.core.internal.cache.CacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 import org.duguo.xdir.spi.security.SecurityService;
 import org.duguo.xdir.core.internal.app.resource.ResourceService;
@@ -26,7 +29,7 @@ import org.duguo.xdir.http.client.HttpClientService;
 import org.duguo.xdir.util.http.HttpUtil;
 
 
-public class JcrTemplateAwareApplication extends SimplePathApplication {
+public class JcrTemplateAwareApplication extends SimplePathApplication implements ApplicationContextAware{
     private static final Logger logger = LoggerFactory.getLogger(JcrTemplateAwareApplication.class);
 
     /**
@@ -38,6 +41,7 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
     private FormatService format;
     private JcrFactory jcrFactory;
     private CacheService cache;
+    private ApplicationContext applicationContext;
 
     /**
      * ****************************************************
@@ -338,6 +342,14 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
         this.httpClient = httpClient;
     }
 
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     private void ensureEndWithSlashForTemplatePaths(String[] templatePaths) {
         for (int i = 0; i < templatePaths.length; i++) {
             String templatePath = templatePaths[i].trim();
@@ -347,5 +359,6 @@ public class JcrTemplateAwareApplication extends SimplePathApplication {
             templatePaths[i] = templatePath;
         }
     }
+
 
 }

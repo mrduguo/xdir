@@ -1,0 +1,4 @@
+<#if !app.security.hasRole(model,10)>
+	${app.security.accessDenied(model,app.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")+"/admin/account/login"+format+"?cause=401&go="+pageUrl)}
+	<#stop "redirected to login"/>
+</#if>

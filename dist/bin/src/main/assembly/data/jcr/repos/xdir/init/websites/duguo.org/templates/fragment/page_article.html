@@ -10,7 +10,7 @@
 <#macro page_overview_content>
 	<#if overview_conent??><@overview_conent/></#if>
 	<#if (pageProperties["_overview"]??)>
-		<div class="overview">${pageProperties["_overview"].displayableValue}</div>
+		<p>${pageProperties["_overview"].displayableValue}</p>
 	</#if>
 	<#list pageProperties?keys?sort as property>
 	  <#if !(property?starts_with("jcr:") || property?starts_with("_"))>
@@ -39,12 +39,10 @@
 	<h2>${propertyName}</h2>
 	<#if propertyValue?starts_with("<")>
 		${propertyValue}
-	<#elseif (propertyValue?index_of("\n")>0)>
-		<pre class="value">${propertyValue?html}</pre>
 	<#elseif propertyValue=="page_overview_children">
 		<@page_overview_children/>
 	<#else>
-		<@panel_main_body_render_property_simple_value propertyValue/>
+		<p><@panel_main_body_render_property_simple_value propertyValue/></p>
 	</#if>
 </#macro>
 <#macro panel_main_body_render_property_simple_value propertyValue>

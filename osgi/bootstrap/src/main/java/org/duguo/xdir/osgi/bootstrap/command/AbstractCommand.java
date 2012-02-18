@@ -20,7 +20,7 @@ public abstract class AbstractCommand implements Command
     
     private OsgiProperties configuration;
     private long commandPollInterval=200; 
-    private long commandTimeoutCount=300; // 1 minutes = 1*60*1000/200
+    private long commandTimeoutCount=3000; // 10 minutes = 10*60*1000/200
     private long commandPickupTimeoutCount=10;
 
     public void setupConfiguration(OsgiProperties configuration){

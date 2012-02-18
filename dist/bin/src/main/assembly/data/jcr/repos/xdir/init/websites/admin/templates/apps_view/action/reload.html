@@ -1,0 +1,7 @@
+${app.cache.clearCache("")}
+${app.applicationContext.getBean("applicationService").reload()}
+<h1><div><a href="${pageUrl}?action=reload" class="button">Reload Applications</a></div>${pageTitle}</h1>
+<div class="text">
+    Applications Reloaded!<br/>
+    <a href="${pageUrl}" accesskey="0">Ok</a>
+</div>

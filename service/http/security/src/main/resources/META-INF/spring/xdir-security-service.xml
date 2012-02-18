@@ -29,13 +29,7 @@
   </bean>
   
   <util:map id="extendedSecurityServices">
-  	<entry key="facebook" value-ref="facebook"/>
-  	<entry key="openidyahoo" value-ref="openidYahoo"/>
-  	<entry key="openidgoogle" value-ref="openidGoogle"/>
-  	<entry key="oauthtwitter" value-ref="oauthTwitter"/>
-  	<entry key="oauthgoogle" value-ref="oauthGoogle"/>
-  	<entry key="oauthlinkedin" value-ref="oauthLinkedin"/>
-  	<entry key="oauthyahoo" value-ref="oauthYahoo"/>
+    <entry key="oauth" value-ref="oauth"/>
   </util:map>
 
   <bean id="sessionTokenStore" class="org.duguo.xdir.security.impl.token.SessionTokenStore">

@@ -3,11 +3,11 @@
 <#include "fragment/page_aside">
 <#include "fragment/page_footer">
 <#include "fragment/page_article">
-<#include "index.global">${model.response.setContentType("text/html;charset=UTF-8")}<#if action??>
+<#include "index.global">${response.setContentType("text/html;charset=UTF-8")}<#if action??>
 <#assign page_overview_content><#include "action/"+action></#assign><@html_content/>
 <#elseif nocompress??>
 <#assign page_overview_content><#include "fragment/page_overview"></#assign><@html_content/>
-<#else><#assign page_overview_content><#include "fragment/page_overview"></#assign><#assign rawoutput><@html_content/></#assign>${model.app.template.compress("html",rawoutput)}
+<#else><#assign page_overview_content><#include "fragment/page_overview"></#assign><#assign rawoutput><@html_content/></#assign>${app.template.compress("html",rawoutput)}
         </#if>
 <#macro html_content>
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

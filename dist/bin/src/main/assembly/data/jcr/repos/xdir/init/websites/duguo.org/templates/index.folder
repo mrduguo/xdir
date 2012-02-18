@@ -2,8 +2,8 @@
 	<#include "support/filestream.html">
 	<@file_stream "",false/>
 <#else>
-${model.response.setContentType("text/html;charset=UTF-8")}<script type="text/javascript">//<![CDATA[
-    var mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
+${response.setContentType("text/html;charset=UTF-8")}<script type="text/javascript">//<![CDATA[
+    var mobile = (/iphone|ipad|ipod|android|blackberry/i.test(navigator.userAgent.toLowerCase()));
     var targetUrl=document.location.href;
     if(targetUrl.substr(-1) === "/"){
         targetUrl=targetUrl+"index";

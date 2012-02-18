@@ -40,6 +40,11 @@
             <artifactId>xdir-service-template-yuicompressor</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.duguo.xdir.service.template</groupId>
+            <artifactId>xdir-service-template-lesscompressor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

@@ -14,12 +14,14 @@
   <util:map id="templateCompressors">
     <entry key="javascript" value-ref="javascriptCompressor"/>
     <entry key="css" value-ref="cssCompressor"/>
+    <entry key="less" value-ref="lessCompressor"/>
     <entry key="html" value-ref="htmlCompressor"/>
     <entry key="xml" value-ref="xmlCompressor"/>
   </util:map>
   
   <bean id="javascriptCompressor" class="org.duguo.xdir.core.internal.template.compressor.JavaScriptCompressor"/>
   <bean id="cssCompressor" class="org.duguo.xdir.core.internal.template.compressor.CssCompressor"/>
+  <bean id="lessCompressor" class="org.duguo.xdir.core.internal.template.compressor.LessCompressor"/>
   <bean id="htmlCompressor" class="org.duguo.xdir.core.internal.template.compressor.HtmlCompressor">
     <property name="compressJavaScript" value="true"/>
     <property name="compressCss" value="true"/>

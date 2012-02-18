@@ -27,7 +27,7 @@ import org.duguo.xdir.util.bean.BeanUtil;
 import org.duguo.xdir.util.bean.BeanUtil.GetterSetterCallback;
 
 
-public abstract class AbstractApplicationRegister implements BeanFactoryAware, InitializingBean, ApplicationService {
+public abstract class AbstractApplicationRegister implements BeanFactoryAware,ApplicationService {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractApplicationRegister.class);
 

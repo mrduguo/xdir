@@ -19,12 +19,12 @@ public abstract class ConfFolderAwareScannerUtils
     private static final String KEY_XDIR_DIR_CONF = "xdir.dir.conf";
     private static final String KEY_XDIR_EXTENDER_CONF_PREFIX = "xdir.extender.prefix";
 
-    private static final String VALUE_XDIR_EXTENDER_CONF_PREFIX = "local";
+    private static final String VALUE_XDIR_EXTENDER_CONF_PREFIX = "spring-override";
     protected static final String VALUE_XDIR_EXTENDER_CONF_XML = ".xml";
     protected static final String VALUE_XDIR_EXTENDER_CONF_PROP = ".properties";
 
 
-    public static void scanLocalConfigurations( Bundle bundle, List<String> confFiles, String confSuffix )
+    public static void scanOverrideConfigurations(Bundle bundle, List<String> confFiles, String confSuffix)
     {
         String confBaseFolder = System.getProperty( KEY_XDIR_DIR_CONF );
         String confPrefix = System.getProperty( KEY_XDIR_EXTENDER_CONF_PREFIX, VALUE_XDIR_EXTENDER_CONF_PREFIX );

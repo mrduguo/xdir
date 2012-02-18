@@ -22,6 +22,8 @@
         xdir.security.crypt.schema=DESede
         xdir.security.crypt.key=momlmCcasPs4JYJhJmCjRmf5CAplCKS6Y66CMqoyo2sjyrLq
         xdir.security.rememberme.expire.in.days=7
+        xdir.security.local.user.authenticator.username=${user.name}
+        xdir.security.superuser.password=e0a69cbb2953a94f8a21e1d306751e3d
       </value>
     </property>
   </bean>

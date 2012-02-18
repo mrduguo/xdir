@@ -33,7 +33,7 @@ public class JcrImportUtils
             for ( String fileName : parentFolder.list() )
             {
                 File childFile = new File( parentFolder, fileName );
-                if ( childFile.isFile() && fileName.equals(PROPERTIES_FILE_PREFIX) )
+                if ( childFile.isFile() && fileName.startsWith(PROPERTIES_FILE_PREFIX) )
                 {
                     hasPropertiesFile=true;
                 }else if(childFile.isFile() && fileName.endsWith(JCR_XML_FILE_SUFFIX)){

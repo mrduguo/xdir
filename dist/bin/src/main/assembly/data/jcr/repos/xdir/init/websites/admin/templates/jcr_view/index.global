@@ -4,8 +4,10 @@
 		    <@page_aside_node_actions/>
 	<#elseif (pagePaths?size>4)>
 		    <li><a href="${pageUrl}?action=postform">New</a></li>
-    <li><a href="${pageUrl}?action=importform">Import</a></li>
+            <li><a href="${pageUrl}?action=importform">Import</a></li>
 		    <li><a href="${pageUrl}?action=jcrquery">Jcr Query</a></li>
+	<#elseif (pagePaths?size==3)>
+            <li><a href="${pageUrl}?action=adv">Adv</a></li>
 	</#if>
 </#macro>
 <#macro page_aside_node_actions>

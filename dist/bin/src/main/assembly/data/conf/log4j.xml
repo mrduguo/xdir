@@ -19,11 +19,10 @@
 
     <logger name="org.duguo">
         <level value="trace"/>
-        <appender-ref ref="xdir"/>
     </logger>
 	
     <root>
-        <priority value="info"/>
+        <priority value="warn"/>
         <appender-ref ref="stdout"/>
         <appender-ref ref="xdir"/>
     </root>

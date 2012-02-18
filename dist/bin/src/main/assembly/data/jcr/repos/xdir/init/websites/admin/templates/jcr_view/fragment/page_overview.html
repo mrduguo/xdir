@@ -1,74 +1,25 @@
 <@page_overview_title/>
-<#if (pagePaths?size>2)>
-	<@page_overview_body/>
-<#elseif (pagePaths?size>1)>
-	<@page_overview_workspacelist workspaceList.workspaces/>
-<#else>
-	<@page_overview_repolist repositoryList.repositories/>
+<#if (pagePaths?size>4)>
+    <@page_overview_body/>
+    <#elseif (pagePaths?size>3)>
+        <@page_overview_workspacelist workspaceList.workspaces/>
+        <#else>
+            <@page_overview_repolist repositoryList.repositories/>
 </#if>
 <#macro page_overview_repolist currentCollection>
-	<table class="sortable">
-		<thead><tr>
-			<th>Name</th>
-			<th>Type</th>
-			<th>Status</th>
-			<th class="nosort">Action</th>
-		</tr></thead><tbody>
-		<#list currentCollection?keys?sort as key>
-			<tr>
-				<td><a href="${pageContext+"/"+key+format}">${key}</a></td>
-				<#if (currentCollection[key].isActive)>
-					<#if (currentCollection[key].isLocalRepository)>
-						<td>Local</td>
-						<td>running</td>
-						<td>
-							<a href="${displayPropertyValue(app.site.url)}?action=reposhutdownform&repositoryName=${key}">shutdown</a>
-							<a href="${displayPropertyValue(app.site.url)}?action=repoputform&repositoryName=${key}">update</a>
-							<a href="${displayPropertyValue(app.site.url)}?action=reporeindexform&repositoryName=${key}">reindex</a>
-							<a href="${displayPropertyValue(app.site.url)}?action=repocleanform&repositoryName=${key}">clean</a>
-							<a href="${displayPropertyValue(app.site.url)}?action=repoinfo&repositoryName=${key}">info</a>
-						</td>
-					<#else>
-						<td>Remote</td>
-						<td>running</td>
-						<td></td>
-					</#if>
-				<#else>
-					<td>Local</td>
-					<td>stopped</td>
-					<td>
-						<a href="${displayPropertyValue(app.site.url)}?action=repodeleteform&repositoryName=${key}">delete</a>
-						<a href="${displayPropertyValue(app.site.url)}?action=repoputform&repositoryName=${key}">update</a>
-						<a href="${displayPropertyValue(app.site.url)}?action=reporeindexform&repositoryName=${key}">reindex</a>
-						<a href="${displayPropertyValue(app.site.url)}?action=repocleanform&repositoryName=${key}">clean</a>
-						<a href="${displayPropertyValue(app.site.url)}?action=repoinfo&repositoryName=${key}">info</a>
-					</td>
-				</#if>
-			</tr>
-		</#list>
-	</tbody></table>
+    <ul>
+        <#list currentCollection?keys?sort as key>
+            <li><a href="${pagePath+"/"+key+format}">${key}</a></li>
+        </#list>
+    </ul>
 </#macro>
 <#macro page_overview_workspacelist currentCollection>
-	<table class="sortable">
-		<thead><tr>
-			<th>Name</th>
-			<th class="nosort">Action</th>
-		</tr></thead><tbody>
-		<#list currentCollection?keys?sort as key>
-			<tr>
-				<td><a href="${pagePath+"/"+key+format}">${key}</a></td>
-				<td>
-					<#if (repositoryList.repositories[model.pathInfo.getPath(model.pathInfo.getCurrentIndex()-1)].isLocalRepository)>
-						<a href="${pageUrl}?action=workspacecloneform&sourceWorkspaceName=${key}">clone</a>
-						<#if (model.pathInfo.getPath(model.pathInfo.getCurrentIndex()-1)!=model.app.jcrRepository || key!=model.app.jcrWorkspace)>
-							<a href="${pageUrl}?action=workspacedeleteform&workspaceName=${key}">delete</a>
-						</#if>
-					</#if>
-				</td>
-			</tr>
-		</#list>
-	</tbody></table>
+    <ul>
+        <#list currentCollection?keys?sort as key>
+            <li><a href="${pagePath+"/"+key+format}">${key}</a></li>
+        </#list>
+    </ul>
 </#macro>
 <#macro page_overview_body>
-	<#include "../support/inlineadvedit">
+    <#include "../support/inlineadvedit">
 </#macro>

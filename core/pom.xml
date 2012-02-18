@@ -15,7 +15,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.duguo.xdir</groupId>
@@ -39,7 +40,7 @@ limitations under the License.
                 <configuration>
                     <instructions>
                         <DynamicImport-Package>*</DynamicImport-Package>
-                        <Export-Package>org.duguo.xdir.core*;version=${project.version}</Export-Package>
+                        <Export-Package>org.duguo.xdir.core*;version=${project.version},org.pegdown*;version=1.1.0,org.parboiled*;version=1.0.2,org.objectweb*;version=3.3.1</Export-Package>
                         <Import-Package>
                             javax.servlet*;version="[2.4.0, 4.0.0)";resolution:=optional,
                             org.slf4j*;version="[1.5.6, 2.0.0)",
@@ -76,6 +77,11 @@ limitations under the License.
         <dependency>
             <groupId>org.duguo.xdir.service.template</groupId>
             <artifactId>xdir-service-template-yuicompressor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.duguo.xdir.service.template</groupId>
+            <artifactId>xdir-service-template-lesscompressor</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -129,6 +135,11 @@ limitations under the License.
             <artifactId>freemarker</artifactId>
             <version>${lib.template.freemarker.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
         <!--&lt;!&ndash; HTTP Service support &ndash;&gt;-->
         <!--<dependency>-->
@@ -161,7 +172,7 @@ limitations under the License.
         <!--<artifactId>xdir-jcr-service</artifactId>-->
         <!--<version>${project.version}</version>-->
         <!--</dependency>-->
-        
+
         <!--&lt;!&ndash; Spring Dependencies &ndash;&gt;-->
         <!--<dependency>-->
         <!--<groupId>osgified.org.aopalliance</groupId>-->
@@ -171,7 +182,7 @@ limitations under the License.
         <!--<groupId>osgified.com.jamonapi.jamon</groupId>-->
         <!--<artifactId>com.jamonapi.jamon</artifactId>-->
         <!--</dependency>-->
-        
+
 
         <!--&lt;!&ndash; Logging Dependencies &ndash;&gt;-->
         <!--<dependency>-->

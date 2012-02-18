@@ -23,22 +23,13 @@ public class SecurityServiceImpl extends AbstractSecurityService implements Secu
 
     public void accessDenied( Model model, String loginUrl )
     {
-        if (isAuthenticated(model)) {
-            try {
-                model.getResponse().sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            } catch (IOException e) {
-                throw new RuntimeException("Send error SC_UNAUTHORIZED failed " + e.getMessage(), e);
-            }
-        }else{
-            getAccessDeniedHandler().accessDenied(model, loginUrl);
-        }
+        getAccessDeniedHandler().accessDenied(model, loginUrl);
     }
 
 
     public boolean isAuthenticated( Model model )
     {
-        return getLoginManager().getUserFromSession( model.getRequest() )!=null;
+        return getUser(model)!=null;
     }
 
     public User login( Model model )

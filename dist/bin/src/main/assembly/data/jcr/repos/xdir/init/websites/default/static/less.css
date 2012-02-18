@@ -1,0 +1,11 @@
+${model.response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
+@color: #4D926F;
+
+#header {
+    color: @color;
+}
+h2 {
+    color: @color;
+}
+</#assign>
+${model.app.template.compress("css",model.app.template.compress("less",rawoutput))}

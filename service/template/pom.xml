@@ -36,6 +36,7 @@ limitations under the License.
         <module>freemarker</module>
         <module>htmlcompressor</module>
         <module>yuicompressor</module>
+        <module>lesscompressor</module>
         <module>group</module>
     </modules>
 

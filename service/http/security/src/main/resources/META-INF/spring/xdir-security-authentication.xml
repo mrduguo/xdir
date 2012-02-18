@@ -17,7 +17,7 @@
         <ref bean="userNamePasswordAuthenticator"/>
         <ref bean="rememberMeAuthenticator"/>
         <ref bean="authorisedLoginAuthenticator"/>
-        <!-- ref bean="localUserAuthenticator"/-->
+        <ref bean="localUserAuthenticator"/>
       </list>
     </property>
   </bean>
@@ -34,7 +34,6 @@
       <list>
         <ref bean="inMemoryUserValidator"/>
         <ref bean="accountServiceUserValidator"/>
-        <ref bean="userNameEqualsPasswordValidator"/>
       </list>
     </property>
   </bean>
@@ -58,15 +57,19 @@
   <bean id="userNamePasswordNormalizer" class="org.duguo.xdir.security.impl.authentication.normalizer.UserNamePasswordNormalizer">
   </bean>
   
-  <bean id="userNameEqualsPasswordValidator" class="org.duguo.xdir.security.impl.authentication.validator.UserNameEqualsPasswordValidator">
-  </bean>
-  
   <bean id="accountServiceUserValidator" class="org.duguo.xdir.security.impl.authentication.validator.AccountServiceUserValidator">
     <property name="accountService" ref="accountService"/>
     <property name="passwordEncoder" ref="passwordEncoder"/>
   </bean>
   
   <bean id="localUserAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.LocalUserAuthenticator">
+      <property name="userName" value="${xdir.security.local.user.authenticator.username}"/>
+      <property name="localIpAddress">
+          <set>
+              <value>127.0.0.1</value>
+              <value>0:0:0:0:0:0:0:1%0</value>
+          </set>
+      </property>
   </bean>
   
   <bean id="rememberMeAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.HeaderBasedAuthenticator">
@@ -87,7 +90,10 @@
       <list>
         <bean class="org.duguo.xdir.security.impl.authentication.UserImpl">
         	<property name="userId" value="superuser"/>
-        	<property name="password" value="e0a69cbb2953a94f8a21e1d306751e3d"/>
+        	<property name="password" value="${xdir.security.superuser.password}"/>
+            <!-- sample password hash value
+            superuser: e0a69cbb2953a94f8a21e1d306751e3d
+            -->
         	<property name="displayName" value="Super User"/>
         	<property name="role" value="100000"/>
         </bean>

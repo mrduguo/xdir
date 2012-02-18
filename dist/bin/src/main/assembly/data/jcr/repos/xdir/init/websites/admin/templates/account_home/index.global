@@ -1,0 +1,3 @@
+<#include "support/secureroleuser.folder">
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+<#include "support/admin_breadcrumb_paths_base.global">

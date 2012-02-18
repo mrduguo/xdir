@@ -31,13 +31,11 @@
 #   XDIR_CONF - location of XDir's configuration dir, default to $XDir_HOME/data/conf
 #   XDIR_OPTS - parameters passed to the Java VM when running server
 #     e.g. to debug Maven itself, use
-#       set XDIR_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
-# ----------------------------------------------------------------------------
-
 if [ "x$1" = "xstart" ] ; then
     XDIR_OPTS="-Dfile.encoding=UTF-8 -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
 fi
 PROGNAME="$0"
+ACTION="$1"
 
 warn() {
     echo "WARN: ${PROGNAME}: $*"
@@ -50,14 +48,10 @@ die() {
 
 detectOS() {
     # OS specific support (must be 'true' or 'false').
-    cygwin=false;
     darwin=false;
     aix=false;
     os400=false;
     case "`uname`" in
-        CYGWIN*)
-            cygwin=true
-            ;;
         Darwin*)
             darwin=true
             ;;
@@ -108,6 +102,7 @@ locateHome() {
 }
 
 
+
 locateConf() {
 	if [ "x$XDIR_CONF" = "x" ]; then
 		XDIR_CONF=$XDIR_HOME/data/conf
@@ -119,10 +114,6 @@ locateConf() {
 
 locateJava() {
     # Setup the Java Virtual Machine
-    if $cygwin ; then
-        [ -n "$JAVA" ] && JAVA=`cygpath --unix "$JAVA"`
-        [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
-    fi
 
     if [ "x$JAVA" = "x" ]; then
 	if [ -f "$XDIR_HOME/../jvm/linux/bin/java" ]; then
@@ -138,7 +129,6 @@ locateJava() {
             fi
             JAVA="$JAVA_HOME/bin/java"
         else
-            warn "JAVA_HOME not set; results may vary"
             JAVA="java"
         fi
     fi
@@ -208,31 +198,57 @@ init(){
     locateJava
 }
 
-run() {
-    # Setup boot classpath
+main() {
+    init
     setupClasspath
 
     # Load xdir boot options
     loadXdirBootOpts "$@"
 
-    if $cygwin; then
-        FINAL_COMMAND=`cygpath --path --windows "$FINAL_COMMAND"`
-    fi
-    $FINAL_COMMAND
-    EXIT_CODE="$?"
     #echo $FINAL_COMMAND
+    if [ "$ACTION" = "start" ]; then
+	    nohup $FINAL_COMMAND >& /dev/null &
+	    sleep 2
+        echo "XDir Started with log at $XDIR_HOME/var/logs/xdir.log"
+    else
+        $FINAL_COMMAND
+    fi
+    EXIT_CODE="$?"
 }
 
-main() {
-	init
-	# restart server by return status code 5
-	EXIT_CODE=5
-	while [ "$EXIT_CODE" = "5" ]
-	do
-	  run "$@"
-	done
-	exit $EXIT_CODE
-}
 
-main "$@"
+case "$ACTION" in
+    start)
+        main "$@"
+        ;;
+    run)
+        shift
+        main "start" "$@"
+        ;;
 
+    stop)
+        main "$@"
+        ;;
+
+    clean)
+        main "stop"
+		rm -rf $XDIR_HOME/var/*
+        main "start"
+        ;;
+
+    status)
+        main "$@"
+        ;;
+
+    restart)
+        $0 clean
+        $0 start
+        ;;
+
+    *)
+    	echo "Usage: $0 {start|run|stop|status|restart|clean}" >&2
+        exit 3
+        ;;
+esac
+
+exit $EXIT_CODE

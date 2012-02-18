@@ -51,22 +51,20 @@
 
 
 
-
 /**********************************************************************************
 *	HEADING
 ***********************************************************************************/
-.pagesection h1,
-.pagesection h3
+.pagesection h1{font-size:1.8em;} .pagesection h2
 {
-	border-bottom:solid ${nav_text_color} 1px;
+	border-bottom:solid ${nav_text_color} 1px;font-size:1.6em;
 }
-.pagesection h2,
 .pagesection h3
 {
-	background:${article_box_background_color};padding:5px;
-}<div>.pagesection h1 {margin:0.5em 0}
+	font-size:1.4em;
+}
+.pagesection h1 {margin:0.5em 0}
 .pagesection h2,h3,h5,h6{
-	 margin:1em 0 0.5em 0;
+	 margin:0 0 0.5em;
 }
 
 .pagesection h1 div,
@@ -220,5 +218,17 @@ textarea.multiautoresize {height:50px;}
 
 .profile img.icon {float:left;padding:0 5px 0 5px;width:48px;height:48px;}
 
+@media print {
+    .pagearticle { margin-left:0px;margin-right:0px;}
+    .pageheader,
+    .pagenav,
+    .pageaside,
+    .pagecomment,
+    .pagemenubar,
+    .pagefooter
+    {
+        display:none;
+    }
+}
 
-<#include "xdir_admin_content.css"></div>
+<#include "xdir_admin_content.css">

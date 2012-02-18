@@ -9,47 +9,40 @@ import org.duguo.xdir.security.api.authentication.Authenticator;
 import org.duguo.xdir.security.impl.authentication.UserImpl;
 import org.duguo.xdir.util.http.HttpUtil;
 
+import java.util.Set;
+
 public class LocalUserAuthenticator implements Authenticator{
     
     
     private static final Logger logger = LoggerFactory.getLogger( LocalUserAuthenticator.class );
 
-    private String localIpAddress="127.0.0.1";
-	private int defaultRole=Role.ADMIN;
+	private Set<String> localIpAddress;
+	private String userName;
 	
 	public int authenticate(LoginEvent loginEvent) {
+        if(logger.isTraceEnabled()) logger.trace("> authenticate remote address {}", loginEvent.getRequest().getRemoteAddr());
 		int result=LoginEvent.LOGIN_USER_NAME_NOT_FOUND;
-		if(localIpAddress.equals( HttpUtil.getClientIp( loginEvent.getRequest() ) )){
-	        String userName=System.getProperty( "user.name" );
+		if(localIpAddress.contains(loginEvent.getRequest().getRemoteAddr() )){
 	        UserImpl user=new UserImpl();
 	        user.setUserId( userName );
-	        user.setRole(defaultRole);
+	        user.setRole(Role.ADMIN);
 	        
 	        loginEvent.setUser(user);
 	        loginEvent.setUserName(userName);
 	        loginEvent.setName(getClass().getSimpleName());
 	        
-	        if(logger.isDebugEnabled())
-                logger.debug("auto logged in as local user [{}]",userName);
+	        if(logger.isInfoEnabled())  logger.info("auto logged in as local user [{}]",userName);
 	        result=LoginEvent.LOGIN_SUCCESS;
 	    }
-		return result;
+        if(logger.isTraceEnabled()) logger.trace("< authenticate  {}", result);
+        return result;
 	}
 
-	public String getLocalIpAddress() {
-		return localIpAddress;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setLocalIpAddress(String localIpAddress) {
-		this.localIpAddress = localIpAddress;
-	}
-
-	public int getDefaultRole() {
-		return defaultRole;
-	}
-
-	public void setDefaultRole(int defaultRole) {
-		this.defaultRole = defaultRole;
-	}
-	
+    public void setLocalIpAddress(Set<String> localIpAddress) {
+        this.localIpAddress = localIpAddress;
+    }
 }
