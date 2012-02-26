@@ -1,28 +1,54 @@
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Twitter Bootstrap Framework Demo</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="${pageContext}">Basic</a></li>
-              <li><a href="${pageContext}/fluid">Fluid</a></li>
-              <li><a href="${pageContext}/smarter">Smarter</a></li>
-            </ul>
-            <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
 
-    <div class="container">
+<div data-role="page">
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+    <div data-role="header">
+        <h1>My Title</h1>
+    </div><!-- /header -->
 
-    </div>
+    <div data-role="content">
+        <p>Hello world</p>
+    </div><!-- /content -->
+
+
+
+
+
+
+
+
+
+<ul data-role="listview" data-inset="true" data-filter="true">
+	<li><a href="#">Acura</a></li>
+	<li><a href="#">Audi</a></li>
+	<li><a href="#">BMW</a></li>
+	<li><a href="#">Cadillac</a></li>
+	<li><a href="#">Ferrari</a></li>
+</ul>
+
+
+
+
+
+
+
+
+<form>
+   <label for="slider-0">Input slider:</label>
+   <input type="range" name="slider" id="slider-0" value="25" min="0" max="100"  />
+</form>
+
+
+
+
+
+
+
+
+<a href="#" data-role="button" data-icon="star">Star button</a>
+
+
+</div><!-- /page -->
+
+
+

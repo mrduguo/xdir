@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
    <head>
        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>${pageTitle} - bootstrap demo</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <title>${pageTitle} - jquery mobile demo</title>
        <link href="${getResourceUrl("css/all.css")}" rel="stylesheet">
        <script src="${getResourceUrl("js/all.js")}"></script>
    </head>

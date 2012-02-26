@@ -1,0 +1,4 @@
+${response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
+<#include "jquery-mobile.css">
+</#assign>
+<#if isCacheableResponse()>${app.service.cssCodec.apply(rawoutput)}<#else>${rawoutput}</#if>
