@@ -1,6 +1,7 @@
 package org.duguo.xdir.core.internal.cache;
 
 import org.apache.commons.io.FileUtils;
+import org.duguo.xdir.spi.service.DynamicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class CacheServiceImpl<K, V> extends AbstractCacheService implements CacheService<K, V>{
+public class CacheServiceImpl<K, V> extends AbstractCacheService implements CacheService<K, V>,DynamicService{
     private static final Logger LOG= LoggerFactory.getLogger(CacheServiceImpl.class);
 
 
@@ -60,4 +61,13 @@ public class CacheServiceImpl<K, V> extends AbstractCacheService implements Cach
         if(LOG.isTraceEnabled()) LOG.trace("< cacheResponse");
 	}
 
+    @Override
+    public Object getServiceInstance() {
+        return this;
+    }
+
+    @Override
+    public String getServiceName() {
+        return System.getProperty("xdir.service.cache.service.name","cache");
+    }
 }

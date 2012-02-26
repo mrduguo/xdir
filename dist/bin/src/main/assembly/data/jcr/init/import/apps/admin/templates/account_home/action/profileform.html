@@ -1,0 +1,60 @@
+<h1>${pageTitle} : Edit Profile</h1>
+${app.loadAccount(model)}
+<@account_info listProperties(account)/>
+<#macro account_info accountNode>
+	<div>	
+		<form method="post" action="${pageUrl}">
+			<input type="hidden" name="action" value="profile"/>
+			<table class="fullwidth">
+				<tr><th class="width200px">Display Name</th><td><input class="fullwidth" type="text" name="_title" value="${accountNode["_title"].displayableValue}"/></td></tr>
+				<#if (account.hasNode("profile"))>
+					<@profile_info listProperties(account.getNode("profile"))/>
+				<#else>
+					<@profile_info_new_icon/>
+				</#if>
+				<tr><th>Key/Value</th><td><input class="fullwidth" type="text" name="propertiesnew1_name" value=""/></td></tr>
+				<tr><td colspan="2"><textarea  class="multiautoresize" name="propertiesnew1_value"></textarea></td></tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit" class="button">Save</button>&nbsp;
+						<a href="${pageUrl}" class="button">Cancel</a>&nbsp;
+						<span class="a" onclick="addKeyValuePairField(this)">Add key/value pair</span>
+						1XX default, 2XX social network
+					</td>
+				</tr>
+			</table>
+			<script src="${getResourceUrl("js/xdir_form.js")}" type="text/javascript">//</script>
+		</form>
+	</div>
+</#macro>
+<#macro profile_info profileNode>
+			<#if (profileNode["_icon"]??)>
+				<tr><th>Icon</th><td>
+				<img src="${profileNode["_icon"].rawValue}" class="profile icon" title="User Icon"/><br/>
+				<input class="fullwidth" type="text" name="_icon" value="${profileNode["_icon"].rawValue}"/>
+					<br/>
+					<a href="${pageUrl}?action=attachform">Upload</a>
+				</td></tr>			
+			<#else>
+				<@profile_info_new_icon/>
+			</#if>
+			<#list profileNode?keys?sort as p>
+				<#if !(p?starts_with("jcr:") || p?starts_with("_"))>
+					<tr><th title="${p}">${profileNode[p].name}</th><td><input type="hidden" name="propertiesexist${p}_name" value="${p}"/>
+					<input class="fullwidth" type="text" name="propertiesexist${p}_value" value="${profileNode[p].rawValue}"/></td></tr>
+				</#if>
+			</#list>
+			<tr><th>Overview</th><td title="_overview"><input type="hidden" name="propertiesexist_overview_name" value="_overview"/></td></tr>
+			<tr><td colspan="2"><textarea class="multiautoresize" name="propertiesexist_overview_value"><#if (profileNode["_overview"]??)>${profileNode["_overview"].rawValue}</#if></textarea></td></tr>
+</#macro>
+<#macro profile_info_new_icon>
+			<tr><th>Icon</th><td>
+					<@profile_info_default_icon account/>
+					<input class="fullwidth" type="text" name="_icon" value=""/>
+				<br/>
+				<a href="${pageUrl}?action=attachform">Upload</a>
+			</td></tr>			
+</#macro>
+<#macro profile_info_default_icon accountNode>
+			<img src="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}")+"/profiles/"+accountNode.getProperty("_user_id").getString()}/icon.png" title="User Icon"/>
+</#macro>

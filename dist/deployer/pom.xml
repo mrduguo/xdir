@@ -31,10 +31,10 @@
     <!-- ======================================= -->
     <profiles>
         <profile>
-            <id>deploy</id>
+            <id>deploy-to-server</id>
             <activation>
                 <property>
-                    <name>deploy</name>
+                    <name>deploy-to-server</name>
                 </property>
             </activation>
             <build>

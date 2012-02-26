@@ -88,19 +88,10 @@
                                             <version>${project.version}</version>
                                         </dependency>
                                         <dependency>
-                                            <groupId>commons-lang</groupId>
-                                            <artifactId>commons-lang</artifactId>
-                                            <version>2.6</version>
-                                        </dependency>
-                                        <dependency>
-                                            <groupId>commons-io</groupId>
-                                            <artifactId>commons-io</artifactId>
-                                            <version>1.4</version>
-                                        </dependency>
-                                        <dependency>
-                                            <groupId>commons-codec</groupId>
-                                            <artifactId>commons-codec</artifactId>
-                                            <version>1.5</version>
+                                            <groupId>org.duguo.xdir.service.codec</groupId>
+                                            <artifactId>xdir-service-codec-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
                                         </dependency>
                                         <dependency>
                                             <groupId>org.duguo.xdir.service.db</groupId>
@@ -111,12 +102,6 @@
                                         <dependency>
                                             <groupId>org.duguo.xdir.service.http</groupId>
                                             <artifactId>xdir-service-http-group</artifactId>
-                                            <version>${project.version}</version>
-                                            <type>pom</type>
-                                        </dependency>
-                                        <dependency>
-                                            <groupId>org.duguo.xdir.service.template</groupId>
-                                            <artifactId>xdir-service-template-group</artifactId>
                                             <version>${project.version}</version>
                                             <type>pom</type>
                                         </dependency>
@@ -139,6 +124,50 @@
                                     </dependencies>
                                 </fileSet>
                             </fileSets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-local-test-overlay</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/test/resources</directory>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${basedir}/target/${build.finalName}</outputDirectory>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <id>stop-xdir-server-if-running</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source><![CDATA[
+                                        command = "/bin/sh ${basedir}/../bin/target/xdir-dist-bin-${project.version}/bin/xdir.sh stop"
+                                        command = command.execute()
+                                        command.in.eachLine { line ->
+                                            println line
+                                        }
+                                    ]]></source>
                         </configuration>
                     </execution>
                 </executions>

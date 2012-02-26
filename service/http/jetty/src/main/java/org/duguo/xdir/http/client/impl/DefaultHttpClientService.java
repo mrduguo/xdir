@@ -8,13 +8,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.duguo.xdir.spi.service.DynamicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.client.HttpClientService;
 import org.duguo.xdir.http.client.HttpClientUtil;
 import org.duguo.xdir.http.json.Json;
 
-public class DefaultHttpClientService implements HttpClientService{
+public class DefaultHttpClientService implements HttpClientService,DynamicService{
 	
 	public static final Logger logger = LoggerFactory.getLogger( DefaultHttpClientService.class );
     
@@ -90,4 +91,14 @@ public class DefaultHttpClientService implements HttpClientService{
 			Map<String, ResponseHandler<Object>> responseHandlers) {
 		this.responseHandlers = responseHandlers;
 	}
+
+    @Override
+    public Object getServiceInstance() {
+        return this;
+    }
+
+    @Override
+    public String getServiceName() {
+        return System.getProperty("xdir.service.httpclent.service.name","httpClient");
+    }
 }

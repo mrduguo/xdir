@@ -9,77 +9,17 @@
   <bean id="jcrRepositoryFactory" class="org.duguo.xdir.jcr.factory.ActionAwareRepositoryManager">
       <property name="repositoryActions" ref="repositoryActions"/>
   </bean>
-  
+
   <util:map id="repositoryActions">
     <entry key="repositoryLoad" value-ref="repositoryLoadAction"/>
-    <entry key="repositoryShutdown" value-ref="repositoryShutdownAction"/>
-    <entry key="repositoryCreate" value-ref="repositoryCreateAction"/>
-    <entry key="repositoryDelete" value-ref="repositoryDeleteAction"/>
-    <entry key="repositoryReindex" value-ref="repositoryReindexAction"/>
-    <entry key="repositoryUpdate" value-ref="repositoryUpdateAction"/>
-    <entry key="repositoryClean" value-ref="repositoryCleanAction"/>
-    <entry key="repositoryList" value-ref="repositoryListAction"/>
-    <entry key="workspaceCreate" value-ref="workspaceCreateAction"/>
-    <entry key="workspaceDelete" value-ref="workspaceDeleteAction"/>
-    <entry key="workspaceList" value-ref="workspaceListAction"/>
   </util:map>
-   
-  <bean id="repositoriesHolder" class="org.duguo.xdir.jcr.jackrabbit.RepositoriesHolder">
-      <property name="repositoriesBase" value="${xdir.jcr.root}"/>
-  </bean>
  
   <bean id="repositoryLoadAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryLoadAction">
       <property name="defaultCredentials" ref="defaultJcrCredentials"/>
       <property name="poolBeanName" value="generalRepositorySessionObjectPool"/>
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
       <property name="autoCreateRepository" value="${xdir.jcr.repo.auto.create}"/>
+      <property name="repositoryFolder" value="${xdir.jcr.repo.path}"/>
   </bean>
- 
-  <bean id="repositoryShutdownAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryShutdownAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="repositoryCreateAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryCreateAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="repositoryDeleteAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryDeleteAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="repositoryReindexAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryReindexAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="repositoryUpdateAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryUpdateAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="repositoryCleanAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryCleanAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-      <property name="repositoryLoadAction" ref="repositoryLoadAction"/>
-  </bean>  
- 
-  <bean id="repositoryListAction" class="org.duguo.xdir.jcr.jackrabbit.RepositoryListAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-  </bean>
- 
-  <bean id="workspaceCreateAction" class="org.duguo.xdir.jcr.jackrabbit.WorkspaceCreateAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-      <property name="repositoryLoadAction" ref="repositoryLoadAction"/>
-  </bean>  
- 
-  <bean id="workspaceDeleteAction" class="org.duguo.xdir.jcr.jackrabbit.WorkspaceDeleteAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-      <property name="repositoryShutdownAction" ref="repositoryShutdownAction"/>
-  </bean>  
- 
-  <bean id="workspaceListAction" class="org.duguo.xdir.jcr.jackrabbit.WorkspaceListAction">
-      <property name="repositoriesHolder" ref="repositoriesHolder"/>
-      <property name="repositoryLoadAction" ref="repositoryLoadAction"/>
-  </bean>  
-  
-  
   
  
   <bean id="generalRepositorySessionObjectPool" scope="prototype" class="org.apache.commons.pool.impl.GenericKeyedObjectPool" destroy-method="clear">

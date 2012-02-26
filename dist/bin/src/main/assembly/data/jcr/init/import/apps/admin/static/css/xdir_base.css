@@ -1,0 +1,16 @@
+${model.response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
+    <#include "../static.conf">
+
+	<#include "yui_reset.css">
+	<#include "yui_fonts.css">
+	<#include "yui_base.css">
+	<#include "xdir_content.css">
+	
+	<#if (css_content??)>
+		<@css_content/>
+	</#if>	
+	<#if (custom_css??)>
+		${custom_css}
+	</#if>
+</#assign>
+<#if isCacheableResponse()>${app.service.cssCodec.apply(rawoutput)}<#else>${rawoutput}</#if>

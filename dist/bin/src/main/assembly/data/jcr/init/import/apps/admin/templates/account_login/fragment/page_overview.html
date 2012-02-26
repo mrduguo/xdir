@@ -1,0 +1,13 @@
+<@page_overview_title/>
+<@page_overview_description/>
+<#if (getStringParameter("cause")??)>
+    <div class="warn">
+        <div class="title">Access Denied</div>
+        <#if app.service.security.isAuthenticated(model)>
+            User <b>${app.service.security.getUserId(model)}</b> don't have permission to access the resource, please try login as another user!
+        <#else>
+            Please login to access the resource!
+        </#if>
+    </div>
+</#if>
+<#include "../support/loginform">

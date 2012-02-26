@@ -7,9 +7,9 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.duguo.xdir.core.internal.cache.CacheService;
+import org.duguo.xdir.spi.model.GetAndPut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
@@ -32,41 +32,19 @@ import org.duguo.xdir.util.http.HttpUtil;
 public class JcrTemplateAwareApplication extends SimplePathApplication implements ApplicationContextAware{
     private static final Logger logger = LoggerFactory.getLogger(JcrTemplateAwareApplication.class);
 
-    /**
-     * ****************************************************
-     * resources
-     * *****************************************************
-     */
+
+    private GetAndPut service;
+    private ApplicationContext applicationContext;
     private TemplateEngine template;
     private FormatService format;
     private JcrFactory jcrFactory;
-    private CacheService cache;
-    private ApplicationContext applicationContext;
-
-    /**
-     * ****************************************************
-     * services
-     * *****************************************************
-     */
     private ResourceService resource;
-    private PropertiesService props;
-    private JcrService jcr;
-    private SecurityService security;
-    private HttpClientService httpClient;
+    private PropertiesService propertiesService;
 
-    /**
-     * ****************************************************
-     * configurations
-     * *****************************************************
-     */
-    private Site site;
-    private String jcrRepository;
-    private String jcrWorkspace;
     private String jcrBasePath;
     private Map<String, String[]> formats;
+    private boolean supportMultipleFormat=true;
     private String[] templatePaths;
-    private String baseUrl;
-    private String baseUri;
 
 
     public int execute(ModelImpl model) throws Exception {
@@ -75,7 +53,7 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
         model.setApp(this);
         int handleStatus = STATUS_PAGE_NOT_FOUND;
         try {
-            jcrFactory.retriveSession(model);
+            jcrFactory.retrieveSession(model);
             handleStatus = handleInSession(model, handleStatus);
         } catch (ResourceNotFoundException ex) {
         } catch (Throwable ex) {
@@ -92,7 +70,7 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
 
     public void doInDefaultSession(SessionCallback sessionCallback) {
         try {
-            Session session = getJcrFactory().retriveSession(getJcrRepository(), getJcrWorkspace());
+            Session session = getJcrFactory().retrieveSession();
             Assert.notNull(session);
             try {
                 sessionCallback.execute(session);
@@ -108,7 +86,8 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
 
     protected int handleInSession(ModelImpl model, int handleStatus) throws Exception {
         if (logger.isTraceEnabled()) logger.trace("> handleInSession");
-        format.resolveFormat(model);
+        if(supportMultipleFormat)
+            format.resolveFormat(model);
         if (resolveNode(model) != null) {
             setupAction(model);
             handleStatus = processTemplate(model);
@@ -160,17 +139,6 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
         return handleStatus;
     }
 
-
-    /**
-     * ****************************************************
-     * modified getter and setter
-     * *****************************************************
-     */
-    public void setBaseUrl(String baseUrl) {
-        Assert.notNull(baseUrl);
-        this.baseUrl = baseUrl;
-        baseUri = HttpUtil.retriveUriFromUrl(baseUrl);
-    }
 
 
     /**
@@ -230,29 +198,6 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
     }
 
 
-    public PropertiesService getProps() {
-        return props;
-    }
-
-
-    public void setProps(PropertiesService props) {
-        this.props = props;
-    }
-
-
-    public Site getSite() {
-        return site;
-    }
-
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
     public String[] getTemplatePaths() {
         return templatePaths;
     }
@@ -273,33 +218,6 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
     }
 
 
-    public String getJcrRepository() {
-        return jcrRepository;
-    }
-
-    public CacheService getCache() {
-        return cache;
-    }
-
-    public void setCache(CacheService cache) {
-        this.cache = cache;
-    }
-
-    public void setJcrRepository(String jcrRepository) {
-        this.jcrRepository = jcrRepository;
-    }
-
-
-    public String getJcrWorkspace() {
-        return jcrWorkspace;
-    }
-
-
-    public void setJcrWorkspace(String jcrWorkspace) {
-        this.jcrWorkspace = jcrWorkspace;
-    }
-
-
     public String getJcrBasePath() {
         return jcrBasePath;
     }
@@ -309,38 +227,6 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
     }
 
 
-    public JcrService getJcr() {
-        return jcr;
-    }
-
-
-    public void setJcr(JcrService jcr) {
-        this.jcr = jcr;
-    }
-
-
-    public String getBaseUri() {
-        return baseUri;
-    }
-
-
-    public SecurityService getSecurity() {
-        return security;
-    }
-
-
-    public void setSecurity(SecurityService security) {
-        this.security = security;
-    }
-
-
-    public HttpClientService getHttpClient() {
-        return httpClient;
-    }
-
-    public void setHttpClient(HttpClientService httpClient) {
-        this.httpClient = httpClient;
-    }
 
     public ApplicationContext getApplicationContext() {
         return applicationContext;
@@ -360,5 +246,27 @@ public class JcrTemplateAwareApplication extends SimplePathApplication implement
         }
     }
 
+    public boolean isSupportMultipleFormat() {
+        return supportMultipleFormat;
+    }
 
+    public void setSupportMultipleFormat(boolean supportMultipleFormat) {
+        this.supportMultipleFormat = supportMultipleFormat;
+    }
+
+    public GetAndPut getService() {
+        return service;
+    }
+
+    public void setService(GetAndPut service) {
+        this.service = service;
+    }
+
+    public PropertiesService getPropertiesService() {
+        return propertiesService;
+    }
+
+    public void setPropertiesService(PropertiesService propertiesService) {
+        this.propertiesService = propertiesService;
+    }
 }

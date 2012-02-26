@@ -1,0 +1,19 @@
+<@page_overview_title/>
+<div class="content_main_level_1">
+<div class="title">Import from xml file</div>
+	<div class="text">
+<form method="post" action="${pageUrl}?action=import"  enctype="multipart/form-data">
+	<input type="hidden" name="action" value="import"/>
+	
+	<div class="field_title">File</div>
+	<div><input class="field_input" type="file" name="uploadedfile" value=""/></div>
+	<div class="field_title">Or path on server</div>
+	<div><input class="field_input" type="text" name="pathName" value=""/></div>
+	
+	<div>
+		<input type="submit" value="Import" name="submit" id="buttonImport"/>&nbsp;
+		<a href="${pageUrl}" accesskey="0">Cancel</a>
+	</div>
+</form>
+	</div>
+</div>

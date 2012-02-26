@@ -30,7 +30,7 @@ public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
     private static final Logger logger = LoggerFactory.getLogger( JcrFactoryImpl.class );
 
     private RepositoryFactory repositoryFactory;
-    private Map<String, Repository> repositories = new HashMap<String, Repository>();
+    private Repository repository;
     private PropertiesService propertiesService;
 
 
@@ -100,15 +100,15 @@ public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
         return node;
     }
 
-    public Session retriveSession( ModelImpl model ) throws RepositoryException, LoginException
+    public Session retrieveSession(ModelImpl model) throws RepositoryException, LoginException
     {
         Session session = model.getSession();
         if ( session == null )
         {
             //if(model.getVirtualHostPath()!=null){
-            //    session = retriveSession( model.getVirtualHostPath(),model.getApp().getJcrWorkspace());
+            //    session = retrieveSession( model.getVirtualHostPath(),model.getApp().getJcrWorkspace());
             //}else{
-                session = retriveSession( model.getApp().getJcrRepository(),model.getApp().getJcrWorkspace());
+                session = retrieveSession();
             //}
             
             model.setSession( session );
@@ -117,35 +117,31 @@ public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
     }
 
 
-    public Session retriveSession( String repositoryName,String workspaceName ) throws RepositoryException, LoginException
+    public Session retrieveSession() throws RepositoryException, LoginException
     {
-        if(logger.isTraceEnabled()) logger.trace("> retriveSession {} {}",repositoryName,workspaceName);
-        Repository repository = retriveRepository( repositoryName );
-        Session session = repository.login(workspaceName);
+        if(logger.isTraceEnabled()) logger.trace("> retrieveSession");
+        retrieveRepository();
+        Session session = repository.login();
         if(session==null){
             // this may happens of repository was expired
-            repositories.remove( repositoryName );
-            repository = retriveRepository( repositoryName );
-            session = repository.login(workspaceName);
+            retrieveRepository();
+            session = repository.login();
             Assert.notNull( session );
         }
-        if(logger.isTraceEnabled()) logger.trace("< retriveSession {}");
+        if(logger.isTraceEnabled()) logger.trace("< retrieveSession {}");
         return session;
     }
 
 
-    public Repository retriveRepository( String repositoryName ) throws RepositoryException
+    public Repository retrieveRepository() throws RepositoryException
     {
-        Repository repository = repositories.get( repositoryName );
         if ( repository == null)
         {
             Map<String, String> params = new HashMap<String, String>();
-            params.put( "repositoryName", repositoryName );
             repository = repositoryFactory.getRepository( params );
-            Assert.notNull( repository );
-            repositories.put( repositoryName, repository );
+            Assert.notNull(repository);
             if ( logger.isDebugEnabled() )
-                logger.debug( "get repository [" + repositoryName + "] from factory successfully" );
+                logger.debug( "loaded jcr repo from factory successfully" );
         }
         return repository;
     }
@@ -156,10 +152,8 @@ public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
         this.repositoryFactory = repositoryFactory;
     }
 
-
-    public void setRepositories( Map<String, Repository> repositories )
-    {
-        this.repositories = repositories;
+    public void setRepository(Repository repository) {
+        this.repository = repository;
     }
 
     public void setPropertiesService( PropertiesService propertiesService )

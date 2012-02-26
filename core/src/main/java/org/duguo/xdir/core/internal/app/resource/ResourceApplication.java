@@ -27,7 +27,7 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
     private String name;
     private CacheService cacheService;
     private String cacheTimestamp;
-    private long cacheAgeInHours =8760; // 1 year
+    private long cacheAgeInHours =87600; // 10 year to make it permanent :)
 
     @Override
     public ResourceService getResource() {

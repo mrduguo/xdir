@@ -1,0 +1,24 @@
+<h1><div><a href="${pageUrl}?action=reload" class="button">Reload Applications</a></div>${pageTitle}</h1>
+<#assign rootApplicationLink>jvm/inspector/services${format}?action=inspect&objectpath=getService(${app.retriveSpringServiceReference("(Bundle-SymbolicName=xdir-core)").getProperty("service.id")}).m_svcObj.getBean(%22rootApplication%22)</#assign>
+<@listApp app.parent "/"/>
+<#macro listApp currentApp appName>
+    <ul>
+	    <@listAppWithChildren currentApp  currentApp.children rootApplicationLink appName/>
+    </ul>
+</#macro>
+<#macro listAppWithChildren currentApp currentChildren nodeLink appName>
+    <li><@rendAppNodeDetail currentApp nodeLink appName/></li>
+    <#if (currentChildren?size>0)>
+    <ul>
+        <#list currentChildren?keys?sort as child>
+            <@listAppWithChildren currentChildren[child] currentChildren[child].children nodeLink+".children.get(%22"+child+"%22)" child/>
+        </#list>
+    </ul>
+    </#if>
+</#macro>
+<#macro rendAppNodeDetail currentApp nodeLink appName>
+    ${appName}
+    <#if currentApp.class.simpleName != "SimplePathApplication">
+        [<a href="${nodeLink}">${currentApp.class.simpleName}</a>]
+    </#if>
+</#macro>

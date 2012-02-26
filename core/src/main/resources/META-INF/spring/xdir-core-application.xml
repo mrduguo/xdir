@@ -4,10 +4,13 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util  
        http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <bean id="serviceHolder" class="org.duguo.xdir.core.internal.app.ServiceHolder"/>
   
   <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl" init-method="reload">
     <property name="servletService" ref="servletService"/>
     <property name="jcrFactory" ref="jcrFactory"/>
+    <property name="propertiesService" ref="propertiesService"/>
     <property name="rootApplication" ref="rootApplication"/>
     <property name="appsRoot" value="${xdir.jcr.apps.root}" />
   </bean>
@@ -15,25 +18,14 @@
   <bean id="rootApplication" scope="singleton" parent="defaultApplicationPrototype">
     <!-- <property name="children" ref="rootSites"/> -->
   </bean>
-
-  <!--
-  <util:map id="rootSites">
-    <entry key="s" value-ref="  1staticResourceService"/>
-  </util:map>
-   -->
   
   <bean id="defaultApplicationPrototype" class="org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication" scope="prototype">
+    <property name="service" ref="serviceHolder"/>
     <property name="format" ref="defaultFormatService"/>
     <property name="formats" ref="defaultFormats"/>
     <property name="jcrFactory" ref="jcrFactory"/>
-    <property name="jcr" ref="jcrService"/>
-    <property name="cache" ref="cacheService"/>
-    <property name="security" ref="securityService"/>
     <property name="template" ref="freeMarkerTemplateEngine"/>
-    <property name="jcrRepository" value="${xdir.jcr.default.repository}"/>
-    <property name="jcrWorkspace" value="${xdir.jcr.default.workspace}"/>
-    <property name="props" ref="propertiesService"/>
-    <property name="httpClient" ref="defaultHttpClientService"/>
+    <property name="propertiesService" ref="propertiesService"/>
   </bean>
   
   <bean id="bestPathMatchApplicationPrototype" class="org.duguo.xdir.core.internal.app.BestPathMatchApplication" parent="defaultApplicationPrototype">
@@ -52,14 +44,20 @@
       </list>
     </property>
   </bean>
+
+  <bean id="staticCdnResourceServicePrototype" class="org.duguo.xdir.core.internal.app.resource.CdnResourceApplication" parent="staticResourceServicePrototype"/>
+
+  <bean id="publicDirBrowseApplicationPrototype" class="org.duguo.xdir.core.internal.app.resource.PublicDirBrowseApplication" scope="prototype">
+      <property name="formatService" ref="defaultFormatService"/>
+      <property name="service" ref="serviceHolder"/>
+  </bean>
   
-  <bean id="fileManagerApplication" class="org.duguo.xdir.core.internal.server.FileManagerApplication" parent="defaultAdminApplicationPrototype">
+  <bean id="fileManagerApplication" class="org.duguo.xdir.core.internal.app.resource.FileManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
   </bean>
   
   
   <bean id="jcrManagerApplication" class="org.duguo.xdir.core.internal.jcr.JcrManagerApplication" parent="defaultAdminApplicationPrototype">
-    <property name="repositoryFactory" ref="jcrRepositoryFactory"/>
   </bean>
   
   <bean id="jdbcManagerApplication" class="org.duguo.xdir.core.internal.resource.jdbc.JdbcManagerApplication" parent="defaultAdminApplicationPrototype">

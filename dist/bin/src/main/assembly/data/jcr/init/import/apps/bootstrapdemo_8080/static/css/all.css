@@ -1,0 +1,8 @@
+${response.setContentType("text/css; charset=utf-8")}<#assign rawoutput>
+<#include "bootstrap.css">
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+<#include "bootstrap-responsive.css">
+</#assign>
+<#if isCacheableResponse()>${app.service.cssCodec.apply(rawoutput)}<#else>${rawoutput}</#if>

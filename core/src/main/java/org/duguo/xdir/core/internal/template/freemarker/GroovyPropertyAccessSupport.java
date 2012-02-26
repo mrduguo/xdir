@@ -4,6 +4,7 @@ import groovy.lang.DelegatingMetaClass;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
 
+import org.duguo.xdir.spi.model.GetAndPut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.json.Json;
@@ -28,6 +29,9 @@ public class GroovyPropertyAccessSupport{
                 if (object instanceof Json) {
                     Json json = (Json) object;
                     return json.get(property);
+                }else if (object instanceof GetAndPut) {
+                    GetAndPut getAndPut = (GetAndPut) object;
+                    return getAndPut.get(property);
                 }
                 return super.getProperty(object, property);
             }

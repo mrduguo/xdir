@@ -17,7 +17,7 @@ public abstract class AbstractActionModel extends AbstractPageModel
 
     public void disableCache(){
         if(getResponse() instanceof CacheableResponse){
-            ((CacheableResponse)getResponse()).disableCache();
+            setResponse(((CacheableResponse)getResponse()).getResponse());
         }
     }
     public boolean isCacheableResponse(){

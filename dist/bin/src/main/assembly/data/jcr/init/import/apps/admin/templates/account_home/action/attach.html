@@ -1,0 +1,16 @@
+<h1>${pageTitle} : Edit Profile</h1>
+${app.loadAccount(model)}
+${store("accountHomeNode",node)}
+${setNode(account)}
+${app.service.jcr.attachFile(model,"uploadedfile")}
+${setNode(account)}
+${addUpdate("profile/_icon","")}
+${app.service.jcr.editNode(model)}
+${setNode(accountHomeNode)}
+<#if status??>
+	<div class="error">${status}</div>
+<#else>
+	<div class="info"><p>Profile updated!</p>
+	<a href="${pageUrl}" class="button">Ok</a>
+	</div>
+</#if>

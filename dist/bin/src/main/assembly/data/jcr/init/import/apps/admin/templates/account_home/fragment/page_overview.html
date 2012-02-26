@@ -1,0 +1,14 @@
+<@page_overview_title/>
+${app.loadAccount(model)}
+<@account_info listProperties(account)/>
+<#macro account_info accountNode>
+	<div class="subtitle">
+		<span>User Id: ${accountNode["_user_id"].displayableValue}</span>
+		<span> | Storage Path: <a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/admin/resources/jcr${account.path}${format}">${account.path}</a></span>
+	</div>
+	<div>
+		<h2>Profile</h2>
+		<#include "../support/profile.html">
+		<@public_profile account/>
+	</div>
+</#macro>

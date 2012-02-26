@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.exception.ResourceNotFoundException;
 import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.template.AbstractTemplateEngine;
-import org.duguo.xdir.core.internal.template.BufferedResponse;
 
 import freemarker.core.StopException;
 import freemarker.template.Configuration;

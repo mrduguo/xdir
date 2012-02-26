@@ -16,12 +16,13 @@ import org.duguo.xdir.core.internal.utils.RequestUtils;
 import org.duguo.xdir.jcr.utils.JcrImportUtils;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.duguo.xdir.jcr.utils.Utf8SortedProperties;
+import org.duguo.xdir.spi.service.DynamicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.*;
 
-public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrService {
+public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrService,DynamicService {
     private static final Logger logger = LoggerFactory.getLogger(JcrServiceImpl.class);
 
     public void download(ModelImpl model) throws Exception {
@@ -184,4 +185,13 @@ public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrServi
         }
     }
 
+    @Override
+    public Object getServiceInstance() {
+        return this;
+    }
+
+    @Override
+    public String getServiceName() {
+        return System.getProperty("xdir.service.jcr.service.name","jcr");
+    }
 }

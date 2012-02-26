@@ -17,9 +17,9 @@ public interface JcrFactory
     
     public Node resolveBestNode( ModelImpl model ) throws RepositoryException;
 
-    public Session retriveSession( ModelImpl model ) throws RepositoryException, LoginException;
+    public Session retrieveSession(ModelImpl model) throws RepositoryException, LoginException;
     
-    public Session retriveSession(String repositoryName,String workspaceName) throws RepositoryException, LoginException;
+    public Session retrieveSession() throws RepositoryException, LoginException;
     
-    public Repository retriveRepository( String repositoryName ) throws RepositoryException;
+    public Repository retrieveRepository() throws RepositoryException;
 }

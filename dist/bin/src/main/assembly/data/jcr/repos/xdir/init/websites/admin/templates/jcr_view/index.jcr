@@ -1,2 +1,0 @@
-<#include "support/secureroleadmin.folder">
-${app.jcr.download(model)}

@@ -11,8 +11,9 @@ import org.duguo.xdir.spi.security.Role;
 import org.duguo.xdir.spi.security.SecurityService;
 import org.duguo.xdir.spi.security.User;
 import org.duguo.xdir.security.impl.authentication.LoginEventImpl;
+import org.duguo.xdir.spi.service.DynamicService;
 
-public class SecurityServiceImpl extends AbstractSecurityService implements SecurityService
+public class SecurityServiceImpl extends AbstractSecurityService implements SecurityService,DynamicService
 {
     
     
@@ -131,4 +132,13 @@ public class SecurityServiceImpl extends AbstractSecurityService implements Secu
         return encode("encrypt",secret);
     }
 
+    @Override
+    public Object getServiceInstance() {
+        return this;
+    }
+
+    @Override
+    public String getServiceName() {
+        return System.getProperty("xdir.service.security.service.name","security");
+    }
 }

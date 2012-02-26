@@ -1,0 +1,16 @@
+<div style="width:500px;">
+<ul>
+    <li><a href="../">..</a></li>
+    <#list files?keys?sort as key>
+	<#if files[key][0].isFile()>
+        <li>
+            <span style="float:right;">${dollar.sign}{files[key][1]}
+            &nbsp;&nbsp;&nbsp;${dollar.sign}{files[key][2]}</span>
+            <a href="${dollar.sign}{key}">${dollar.sign}{key}</a>
+        </li>
+	<#else>
+        <li><a href="${dollar.sign}{key}/">${dollar.sign}{key}</a></li>
+	</#if>
+    </#list>
+</ul>
+</div>

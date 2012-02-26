@@ -3,6 +3,7 @@ package org.duguo.xdir.core.internal.config;
 import java.util.Map;
 import java.util.Properties;
 
+import org.duguo.xdir.spi.service.DynamicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -13,7 +14,7 @@ import org.springframework.util.StringValueResolver;
 import org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver;
 import org.duguo.xdir.util.bean.BeanUtil;
 
-public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer implements PropertiesService
+public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer implements PropertiesService,DynamicService
 {
     private static final Logger logger = LoggerFactory.getLogger( PropertiesServiceImpl.class );
     private Properties mergedProperties;
@@ -77,6 +78,16 @@ public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer impleme
         super.processProperties( beanFactoryToProcess, props );
         if(logger.isDebugEnabled())
             logger.debug( "PropertiesService inited" );
+    }
+
+    @Override
+    public Object getServiceInstance() {
+        return this;
+    }
+
+    @Override
+    public String getServiceName() {
+        return System.getProperty("xdir.service.props.service.name","props");
     }
 
 

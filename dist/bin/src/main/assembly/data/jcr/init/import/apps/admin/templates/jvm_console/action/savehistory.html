@@ -1,0 +1,25 @@
+<#include "../support/console.html">
+<@page_overview_title/>
+<#if app.consoleOutput??>
+	${app.service.jcr.createNode(model)}
+	<#if !(getStringParameter("_title")??)>
+		${addUpdate("_title","History: "+getStringParameter("_path"))}
+	</#if>
+	<#assign historyOverview>
+		<@display_console_output app.consoleOutput/>
+	</#assign>
+	${model.addUpdate("_overview",historyOverview)}
+	${app.service.jcr.editNode(model)}
+	<#assign newCreatedNodePath=node.name/>
+	${model.setNode(node.parent)}
+	${app.executeCommand(model,"clear")}
+</#if>
+	<div class="info">
+		<#if app.consoleOutput??>
+				History saved at <a href="${pagePath}/${newCreatedNodePath}${format}">${newCreatedNodePath}${format}</a>
+		<#else>
+			Console already closed
+		</#if>
+	</div>
+<@console_overview/>
+<@page_overview_content/>

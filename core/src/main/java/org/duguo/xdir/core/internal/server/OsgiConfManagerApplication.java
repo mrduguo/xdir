@@ -64,7 +64,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
         {
             public void execute() throws Exception
             {
-                Session session=getJcrFactory().retriveSession( getJcrRepository(), getJcrWorkspace() );
+                Session session=getJcrFactory().retrieveSession();
                 try{
                     Node baseNode=session.getNode( getJcrBasePath());
                     scanConf( baseNode );
@@ -86,7 +86,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
         String fileLocation=JcrNodeUtils.getPropertyIfExist( fileNode, "file_location" );
         String oldFileHash=JcrNodeUtils.getPropertyIfExist( fileNode, "file_hash" );
         Assert.notNull( fileLocation );
-        fileLocation=getProps().resolveStringValue( fileLocation );
+        fileLocation=getPropertiesService().resolveStringValue( fileLocation );
         if("conf_resource".equals( fileType )){
             fileContent=readResourceAsString( fileLocation );
             if(fileContent.length()>0){
@@ -119,8 +119,8 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
             logger.debug("scan conf to node [{}] started",baseNode.getPath());
         if(hasChange(baseNode)){
             String snapshotBase="snapshots/"+DateTimeUtil.currentTimestampKey();
-            String bundlesBase=getProps().resolveStringValue( "${xdir.dir.bundles}");
-            String confBase= getProps().resolveStringValue( "${xdir.dir.conf}");
+            String bundlesBase=getPropertiesService().resolveStringValue( "${xdir.dir.bundles}");
+            String confBase= getPropertiesService().resolveStringValue( "${xdir.dir.conf}");
             JcrNodeUtils.setNodeProperty( baseNode, snapshotBase+"/_type","conf_snapshot");
             JcrNodeUtils.setNodeProperty( baseNode, snapshotBase+"/_mm_no_children","true");
             for(Bundle bundle:getBundleContext().getBundles()){
@@ -131,7 +131,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
                     if(additionalConfigurations!=null){
                         scanFolders.addAll( additionalConfigurations );
                     }
-                    scanFolders.add( getProps().resolveStringValue( "${xdir.dir.home}/boot") );
+                    scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.home}/boot") );
                     scanFolders.add( confBase);
                     JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/status/_type","conf_status_framework");
                     JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/status/_system_properties", buildPropertiesAsString(System.getProperties()) );
@@ -273,7 +273,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
                    continue;
                 }
                 if(confRootFile.exists()){
-                    filePath=getProps().resolveToRelativePath( filePath );
+                    filePath=getPropertiesService().resolveToRelativePath( filePath );
                     if(confRootFile.isFile()){
                         addedLocalFile.add( confRootFile.getPath() );
                         attachConfFile( baseNode, bundleStorageBase+"/"+i, filePath, confRootFile );
@@ -341,9 +341,9 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
     {
         String previousHash=JcrNodeUtils.getPropertyIfExist( baseNode, "conf_hash" );
         List<String> scanFolders=new ArrayList<String>();
-        scanFolders.add( getProps().resolveStringValue( "${xdir.dir.home}/boot") );
-        scanFolders.add( getProps().resolveStringValue( "${xdir.dir.bundles}") );
-        scanFolders.add( getProps().resolveStringValue( "${xdir.dir.conf}") );
+        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.home}/boot") );
+        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.bundles}") );
+        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.conf}") );
         if(additionalConfigurations!=null){
             scanFolders.addAll(additionalConfigurations);
         }

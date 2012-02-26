@@ -52,11 +52,13 @@ public class LoginManagerImpl implements LoginManager {
         userInfoCookie.setPath(userInfoCookiePath);
         
         if(loginEvent.isRememberMe()){
-        	String rememberMeCookieValue=rememberMeEncoder.encode(loginEvent.getUser().getUserId());
+            int expireSeconds=rememberMexpireInDays*24*60*60;
+            long expireTimestamp=expireSeconds*1000L+System.currentTimeMillis();
+        	String rememberMeCookieValue=loginEvent.getUser().getUserId()+":"+expireTimestamp;
+        	rememberMeCookieValue=rememberMeEncoder.encode(rememberMeCookieValue);
         	Cookie rememberMeCookie=new Cookie(rememberMeCookieKey,rememberMeCookieValue);
         	rememberMeCookie.setPath(userInfoCookiePath);
             
-        	int expireSeconds=rememberMexpireInDays*24*60*60;
         	rememberMeCookie.setMaxAge(expireSeconds);
             response.addCookie(rememberMeCookie);
             

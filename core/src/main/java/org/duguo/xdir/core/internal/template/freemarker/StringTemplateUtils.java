@@ -15,7 +15,7 @@ import java.util.Map;
 public class StringTemplateUtils {
     private static final Logger logger = LoggerFactory.getLogger(StringTemplateUtils.class);
 
-    public static String render(String template, Model model) {
+    public static String render(String template, Object model) {
         if (logger.isTraceEnabled()) logger.trace("> render with template: {}", template);
         StringTemplateLoader stringLoader = new StringTemplateLoader();
         String stringTemplate = "stringTemplate";

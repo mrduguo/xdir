@@ -1,0 +1,39 @@
+<form method="post">
+<#if (getStringParameter("go")??)>
+    <#assign goUrl>${getStringParameter("go")?html}</#assign>
+<#elseif (request.getHeader("referer")?? && request.getHeader("referer")?index_of("/log")<0)>
+    <#assign goUrl>${request.getHeader("referer")?html}</#assign>
+<#else>
+    <#assign goUrl>${pageContext}/index${format}</#assign>
+</#if>
+    <input type="hidden" name="go" value="${goUrl}"/>
+    <table class="fullwidth">
+        <tr>
+            <th class="width100px">Username</th>
+            <td><input type="text" name="username" value="" tabindex="1"/></td>
+            <td rowspan="3">
+                <p>Or login with:</p>
+                <@display_oauth_providers listAllChildren(model.node)/>
+            </td>
+        </tr>
+        <tr><th>Password</th><td><input type="password" name="password" value=""  tabindex="2"/></td></tr>
+        <tr><th>Remember Me</th><td><input type="checkbox" name="rememberme" value="true"  tabindex="3"/></td></tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" class="button"  tabindex="4">Login</button>&nbsp;
+                <a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}/")}" class="button"  tabindex="5">Cancel</a>
+            </td>
+        </tr>
+    </table>
+</form>
+<#macro display_oauth_providers children>
+        <ul>
+            <#list children?keys?sort as key>
+                <#if children[key].node.hasProperty("_oauth_api_key") && children[key].node.getProperty("_oauth_api_key").getString()!="disabled">
+                    <li>
+                        <a href="${children[key].url}?go=${goUrl}">${children[key].title}</a>
+                    </li>
+                </#if>
+            </#list>
+        </ul>
+</#macro>

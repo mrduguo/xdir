@@ -49,7 +49,7 @@ public class JcrImportUtils
                             logger.debug( "added node [{}]", childFile.getPath());
                         importFolder( childNode, childFile );
                     }
-                    else
+                    else if(childFile.getName().charAt(0)!='.')
                     {
                         addFileNode( parentNode, childFile );
                     }
@@ -76,9 +76,7 @@ public class JcrImportUtils
     }
 
 
-    public static void addFileNode( Node parentNode, File childFile ) throws ItemExistsException,
-        PathNotFoundException, NoSuchNodeTypeException, LockException, VersionException, ConstraintViolationException,
-        RepositoryException
+    public static void addFileNode( Node parentNode, File childFile ) throws Exception
     {
         Node childNode = parentNode.addNode( childFile.getName(), "nt:xfile" );
         Node contentNode = childNode.addNode( "jcr:content");

@@ -134,8 +134,8 @@ public abstract class AbstractPageModel extends AbstractJcrModel {
     }
 
     public String internalBuildUrl(String jcrPath) {
-        // /websites/admin/pages/platform/osgi/bundles   /admin/platform/osgi/bundles
-        // /websites/admin/pages/platform/troubleshooting
+        // /apps/admin/pages/platform/osgi/bundles   /admin/platform/osgi/bundles
+        // /apps/admin/pages/platform/troubleshooting
         //
         StringBuilder urlPath = new StringBuilder();
         urlPath.append(getPageContext());

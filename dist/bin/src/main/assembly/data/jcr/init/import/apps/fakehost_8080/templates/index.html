@@ -1,0 +1,43 @@
+<#include "fragment/page_nav">
+<#include "fragment/page_header">
+<#include "fragment/page_aside">
+<#include "fragment/page_footer">
+<#include "fragment/page_article">
+<#include "index.global">${response.setContentType("text/html;charset=UTF-8")}<#if action??>
+	<#assign page_overview_content><#include "action/"+action></#assign><@html_content/>
+<#else><#assign page_overview_content><#include "fragment/page_overview"></#assign>
+<#if isCacheableResponse()><#assign rawoutput><@html_content/></#assign>${app.service.htmlCodec.apply(rawoutput)}<#else><@html_content/></#if></#if><#macro html_content>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <@page_header_title/>
+        <link rel="stylesheet" href="${getResourceUrl("html_base.css")}" type="text/css"/>
+        <script src="${getResourceUrl("html_base.js")}" type="text/javascript">//</script>
+        <#if html_header??><@html_header/></#if>
+    </head>
+    <body>
+        <div class="pageheader">
+            <@page_header/>
+        </div>
+        <div class="pagearticle">
+            <div class="pagesection">
+				<div class="breadcrumb">
+					<@page_breadcrumb/>
+				</div>
+                ${page_overview_content}
+            </div>
+            <div class="place_holder"></div>
+            <#include "fragment/page_comment">
+        </div>
+        <div class="pagenav">
+            <@page_nav/>
+        </div>
+        <div class="pageaside">
+            <@page_aside/>
+        </div>
+        <div class="pagefooter">
+            <@page_footer/>
+        </div>
+    </body>
+</html></#macro>

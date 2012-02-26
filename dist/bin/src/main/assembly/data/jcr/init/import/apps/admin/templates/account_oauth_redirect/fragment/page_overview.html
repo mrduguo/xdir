@@ -1,0 +1,21 @@
+<@page_overview_title/>
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+        def oauthParams=["_oauth_callback_url":model.pagePath+"/callback"+model.format+"?go="+java.net.URLEncoder.encode(model.getStringParameter("go"), "UTF-8")]
+        model.pageProperties.each(){ key,value->
+            if(key.startsWith("_oauth_"))
+                oauthParams[key]=value.displayableValue
+        }
+		json=model.app.service.security.oauth.retrieveAuthorizeUrl(model.request,oauthParams);
+		model.put("json",json);
+        authUrl = json.authorizeUrl;
+        if(authUrl.isNull()){
+        	return "Failed to talk to OAuth, please try again later.";
+        }else{
+	        model.response.sendRedirect(authUrl.toString());
+        }
+	return ""
+</@groovy>
+<#if !json.authorizeUrl.isNull()>
+<#stop "redirected to login"/>
+</#if>

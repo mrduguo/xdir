@@ -155,11 +155,7 @@ public abstract class AbstractCacheService {
 
     protected HttpServletResponse createCachableResponse(HttpServletResponse response, File cacheFolder) throws IOException {
         WebPageCache webPageCache = new WebPageCache();
-        if(!responseDir.exists()){
-            responseDir.mkdirs();
-        }
-        File outputFile = File.createTempFile("response.", ".tmp", responseDir);
-        webPageCache.setContent(outputFile);
+        webPageCache.setContent(responseDir);
         return new CacheableResponse(response, webPageCache);
     }
 

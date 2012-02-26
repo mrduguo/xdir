@@ -12,7 +12,7 @@ public class UserNamePasswordAuthenticator implements Authenticator{
     
 	private LoginRetriever[] userNamePasswordRetrievers;
     private LoginNormalizer userNamePasswordNormalizer;
-	private LoginValidator[] userNamePasswordValidators;
+	private LoginValidator userNamePasswordValidator;
 
 	
 	public int authenticate(LoginEvent loginEvent) {
@@ -20,21 +20,10 @@ public class UserNamePasswordAuthenticator implements Authenticator{
 		if(loginEvent.getUserName()!=null){
 			userNamePasswordNormalizer.normalize(loginEvent);
 			if(loginEvent.getUserName()!=null){
-				return validateUserNamePassword(loginEvent);
+				return userNamePasswordValidator.validate(loginEvent);
 			}
 		}
 		return LoginEvent.LOGIN_USER_NAME_NOT_FOUND;
-	}
-
-	protected int validateUserNamePassword(LoginEvent loginEvent) {
-		int result=LoginEvent.LOGIN_USER_NAME_NOT_FOUND;
-		for(LoginValidator usernamePasswordValidator:userNamePasswordValidators){
-			result=usernamePasswordValidator.validate(loginEvent);
-			if(result!=LoginEvent.LOGIN_USER_NAME_NOT_FOUND){
-				break;
-			}
-		}
-		return result;
 	}
 
 	protected void retriveUserNamePassword(LoginEvent loginEvent) {
@@ -64,14 +53,11 @@ public class UserNamePasswordAuthenticator implements Authenticator{
 		this.userNamePasswordNormalizer = userNamePasswordNormalizer;
 	}
 
-	public LoginValidator[] getUserNamePasswordValidators() {
-		return userNamePasswordValidators;
-	}
+    public LoginValidator getUserNamePasswordValidator() {
+        return userNamePasswordValidator;
+    }
 
-	public void setUserNamePasswordValidators(
-			LoginValidator[] userNamePasswordValidators) {
-		this.userNamePasswordValidators = userNamePasswordValidators;
-	}
-
-	
+    public void setUserNamePasswordValidator(LoginValidator userNamePasswordValidator) {
+        this.userNamePasswordValidator = userNamePasswordValidator;
+    }
 }

@@ -113,45 +113,14 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware,Ap
         }
         return childApplication;
     }
-
-
-    protected boolean isValidJcrApplication(Node configNode, JcrTemplateAwareApplication application) throws Exception {
-        RepoPath repoPath = JcrRepositoryUtils.parseRepoPath(appsRoot);
-        boolean isNewSession = false;
-        boolean isNodeExist = false;
-        Session targetSession = null;
-        if (repoPath.getRepositoryName().equals(application.getJcrRepository()) && repoPath.getWorkspaceName().equals(application.getJcrWorkspace())) {
-            isNewSession = false;
-            targetSession = configNode.getSession();
-        } else {
-            isNewSession = true;
-            targetSession = jcrFactory.retriveSession(application.getJcrRepository(), application.getJcrWorkspace());
-        }
-
-        try {
-            isNodeExist = targetSession.itemExists(application.getJcrBasePath());
-            if (logger.isDebugEnabled())
-                logger.debug("jcr path [{}]{} exist", application.getJcrRepository() + "/" + repoPath.getWorkspaceName() + application.getJcrBasePath(), (isNodeExist ? "" : " doesn't"));
-        } finally {
-            if (isNewSession) {
-                targetSession.logout();
-            }
-        }
-        return isNodeExist;
-    }
-
-
     protected JcrTemplateAwareApplication retrieveNearestJcrTemplateAwareApplication(Application parentApp) {
         do{
-            if(parentApp==null){
-                break;
-            }else if(parentApp instanceof JcrTemplateAwareApplication){
+            if(parentApp instanceof JcrTemplateAwareApplication){
                 return (JcrTemplateAwareApplication)parentApp;
             }else{
                 parentApp=parentApp.getParent();
             }
         }while(true);
-        return rootApplication;
     }
 
 

@@ -30,6 +30,7 @@ public class XdirServletImpl extends AbstractAliasSupportServlet {
 
 
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        long startTimestamp=System.currentTimeMillis();
         if (logger.isTraceEnabled()) logger.trace("> service {}", ((HttpServletRequest) req).getRequestURL());
 
         HttpServletResponse response = (HttpServletResponse) res;
@@ -37,7 +38,7 @@ public class XdirServletImpl extends AbstractAliasSupportServlet {
         try {
             handleRequest(request, response);
             if (logger.isTraceEnabled())
-                logger.trace("< service successfully");
+                logger.trace("< service successfully [time: {}] {}",System.currentTimeMillis()-startTimestamp, ((HttpServletRequest) req).getRequestURL());
         } catch (Throwable ex) {
             logger.error("Failed to handle request", ex);
             if (logger.isTraceEnabled()) logger.trace("< service with exception {}", ex.getMessage());
@@ -51,10 +52,7 @@ public class XdirServletImpl extends AbstractAliasSupportServlet {
 
 
     protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int port = resolveNoneStandardPort(request, scheme);
-        String virtualHostKey = buildVirtualHostKey(scheme, serverName, port);
+        String virtualHostKey = buildVirtualHostKey(request);
         Application selectedApp = rootApplication.getChildren().get(virtualHostKey);
         if(selectedApp!=null){
             logger.debug("use virtual host app with key {}", virtualHostKey);
@@ -72,7 +70,6 @@ public class XdirServletImpl extends AbstractAliasSupportServlet {
         } finally {
             if (response instanceof CacheableResponse) {
                 CacheableResponse cacheableResponse = (CacheableResponse) response;
-                cacheableResponse.flushBuffer();
                 if (!cacheableResponse.isRequestProcessed()) {
                     cacheService.cacheResponse(request, cacheableResponse);
                 }
@@ -102,20 +99,12 @@ public class XdirServletImpl extends AbstractAliasSupportServlet {
             logger.trace("< handleRequestWithEmptyCache finished with status {}", returnStatus);
     }
 
-    private int resolveNoneStandardPort(HttpServletRequest request, String scheme) {
+    private String buildVirtualHostKey(HttpServletRequest request) {
+        String serverName = request.getServerName();
         int port = request.getServerPort();
-        if ((scheme.equalsIgnoreCase(HttpUtil.HTTP) && port == 80) || (scheme.equalsIgnoreCase(HttpUtil.HTTPS) && port == 443)) {
-            port = 0;
-        }
-        return port;
-    }
-
-    private String buildVirtualHostKey(String scheme, String serverName, int port) {
         StringBuilder virtualHostKey = new StringBuilder(48);
-        virtualHostKey.append(scheme);
-        virtualHostKey.append("_");
         virtualHostKey.append(serverName);
-        if (port > 0) {
+        if (port != 80) {
             virtualHostKey.append('_');
             virtualHostKey.append(port);
         }

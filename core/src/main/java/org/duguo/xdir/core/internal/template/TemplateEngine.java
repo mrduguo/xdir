@@ -11,7 +11,4 @@ public interface TemplateEngine
     int process( ModelImpl model,String templateName) throws Exception;
     
     int process( ModelImpl model,String templateName,String nodeType) throws Exception;
-        
-    String compress( String format,String rawString) throws Exception;
-
 }

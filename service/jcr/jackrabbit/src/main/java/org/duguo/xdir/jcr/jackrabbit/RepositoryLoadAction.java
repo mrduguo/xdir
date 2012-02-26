@@ -6,9 +6,12 @@ import java.util.Map;
 
 import javax.jcr.Credentials;
 import javax.jcr.Repository;
+import javax.jcr.Session;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.apache.jackrabbit.core.TransientRepository;
+import org.duguo.xdir.jcr.utils.JcrImportUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -28,6 +31,8 @@ public class RepositoryLoadAction extends AbstractJackrabbitAction implements Be
     private boolean autoCreateRepository = false;
     private Credentials defaultCredentials;
     private String poolBeanName;
+    private File repositoryFolder;
+    private PooledRepository repository;
     
     private BeanFactory beanFactory;
 
@@ -39,14 +44,17 @@ public class RepositoryLoadAction extends AbstractJackrabbitAction implements Be
 
     public void destroy() throws Exception
     {
-        for(Map.Entry<String, PooledRepository> entry:getRepositoriesHolder().getDisposableRepositories().entrySet()){
-            entry.getValue().destroyRepository();
-        }
+        repository.destroyRepository();
     }
 
     @SuppressWarnings("unchecked")
-    protected Repository loadRepository( Map parameters, String repositoryName, File repositoryFolder ) throws Exception
+    protected void loadRepository( Map parameters) throws Exception
     {
+        boolean isNewRepo=!repositoryFolder.exists();
+        if(isNewRepo){
+            File repoConfFolder=new File(repositoryFolder.getParentFile(),"init/conf");
+            FileUtils.copyDirectory(repoConfFolder,repositoryFolder);
+        }
         TransientRepository rawRepository = new TransientRepository( repositoryFolder );
         PoolableSessionObjectFactory sessionObjectFactory = new PoolableSessionObjectFactory();
         sessionObjectFactory.setRepository( rawRepository );
@@ -55,58 +63,49 @@ public class RepositoryLoadAction extends AbstractJackrabbitAction implements Be
         pool.setFactory( sessionObjectFactory );
 
         
-        PooledRepository pooledRepository = new PooledRepository();
-        pooledRepository.setPool( pool );
-        pooledRepository.setRepository( rawRepository );
-        pooledRepository.setRepositoryBase( repositoryFolder );
-        pooledRepository.setDefaultCredentials( defaultCredentials );
-        if(parameters.containsKey(  "defaultWorkspace" )){
-            pooledRepository.setDefaultWorkspace( (String) parameters.get( "defaultWorkspace" ) );   
-        }        
-        pooledRepository.initRepository();
-
-        getRepositoriesHolder().getActiveRepositories().put( repositoryName, pooledRepository );
-        getRepositoriesHolder().getDisposableRepositories().put( repositoryName, pooledRepository );
-        if ( logger.isDebugEnabled() )
-            logger.debug( "new repository [" + repositoryName + "] created" );
-        return pooledRepository;
+        repository = new PooledRepository();
+        repository.setPool(pool);
+        repository.setRepository(rawRepository);
+        repository.setRepositoryBase(repositoryFolder);
+        repository.setDefaultCredentials(defaultCredentials);
+        if(parameters.containsKey("defaultWorkspace")) {
+            repository.setDefaultWorkspace((String) parameters.get("defaultWorkspace"));
+        }
+        if(isNewRepo){
+            Session session=null;
+            try {
+                session = repository.login();
+                File initBase=new File(repositoryFolder.getParentFile(),"init/import");
+                if(initBase.exists()){
+                    long startTimestamp=System.currentTimeMillis();
+                    JcrImportUtils.importFolder(session.getRootNode(), initBase);
+                    logger.info( "import ["+initBase.getPath()+"] finished in "+(System.currentTimeMillis()-startTimestamp)+" milliseconds" );
+                }
+            }catch(RuntimeException ex){
+                throw ex;
+            }catch(Exception ex){
+                throw new RuntimeException("failed to init repository ["+repositoryFolder.getPath()+"]",ex);
+            }finally{
+                if(session!=null){
+                    session.logout();
+                }
+            }
+            if ( logger.isDebugEnabled() )
+                logger.info( "repository [" + repositoryFolder.getAbsolutePath() + "] created" );
+        }
     }
 
 
     @SuppressWarnings("unchecked")
     protected synchronized Repository retriveRepository( Map parameters) throws Exception
     {
-        String repositoryName =getRepositoryName( parameters );
-        
-        File repositoryFolder = getRepositoryFolder( repositoryName );
         parameters.put( "repositoryFolder", repositoryFolder.getPath() );
         
-        Repository repository = getRepositoriesHolder().getActiveRepositories().get( repositoryName );
-        if ( logger.isDebugEnabled() )
-            logger.debug( "getRepository(" + repositoryName + ")" );
-        if ( repository != null )
+        if ( repository == null )
         {
-            if ( logger.isDebugEnabled() )
-                logger.debug( "getRepository(" + repositoryName + ") found in cached repositories" );
-            return repository;
+            loadRepository( parameters);
         }
-        return loadNewRepository( parameters, repositoryName, repositoryFolder );
-    }
-
-    @SuppressWarnings("unchecked")
-    protected Repository loadNewRepository( Map parameters, String repositoryName, File repositoryFolder )
-        throws Exception
-    {
-        
-        if ( logger.isDebugEnabled() )
-            logger.debug( "create new repository" );
-
-        if ( !repositoryFolder.exists() && !autoCreateRepository )
-        {
-            Assert.state(false, "cannot load none exist repository: repository not exist and autoCreateRepository is false" );
-        }
-        
-        return loadRepository( parameters, repositoryName, repositoryFolder );
+        return repository;
     }
 
     public void setPoolBeanName( String poolBeanName )
@@ -129,4 +128,7 @@ public class RepositoryLoadAction extends AbstractJackrabbitAction implements Be
         this.defaultCredentials = defaultCredentials;
     }
 
+    public void setRepositoryFolder(File repositoryFolder) {
+        this.repositoryFolder = repositoryFolder;
+    }
 }

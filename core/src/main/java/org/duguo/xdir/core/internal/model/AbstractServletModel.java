@@ -21,7 +21,7 @@ public abstract class AbstractServletModel extends AbstractGetAndPut implements 
 {
 
     private PathInfoImpl pathInfo;
-    private String format;
+    private String format=FormatService.FORMAT_FOLDER;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private boolean advancedView;

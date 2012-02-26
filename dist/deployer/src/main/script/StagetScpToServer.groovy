@@ -7,13 +7,17 @@ def execShellCommand(cmd, ignoreError = false) {
     println new Date().toLocaleString()+" executing $cmd"
     proc = cmd.execute()
     def result=new StringBuilder()
-    proc.in.eachLine { line ->
-        println line
-        result.append(line)
-        result.append("\n")
+    Thread.start{
+        proc.in.eachLine { line ->
+            println line
+            result.append(line)
+            result.append("\n")
+        }
     }
-    proc.err.eachLine { line ->
-        println "ERR: "+line
+    Thread.start{
+        proc.err.eachLine { line ->
+            println "ERR: "+line
+        }
     }
     proc.waitFor()
     if (proc.exitValue()) {
@@ -42,14 +46,16 @@ deployScript("newDeployment='/opt/xdir/xdir-${project.version}-" + new Date().fo
 def previousDeployment = sshCommand("file /opt/xdir/CURRENT", true)
 if (previousDeployment != null) {
     previousDeployment = previousDeployment.substring(previousDeployment.indexOf("`") + 1, previousDeployment.indexOf("'"))
+    println "previousDeployment is:"+previousDeployment
     deployScript("previousDeployment='$previousDeployment'")
     deployScript('cp -r overlay/* \$tempDeployment/')
     deployScript('cp \$previousDeployment/data/conf/osgi.properties \$tempDeployment/data/conf/osgi.properties')
-    deployScript('wget -O \$previousDeployment/backup-website.zip http://127.0.0.1/admin/resources/jcr/xdir/default/websites.jcr')
-    deployScript('jar -xf \$previousDeployment/backup-website.zip')
-    deployScript('cp -r websites/duguo.org \$tempDeployment/data/jcr/repos/xdir/init/websites')
-    deployScript('cp -r websites/admin/org/users \$tempDeployment/data/jcr/repos/xdir/init/websites/admin/org')
-    deployScript('cp -r websites/admin/pages/account/login \$tempDeployment/data/jcr/repos/xdir/init/websites/admin/pages/account')
+    deployScript('wget -O \$previousDeployment/backup-apps.zip http://127.0.0.1/admin/resources/jcr/apps.jcr')
+    deployScript('jar -xf \$previousDeployment/backup-apps.zip')
+    deployScript('cp -r apps/duguo.org \$tempDeployment/data/jcr/init/import/apps')
+    deployScript('echo "favicon.ico/_hidden_node=true" >> \$tempDeployment/data/jcr/init/import/apps/duguo.org/pages/jcr.properties')
+    deployScript('cp -r apps/admin/org/users \$tempDeployment/data/jcr/init/import/apps/admin/org')
+    deployScript('cp -r apps/admin/pages/account/login \$tempDeployment/data/jcr/init/import/apps/admin/pages/account')
 }
 deployScript("mv \$tempDeployment \$newDeployment")
 
@@ -65,7 +71,7 @@ if (previousDeployment == null) {
 }
 deployScript("/etc/init.d/xdir start")
 deployScript("cd /opt/xdir")
-deployScript("rm -rf /opt/xdir/deployer")
+//deployScript("rm -rf /opt/xdir/deployer")
 
 
 

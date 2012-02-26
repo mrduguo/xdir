@@ -10,7 +10,7 @@
 
   <osgi:service ref="defaultHttpService" interface="org.osgi.service.http.HttpService" depends-on="jettyServer"/>
 
-  <osgi:service ref="defaultHttpClientService" interface="org.duguo.xdir.http.client.HttpClientService"/>
+  <osgi:service ref="defaultHttpClientService" auto-export="interfaces"/>
 
 
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

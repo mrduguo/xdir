@@ -34,7 +34,6 @@ limitations under the License.
         <module>osgi</module>
         <module>service</module>
         <module>dist</module>
-        <module>tests</module>
     </modules>
 
     <!-- ======================================= -->

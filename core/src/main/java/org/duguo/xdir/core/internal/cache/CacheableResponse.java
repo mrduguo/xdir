@@ -10,10 +10,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 public class CacheableResponse extends AbstractCacheableResponse implements HttpServletResponse {
-	
-	private static final int CACEHE_ENABLED=1;
-	private static final int CACEHE_DISABLED=-1;
-	private static final int REQUEST_PROCESSED=-2;
+
+    public static final int CACEHE_ENABLED=1;
+    public static final int CACEHE_DISABLED=-1;
+	public static final int REQUEST_PROCESSED=-2;
 	
 	private int cacheable=CACEHE_ENABLED;
 	private WebPageCache webPageCache;
@@ -33,6 +33,9 @@ public class CacheableResponse extends AbstractCacheableResponse implements Http
 	}
 	public boolean isRequestProcessed() {
 		return cacheable == REQUEST_PROCESSED;
+	}
+	public void setRequestProcessed() {
+		cacheable = REQUEST_PROCESSED;
 	}
 	public void disableCache() {
         this.cacheable = CACEHE_DISABLED;
@@ -100,7 +103,7 @@ public class CacheableResponse extends AbstractCacheableResponse implements Http
 		getResponse().addCookie(arg0);
 	}
 
-	private void checkWriterOrOutputStream() {
+	private void checkWriterOrOutputStream()throws IOException{
 		if(webPageCache.getContent().length()>0){
 			throw new RuntimeException("the response already opened"+webPageCache.getContent().length());
 		}

@@ -18,16 +18,20 @@ public class InMemoryUserValidator implements LoginValidator{
 	public int validate(LoginEvent loginEvent) {
 		for(UserImpl user: users){
 			if(user.getUserName().equals(loginEvent.getUserName())){
-				String encodedPassword=passwordEncoder.encode(loginEvent);
-				if(user.getPassword().equals(encodedPassword)){
-					loginEvent.setUser(user);
-			        loginEvent.setName(getClass().getSimpleName());
-			        if(logger.isDebugEnabled())
-			        	logger.debug("logged in success for [{}]",loginEvent.getUserName());
-			        return LoginEvent.LOGIN_SUCCESS;
-				}else{
-			        return LoginEvent.LOGIN_WRONG_PASSWORD;
-				}
+                if(loginEvent.getPassword()==null){
+                    if(logger.isDebugEnabled())
+                        logger.debug("logged in without password success for [{}]",loginEvent.getUserName());
+                }else{
+                    String encodedPassword=passwordEncoder.encode(loginEvent);
+                    if(!user.getPassword().equals(encodedPassword)){
+                        return LoginEvent.LOGIN_WRONG_PASSWORD;
+                    }
+                    if(logger.isDebugEnabled())
+                        logger.debug("logged in success for [{}]",loginEvent.getUserName());
+                }
+                loginEvent.setUser(user);
+                loginEvent.setName(getClass().getSimpleName());
+                return LoginEvent.LOGIN_SUCCESS;
 			}
 		}
         return LoginEvent.LOGIN_USER_NAME_NOT_FOUND;

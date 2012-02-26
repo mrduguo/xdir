@@ -1,0 +1,58 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<@page_overview_description/>
+<@groovy>
+//return  model.app.children.toString()
+	def ouputstring=""
+	monitorService=model.app.children.get("platform").children.get("osgi").children.get("spring").retriveMonitorService()
+	if(monitorService==null){
+		model.pageNavLevel3.clear()
+		ouputstring="<div class=\"notice\"><div class=\"title\">Monitor service disabled</div>You may turn on monitor by <a href=\""
+		ouputstring=ouputstring+"../osgi/spring/xdir-core${format}?action=springeditconfform&resourcelocation=local.xml&configstring="
+		ouputstring=ouputstring+freemarker.template.utility.StringUtil.URLEnc("<import resource=\"classpath:/META-INF/spring/troubleshooting/xdir-core-troubleshooting.xml\"/>","utf-8")
+		ouputstring="$ouputstring\">including xdir-core-troubleshooting.xml</a></div>"
+		return ouputstring
+	}
+	
+	<#if (pageProperties["_monitor_code"]??)>
+		${app.service.props.resolveStringValue(pageProperties["_monitor_code"].displayableValue)}
+	<#elseif (pageProperties["_monitor_filter"]??)>
+		monitorMap=new java.util.HashMap()
+		monitorNames=[]
+		table_header="<thead><tr><th>Label</th><th>Hits</th><th>Avg</th><th>Last</th><th>Total</th><th>Min</th><th>Max</th><th>Max Active</th><th>StdDev</th><th>First Accessed</th><th>Last Accessed</th></tr></thead>"
+		row_columns={
+			ouputstring="$ouputstring<tr><td>"+it.label+"</td>"
+			ouputstring="$ouputstring<td>"+it.hits.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.avg.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.lastValue.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.total.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.min.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.max.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.maxActive.round()+"</td>"
+			ouputstring="$ouputstring<td>"+it.stdDev.round()+"</td>"
+			ouputstring="$ouputstring<td>"+model.displayTimePassed(it.firstAccess.time)+"</td>"
+			ouputstring="$ouputstring<td>"+model.displayTimePassed(it.lastAccess.time)+"</td></tr>"
+		}
+		row_filter={
+			return true
+		}
+		${app.service.props.resolveStringValue(pageProperties["_monitor_filter"].displayableValue)}
+		ouputstring="$ouputstring<table class=\"fullwidth sortable\">$table_header<tbody>"
+		com.jamonapi.MonitorFactory.getRootMonitor().getMonitors().each(){
+			label=it.label
+			if(row_filter(label)){
+				monitorMap.put(label,it)
+				monitorNames.add(label)
+			}
+		}
+		monitorNames.sort().each(){
+			row_columns(monitorMap.get(it))
+		}
+		ouputstring="$ouputstring</tbody></table>"
+	<#else>
+		ouputstring="$ouputstring<h2><div><a class=\"button\" href=\"${pageUrl}?action=reset\">reset</a></div>JAMon Monitors ("+com.jamonapi.MonitorFactory.getRootMonitor().getMonitors()?.size()
+		ouputstring="$ouputstring)</h2>"
+	</#if>
+	return ouputstring
+</@groovy>
+<@page_overview_content/>

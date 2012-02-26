@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -27,7 +28,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     private static final Logger logger = LoggerFactory.getLogger( DefaultAdminApplication.class );
 
     private BundleContext bundleContext;
-    
+
     public String readResourceAsString(String resourceLocation) throws Exception{
         InputStream resourceStream=readResourceAsStream(resourceLocation);
         if(resourceStream!=null){
@@ -54,7 +55,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     
     public Resource loadResource(String resourceLocation) throws Exception{
         DefaultResourceLoader resourceLoader=new DefaultResourceLoader();
-        Resource resource=resourceLoader.getResource( getProps().resolveStringValue( resourceLocation ) );
+        Resource resource=resourceLoader.getResource( getPropertiesService().resolveStringValue(resourceLocation) );
         if(resource.exists()){
             if(logger.isDebugEnabled())
                 logger.debug("resource [{}] found",resourceLocation);
@@ -67,7 +68,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     }
     
     public void saveResource(String filePath,String textContent) throws Exception{
-        File realFile=new File(getProps().resolveStringValue( filePath ));
+        File realFile=new File(getPropertiesService().resolveStringValue(filePath));
         String contentWithoutLr=textContent.replaceAll( "\r", "" );
         FileUtils.writeStringToFile( realFile, contentWithoutLr );
         if(logger.isDebugEnabled())
@@ -201,5 +202,4 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     {
         return bundleContext;
     }
-
 }

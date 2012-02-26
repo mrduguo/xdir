@@ -1,0 +1,13 @@
+<#include "../support/bean.html">
+<@page_overview_title/>
+<#assign log4jConfXmlFile=(app.service.props.resolveStringValue("$"+"{xdir.dir.conf}/log4j.xml"))/>
+<@groovy>
+	def ouputstring=""
+	org.apache.log4j.LogManager.resetConfiguration()
+	org.apache.log4j.xml.DOMConfigurator.configure("${log4jConfXmlFile}")
+	return ouputstring
+</@groovy>
+<div class="info">
+	<p>Configration reloaded from log4j.xml.</p>
+	<p><a href="${pageUrl}" class="button">OK</a></p>
+</div>

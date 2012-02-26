@@ -1,0 +1,20 @@
+<#include "parent:index.global">
+<#macro page_actions>
+    <#if (pagePaths?size==3)>
+		    <li><a href="${pageUrl}?action=postform">New</a></li>
+            <li><a href="${pageUrl}?action=importform">Import</a></li>
+		    <li><a href="${pageUrl}?action=jcrquery">Jcr Query</a></li>
+	<#else>
+		    <@page_aside_node_actions/>
+	</#if>
+</#macro>
+<#macro page_aside_node_actions>
+    <li><a href="${pageUrl}?action=postform">New</a></li>
+    <li><a href="${pageUrl}?action=putform">Edit</a></li>
+    <li><a href="${pageUrl}?action=deleteform">Delete</a></li>
+    <li><a href="${pageUrl}?action=attachform">Attach</a></li>
+    <li><a href="${pageUrl}?action=copyform">Copy</a></li>
+    <li><a href="${pageUrl}?action=moveform">Move</a></li>
+    <li><a href="${pageUrl}?action=importform">Import</a></li>
+    <li><a href="${pagePath}.jcr?action=download">Export</a></li>
+</#macro>

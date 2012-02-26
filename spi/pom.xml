@@ -55,6 +55,11 @@ limitations under the License.
             <artifactId>com.springsource.javax.servlet</artifactId>
             <version>${lib.servlet.api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>${lib.osgi.core.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,0 +1,17 @@
+${setPageTitle("HTTP 404 - Page Not Found")}${model.response.setContentType("text/html;charset=UTF-8")}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title>${pageTitle}</title>
+	</head>
+	<body>
+        <h1>${pageTitle}</h1>
+        <div>${request.requestURL}</div>
+
+        <h3>What to do next</h3>
+        <p>If you have typed the URL in by hand then please make sure you have entered it correctly.</p>
+        <p>Alternatively, if you have come from a link within the site and found this page, please <a href="/">report a technical problem</a> that we will correct as soon as possible!</p>
+
+      <p><a href="http://xdir.duguo.org/">Powered by XDir</a></p>
+	</body>
+</html>

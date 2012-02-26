@@ -21,6 +21,16 @@
       </list>
     </property>
   </bean>
+
+  <bean id="chainedValidator" class="org.duguo.xdir.security.impl.authentication.validator.ChainedValidator">
+    <property name="validators">
+      <list>
+          <ref bean="accountServiceUserValidator"/>
+          <ref bean="inMemoryUserValidator"/>
+      </list>
+    </property>
+  </bean>
+
   
   <bean id="userNamePasswordAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.UserNamePasswordAuthenticator">
     <property name="userNamePasswordRetrievers">
@@ -30,12 +40,7 @@
       </list>
     </property>
     <property name="userNamePasswordNormalizer" ref="userNamePasswordNormalizer"/>
-    <property name="userNamePasswordValidators">
-      <list>
-        <ref bean="inMemoryUserValidator"/>
-        <ref bean="accountServiceUserValidator"/>
-      </list>
-    </property>
+    <property name="userNamePasswordValidator" ref="chainedValidator"/>
   </bean>
   
   <bean id="authorisedLoginAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.HeaderBasedAuthenticator">
@@ -74,7 +79,7 @@
   
   <bean id="rememberMeAuthenticator" class="org.duguo.xdir.security.impl.authentication.authenticator.HeaderBasedAuthenticator">
     <property name="loginRetriever" ref="rememberMeLoginRetriever"/>
-    <property name="loginValidator" ref="authorisedValidator"/>
+    <property name="loginValidator" ref="chainedValidator"/>
   </bean>
   
   <bean id="rememberMeLoginRetriever" class="org.duguo.xdir.security.impl.authentication.retriever.RememberMeLoginRetriever">

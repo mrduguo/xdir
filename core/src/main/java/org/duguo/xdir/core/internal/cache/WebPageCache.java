@@ -1,6 +1,7 @@
 package org.duguo.xdir.core.internal.cache;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class WebPageCache  implements Serializable{
@@ -31,7 +32,12 @@ public class WebPageCache  implements Serializable{
 	public void setHeaders(String[][] headers) {
 		this.headers = headers;
 	}
-	public File getContent() {
+	public File getContent() throws IOException{
+        if(!content.isFile()){
+            if(!content.exists())
+                content.mkdirs();
+            content=File.createTempFile("response.", ".tmp", content);
+        }
 		return content;
 	}
 	public void setContent(File content) {

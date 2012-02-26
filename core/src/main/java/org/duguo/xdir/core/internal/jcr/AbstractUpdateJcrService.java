@@ -223,6 +223,8 @@ public abstract class AbstractUpdateJcrService extends AbstractQueryJcrService {
 
     public void editNode(ModelImpl model) throws Exception {
         updateTitle(model);
+        model.getNode().setProperty("_modified", Calendar.getInstance());
+        model.getNode().setProperty("_modifiedBy", model.getUserId());
         initProperties(model);
         updateVersionable(model);
         storeUpdates(model);
@@ -330,9 +332,8 @@ public abstract class AbstractUpdateJcrService extends AbstractQueryJcrService {
     }
 
     private void updateNewNode(ModelImpl model) throws Exception {
-        Calendar now = Calendar.getInstance();
         model.getNode().setProperty("_name", model.getNode().getName());
-        model.getNode().setProperty("_created", now);
+        model.getNode().setProperty("_created", Calendar.getInstance());
         model.getNode().setProperty("_createdBy", model.getUserId());
     }
 

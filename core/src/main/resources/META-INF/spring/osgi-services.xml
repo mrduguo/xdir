@@ -20,7 +20,11 @@
   <osgi:reference id="defaultHttpService" bean-name="defaultHttpService" interface="org.osgi.service.http.HttpService">
     <osgi:listener bind-method="onBind" unbind-method="onUnbind" ref="servletService" />
   </osgi:reference>
-  
+
+    <osgi:list id="xdirServices" interface="org.duguo.xdir.spi.service.DynamicService" availability="optional">
+        <osgi:listener bind-method="onBind" unbind-method="onUnbind" ref="serviceHolder" />
+    </osgi:list>
+
   <osgi:reference id="securityService" interface="org.duguo.xdir.spi.security.SecurityService" />
 
   <osgi:reference id="jcrRepositoryFactory" interface="javax.jcr.RepositoryFactory" />
@@ -36,21 +40,19 @@
   <bean id="propertiesService" class="org.duguo.xdir.core.internal.config.PropertiesServiceImpl">
     <property name="properties">
       <value>
+          dollar.sign=$
         xdir.port.http=8080
         xdir.port.https=8443
         xdir.web.host=localhost
         xdir.core.resource.base=${xdir.dir.data}/jcr/xdir/init
-        xdir.jcr.default.repository=xdir
-        xdir.jcr.default.workspace=default
-        xdir.jcr.apps.root=${xdir.jcr.default.repository}/${xdir.jcr.default.workspace}/websites/admin/apps
-        xdir.jcr.root=${xdir.dir.data}/jcr/repos
+        xdir.jcr.apps.root=/apps
         xdir.web.default.contenttype=text/html;charset=UTF-8
 
         xdir.web.virtualhost.defaulthttpurl=http://${xdir.web.host}:${xdir.port.http}
         xdir.web.virtualhost.defaulthttpsurl=https://${xdir.web.host}:${xdir.port.https}
         xdir.web.base.url=http://${xdir.web.host}:${xdir.port.http}
         xdir.web.base.secureurl=https://${xdir.web.host}:${xdir.port.https}
-        xdir.web.template.defaultpath=/websites/default/templates
+        xdir.web.template.defaultpath=/apps/default/templates
 
         xdir.s3.aws.bucket.name=s3.duguo.org
         xdir.s3.aws.base.url=http://${xdir.s3.aws.bucket.name}

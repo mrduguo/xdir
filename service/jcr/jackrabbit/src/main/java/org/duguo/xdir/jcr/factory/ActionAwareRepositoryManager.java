@@ -51,7 +51,7 @@ public class ActionAwareRepositoryManager implements RepositoryFactory
 
 
     @SuppressWarnings("unchecked")
-    protected synchronized Repository performAction( Map parameters, String actionName )throws Exception
+    protected synchronized Repository  performAction( Map parameters, String actionName )throws Exception
     {
         Repository repository=null;
         RepositoryAction repositoryAction=repositoryActions.get( actionName );

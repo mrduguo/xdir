@@ -31,9 +31,9 @@
 #   XDIR_CONF - location of XDir's configuration dir, default to $XDir_HOME/data/conf
 #   XDIR_OPTS - parameters passed to the Java VM when running server
 #     e.g. to debug Maven itself, use
-if [ "x$1" = "xstart" ] ; then
-    XDIR_OPTS="-Dfile.encoding=UTF-8 -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
-fi
+#if [ "x$1" = "xstart" ] ; then
+#    XDIR_OPTS="-Dfile.encoding=UTF-8 -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=127.0.0.1:8000"
+#fi
 PROGNAME="$0"
 ACTION="$1"
 
@@ -207,7 +207,8 @@ main() {
 
     #echo $FINAL_COMMAND
     if [ "$ACTION" = "start" ]; then
-	    nohup $FINAL_COMMAND >& /dev/null &
+        mkdir -p $XDIR_HOME/var/logs
+	    nohup $FINAL_COMMAND >& $XDIR_HOME/var/logs/console.log </dev/null &
 	    sleep 2
         echo "XDir Started with log at $XDIR_HOME/var/logs/xdir.log"
     else
@@ -228,6 +229,7 @@ case "$ACTION" in
 
     stop)
         main "$@"
+	    sleep 2
         ;;
 
     clean)

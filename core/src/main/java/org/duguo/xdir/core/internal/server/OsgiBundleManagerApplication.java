@@ -47,7 +47,7 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
             }else{
                 String deployPath=fileUploadHttpServletRequest.getParameter( "deploy_path" );
                 if(deployPath!=null && deployPath.trim().length()>0){
-                    deployPath=getProps().resolveStringValue( deployPath );
+                    deployPath=getPropertiesService().resolveStringValue( deployPath );
                     if(logger.isDebugEnabled())
                         logger.debug("deploy files at path [{}]",deployPath);
                     
@@ -120,7 +120,7 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
             }
         }finally{
             // deletet deployed file from deploy folder
-            String dirVar= getProps().resolveStringValue( "${xdir.dir.var}");
+            String dirVar= getPropertiesService().resolveStringValue( "${xdir.dir.var}");
             for(File currentFile:filesToDeploy){
                 if(currentFile.getPath().startsWith( dirVar )){
                     currentFile.delete();
@@ -133,7 +133,7 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
     private Map<String,Object> copySourceFilesToGroup( String targetGroup, List<File> filesToDeploy )
         throws IOException
     {
-        String bundlesBase= getProps().resolveStringValue( "${xdir.dir.bundles}");
+        String bundlesBase= getPropertiesService().resolveStringValue( "${xdir.dir.bundles}");
         Map<String,Object> bundlesToDeploy=new HashMap<String,Object>();
         for(File currentFile:filesToDeploy){
             JarFile jarFile=new JarFile(currentFile );
@@ -189,33 +189,11 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
 
 
     public void performBundleAction(final String action, final String bundleInfo)throws Exception{
-        ThreadUtil.delayedAction( 1000, new Action()
-        {
-            public void execute() throws Exception
-            {
-                Bundle bundle=retriveBundle(  bundleInfo );
-                Assert.notNull( bundle );
-                if("update".equals( action ) && bundle.getBundleId()==0){
-                    restartServer();
-                }else{
-                    Method actionMethod=Bundle.class.getMethod( action, new Class[0] );
-                    Assert.notNull( actionMethod );
-                    actionMethod.invoke( bundle, new Object[0] );
-                }
-            }
-
-            public String getName()
-            {
-                return action+"["+bundleInfo+"]";
-            }
-        });
-    }
-
-    protected void restartServer()
-    {
-        osgiFrameworkAdaptor.restart();
-        if(logger.isDebugEnabled())
-            logger.debug("restart server command received");
+        Bundle bundle=retriveBundle(  bundleInfo );
+        Assert.notNull( bundle );
+        Method actionMethod=Bundle.class.getMethod( action, new Class[0] );
+        Assert.notNull( actionMethod );
+        actionMethod.invoke( bundle, new Object[0] );
     }
     public MultipartRequestResolver getMultipartRequestResolver()
     {

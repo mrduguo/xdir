@@ -79,11 +79,6 @@ limitations under the License.
             <artifactId>xdir-service-template-yuicompressor</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.duguo.xdir.service.template</groupId>
-            <artifactId>xdir-service-template-lesscompressor</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -141,76 +136,6 @@ limitations under the License.
             <version>1.1.0</version>
         </dependency>
 
-        <!--&lt;!&ndash; HTTP Service support &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.javax.servlet</groupId>-->
-        <!--<artifactId>servlet-api</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.apache.commons</groupId>-->
-        <!--<artifactId>org.apache.commons.fileupload</artifactId>-->
-        <!--<version>1.2.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.apache.commons</groupId>-->
-        <!--<artifactId>org.apache.commons.io</artifactId>-->
-        <!--<version>1.4</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.apache.commons</groupId>-->
-        <!--<artifactId>org.apache.commons.codec</artifactId>-->
-        <!--<version>1.4</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; JCR Service support &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>javax.jcr</groupId>-->
-        <!--<artifactId>jcr</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.duguo.xdir.jcr</groupId>-->
-        <!--<artifactId>xdir-jcr-service</artifactId>-->
-        <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Spring Dependencies &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.aopalliance</groupId>-->
-        <!--<artifactId>org.aopalliance</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.com.jamonapi.jamon</groupId>-->
-        <!--<artifactId>com.jamonapi.jamon</artifactId>-->
-        <!--</dependency>-->
-
-
-        <!--&lt;!&ndash; Logging Dependencies &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.slf4j</groupId>-->
-        <!--<artifactId>org.slf4j.api</artifactId>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Freemarker ,groovy*;resolution:=optional,org.codehaus.groovy*;resolution:=optional,freemarker*;resolution:=optional &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.org.freemarker</groupId>-->
-        <!--<artifactId>org.freemarker.freemarker</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.com.googlecode.htmlcompressor</groupId>-->
-        <!--<artifactId>com.googlecode.htmlcompressor</artifactId>-->
-        <!--<version>0.8.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>osgified.com.yahoo.yuicompressor</groupId>-->
-        <!--<artifactId>com.yahoo.yuicompressor</artifactId>-->
-        <!--<version>2.4.2</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Groovy &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.codehaus.groovy</groupId>-->
-        <!--<artifactId>groovy-all</artifactId>-->
-        <!--</dependency>-->
 
 
     </dependencies>
