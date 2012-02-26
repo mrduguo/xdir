@@ -1,0 +1,29 @@
+div.wikitext {padding:5px;}
+div.wikierror {background-color:#fcc;border:1px solid #c00;line-height:1.1em;padding:1em;margin:10px 0px 10px 0px;}
+div.wikiwarn {background-color:#FFFFCE;border:1px solid #F0C000;line-height:1.1em;padding:1em;margin:10px 0px 10px 0px;}
+div.wikiinfo {background-color:#D8E4F1;border:1px solid #3C78B5;line-height:1.1em;padding:1em;margin:10px 0px 10px 0px;}
+div.wikitips {background-color:#dfd;border:1px solid #090;line-height:1.1em;padding:1em;margin:10px 0px 10px 0px;}
+
+div.wikierror div.title,div.wikiwarn div.title,div.wikiinfo div.title,div.wikitips div.title, {font-weight:bold;}
+
+
+table.wiki { border: 2px solid #ccc; border-collapse: collapse;  border-spacing: 0;margin-top:10px;}
+table.wiki td,table.wiki th { border: 1px solid #ccc;  padding: .1em .25em; vertical-align:top;}
+table.wiki .odd,table.wiki tr.odd td,table.wiki tr.odd th{background:#f7f7f0;}
+
+ul.wiki li {list-style: square;}
+ul.wiki ul li {list-style: circle;}
+ul.wiki ul ul li {list-style: disc;}
+ul.wiki ul ul ul li {list-style: square;}
+
+h1.wiki {background:#F0F0F0;border-bottom:solid gray 1px;font-size:150%;padding:5px 5px 0px 10px;}
+h2.wiki {background:#F0F0F0;border-bottom:dashed gray 1px;font-size:120%;padding:5px 5px 0px 10px;}
+h3.wiki {font-size:120%;border-bottom:solid gray 1px;padding:5px 5px 0px 10px;}
+h4.wiki {font-size:100%;border-bottom:dashed gray 1px;padding:5px 5px 0px 10px;}
+h5.wiki {padding:5px 5px 0px 10px;}
+h1.wiki div.right_content,h2.wiki div.right_content,h3.wiki div.right_content,h4.wiki div.right_content,h5.wiki div.right_content,
+h1.wiki div.right_content a,h2.wiki div.right_content a,h3.wiki div.right_content a,h4.wiki div.right_content a,h5.wiki div.right_content a
+ {float:right;font-size:12px;font-weight:normal;}
+ 
+ 
+pre.wiki {background-color:#F9F9F9;border:1px dashed #2F6FAB;line-height:1.1em;padding:1em;font-size:12px;}

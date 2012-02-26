@@ -1,0 +1,60 @@
+<#assign overviewDispalyChildren=true/>
+<#macro page_overview_title>
+	<h1>${pageTitle}</h1>
+</#macro>
+<#macro page_overview_description>
+	<#if (pageProperties["_description"]??)>
+		<div class="subtitle">${pageProperties["_description"].displayableValue}</div>
+	</#if>
+</#macro>
+<#macro page_overview_content>
+	<#if overview_conent??><@overview_conent/></#if>
+	<#if (pageProperties["_overview"]??)>
+		<div class="overview">${pageProperties["_overview"].displayableValue}</div>
+	</#if>
+	<#list pageProperties?keys?sort as property>
+	  <#if !(property?starts_with("jcr:") || property?starts_with("_"))>
+			<#assign overviewDispalyChildren=false/>
+			<@panel_main_body_render_property pageProperties[property].name pageProperties[property].displayableValue/>
+	  </#if>
+	</#list>
+	<#if (overviewDispalyChildren==true)><@page_overview_children/></#if>
+</#macro>
+<#macro page_overview_children>
+	<#assign overviewDispalyChildren=false/>
+	<#if (pageNavLevel3?size>0 && !node.hasProperty("_overview_no_child"))>
+		<ul>
+			<#list pageNavLevel3?keys?sort as key>
+			  <li>
+			  	<a href="${pageNavLevel3[key].url}">${pageNavLevel3[key].title}</a>
+			  	<#if (pageNavLevel3[key].node?? && pageNavLevel3[key].node.hasProperty("_description"))>
+			  		<span class="subtitle">${displayPropertyValue(pageNavLevel3[key].node.getProperty("_description").getString())}</span>
+			  	</#if>
+			  </li>
+			</#list>
+		</ul>
+	</#if>
+</#macro>
+<#macro panel_main_body_render_property propertyName propertyValue>
+	<h3>${propertyName}</h3>
+	<#if propertyValue?starts_with("<")>
+		${propertyValue}
+	<#elseif (propertyValue?index_of("\n")>0)>
+		<pre class="value">${propertyValue?html}</pre>
+	<#elseif propertyValue=="page_overview_children">
+		<@page_overview_children/>
+	<#else>
+		<@panel_main_body_render_property_simple_value propertyValue/>
+	</#if>
+</#macro>
+<#macro panel_main_body_render_property_simple_value propertyValue>
+			<#if propertyValue?matches("^[0\\+][\\(\\) \\-\\d]*$")>
+				<a href="tel:${propertyValue}">${propertyValue}</a>
+			<#elseif propertyValue?matches("^https?://.*")>
+				<a href="${propertyValue}">${propertyValue}</a>
+			<#elseif propertyValue?matches("^[\\w\\.=-]+@[\\w\\.-]+\\.[\\w]{2,3}$")>
+				<a href="mailto:${propertyValue}">${propertyValue}</a>
+			<#else>
+				${propertyValue}
+			</#if>
+</#macro>

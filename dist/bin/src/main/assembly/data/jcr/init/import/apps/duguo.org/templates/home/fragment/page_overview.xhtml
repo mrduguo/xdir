@@ -1,0 +1,15 @@
+<#macro page_header_title>
+    <title>Home - duguo.org</title>
+</#macro>
+<div><#include "recent_updates"></div><div><h2>Navigation</h2>
+<ul>
+	<#list pageNavLevel3?keys?sort as key>
+	  <li>
+		<a href="${pageNavLevel3[key].url}">${pageNavLevel3[key].title}</a>
+		<#if (pageNavLevel3[key].node?? && pageNavLevel3[key].node.hasProperty("_description"))>
+			<br/><span class="subtitle">${displayPropertyValue(pageNavLevel3[key].node.getProperty("_description").getString())}</span>
+		</#if>
+	  </li>
+	</#list>
+</ul>
+</div>

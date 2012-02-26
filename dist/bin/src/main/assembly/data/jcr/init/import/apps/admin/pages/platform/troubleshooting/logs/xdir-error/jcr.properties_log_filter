@@ -1,0 +1,4 @@
+if(lineString.indexOf(" ERROR")<0){
+ continue
+}
+lineString="LINE "+lineNumber+": "+lineString

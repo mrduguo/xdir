@@ -1,0 +1,28 @@
+
+      <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Twitter Bootstrap Framework Demo</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="${pageContext}">Basic</a></li>
+              <li><a href="${pageContext}/fluid">Fluid</a></li>
+              <li class="active"><a href="${pageContext}/starter">Starter</a></li>
+            </ul>
+            <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <h1>Bootstrap starter template</h1>
+      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+
+    </div>

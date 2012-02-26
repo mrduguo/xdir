@@ -1,0 +1,5 @@
+${response.setContentType("text/css;charset=UTF-8")}
+<#include "css/flora">
+<#include "css/xdir">
+<#include "css/content">
+<#include "css/update">

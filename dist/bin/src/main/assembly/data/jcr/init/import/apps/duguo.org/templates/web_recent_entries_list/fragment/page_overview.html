@@ -1,0 +1,55 @@
+<@page_overview_title/>
+<@page_overview_description/>
+<#if (pageProperties["overview"]??)>
+    <div class="content_main_level_1">
+        <div class="text">${pageProperties["overview"].displayableValue}</div>
+    </div>
+</#if>
+<#assign searchBaseJcrPath>${node.path}</#assign>
+<@render_search_list app.jcrFactory.sqlQuery(model,"SELECT [_title],[_created],[jcr:path] from [nt:base] WHERE _type = 'web_page' AND  ISDESCENDANTNODE(['"+searchBaseJcrPath+"']) ORDER BY _created DESC",0,20)/>
+<#macro render_search_list search_list>
+    <#if (search_list?size>0)>
+        <#list search_list as row>
+            <div>
+                <a href="${internalBuildUrl(row[2])}">
+                    <#if (row[0]??)>
+                        ${row[0]}
+                        <#else>
+                        ${displayPropertyName(row[2]?substring(row[2]?last_index_of("/")+1))}
+                    </#if>
+                </a>
+                <div style="color:#8E9181;padding:0 0 10px 0;">
+                	<#if (row[1]??)>${row[1]?substring(0,10)}</#if> » 
+                	${row[2]?substring(searchBaseJcrPath?length,row[2]?last_index_of("/")+1)}
+                </div>
+            </div>
+        </#list>
+    </#if>
+</#macro>
+
+<#assign hasCategories>false</#assign>
+<#list pageNavLevel3?keys as key>
+	<#if (pageNavLevel3[key].node.hasProperty("_type") && pageNavLevel3[key].node.getProperty("_type").getString()!="web_page")>
+		<#assign hasCategories>true</#assign>
+	</#if>
+  </li>
+</#list>
+<#if (hasCategories=="true")>
+	<h2>Categories</h2>
+	<p>
+	<ul>
+		<#list pageNavLevel3?keys?sort as key>
+			<#if (pageNavLevel3[key].node.hasProperty("_type") && pageNavLevel3[key].node.getProperty("_type").getString()!="web_page")>
+			  <li>
+				<a href="${pageNavLevel3[key].url}">${pageNavLevel3[key].title}</a>
+				<#if (pageNavLevel3[key].node?? && pageNavLevel3[key].node.hasProperty("_description"))>
+					<br/><span class="subtitle">${displayPropertyValue(pageNavLevel3[key].node.getProperty("_description").getString())}</span>
+				</#if>
+			  </li>
+			</#if>
+		</#list>
+	</ul>
+	</p>
+</#if>
+<div>
+</div>

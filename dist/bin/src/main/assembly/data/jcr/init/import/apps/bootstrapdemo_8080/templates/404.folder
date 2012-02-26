@@ -1,0 +1,43 @@
+${setPageTitle("HTTP 404 - Page Not Found")}<#include "bootstrap.ftl">
+<#macro page_body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Twitter Bootstrap Framework Demo</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="${pageContext}">Basic</a></li>
+              <li><a href="${pageContext}/fluid">Fluid</a></li>
+              <li><a href="${pageContext}/starter">Starter</a></li>
+            </ul>
+            <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h2>${pageTitle}</h2>
+        <p>${request.requestURL}</p>
+        <h2>What to do next</h2>
+        <p>If you have typed the URL in by hand then please make sure you have entered it correctly.</p>
+
+                <p>Alternatively, if you have come from a link within the site and found this page, please <a href="/">report a technical problem</a> that we will correct as soon as possible!</p>
+        <p><a class="btn btn-primary btn-large" href="${pageContext}">Back to Home &raquo;</a></p>
+      </div>
+
+      <footer>
+        <p>&copy; Company 2012</p>
+      </footer>
+
+    </div>
+</#macro>

@@ -1,0 +1,142 @@
+/**********************************************************************************
+*	PAGE GLOBAL
+***********************************************************************************/
+
+html {min-width:800px;}
+
+<#if (nav_background_image??)>
+	body { background-image:url(${getResourceUrl("images/xdir_all.gif")}); }
+</#if>
+
+.pageheader,
+.pagefooter
+{
+	height:${nav_header_height}px;
+	margin:0px ${nav_aside_width}px 0px ${nav_sidebar_width}px;
+}
+
+.place_holder {	clear:both; height:1px; overflow:hidden; }
+
+.hidden {display:none;}
+
+/**********************************************************************************
+*	PAGE HEADER
+***********************************************************************************/
+
+
+.pageheader h2 {font-size:1.2em;padding:${nav_text_padding*2}px 0 0 0;margin: 0;}
+.pageheader h3{font-weight: normal; padding:0 0 0 ${nav_text_padding}px;margin:0;font-size:100%;}
+.pageheader form{position:absolute;right:${nav_aside_width}px;top:${nav_text_padding*2}px;}
+.pageheader input{border:1px solid ${nav_text_color};background:${nav_text_color};color:${nav_background_color};}
+.pageheader input[type="text"]:focus {background:${article_background_color};color:${article_text_color};}
+.pageheader button{background:${nav_background_color};border:0 none;color:${nav_text_color};font-weight:normal;}
+.pageheader ul.menu { position:absolute;right:${nav_sidebar_width}px;top:${nav_header_height*0.6}px;padding:0px;margin:0px;}
+.pageheader ul.menu li{ display:inline;}
+
+/**********************************************************************************
+*	PAGE NAV
+***********************************************************************************/
+
+.pagenav, 
+.pageaside
+{
+	position:absolute;
+	top:${nav_header_height}px;	
+	width:${nav_sidebar_width-nav_text_padding*2}px;
+	overflow:hidden;
+    padding-left:${nav_text_padding}px;
+}
+.pagenav { left:0;}
+.pageaside { right:0;}
+
+.list
+{
+	padding:${nav_text_padding}px 0 ${nav_text_padding}px ${nav_text_padding}px;
+}
+
+.pagenav h3, 
+.pageaside h3
+{
+	font-size:100%;
+	margin:0;
+}
+
+.pagenav ul, 
+.pageaside ul
+{
+	padding:0 0 0 ${nav_text_padding*2}px;
+	margin:0;
+}
+.pagenav li,
+.pageaside li
+{
+	padding:2px 0 2px 0;
+	list-style-type:square;
+}
+
+.pagenav li a,
+.pageaside li a
+{
+	display: block;
+	width: 500px;
+}
+
+
+/**********************************************************************************
+*	PAGE FOOTER
+***********************************************************************************/
+
+.pagefooter .col{ float:left; position:relative; width:33%; padding-top:5px; }
+.pagefooter .col-center { text-align:center; }
+.pagefooter .col-right { text-align:right; float:right; }
+
+/**********************************************************************************
+*	PAGE ARTICLE
+***********************************************************************************/
+
+.pagearticle
+{
+	background:${article_background_color};
+	margin-left:${nav_sidebar_width}px;
+	margin-right:${nav_aside_width}px;
+	min-width:400px;
+	min-height:400px;
+	clear:both;
+}
+.pagesection {padding:${nav_text_padding}px ${nav_text_padding*2}px ${nav_text_padding}px ${nav_text_padding*2}px; margin-bottom:${nav_text_padding*2}px; }
+
+/**********************************************************************************
+*	NAV LOOK AND FEEL
+***********************************************************************************/
+
+.pageheader,
+.pageheader h2,
+.pageheader h3,
+.pagenav,
+.pageaside, 
+.pagefooter
+{
+	color:${nav_text_color};
+}
+
+.pageheader a,
+.pagenav a,
+.pageaside a,
+.pagefooter a
+{
+	color:${nav_text_color};
+	padding:1px ${nav_text_padding}px 1px ${nav_text_padding}px;
+	text-decoration: none;
+}
+
+.pageheader li.selected a,
+.pageheader a:hover,
+.pageheader button:hover,
+.pagenav a:hover,
+.pagenav li.selected a,
+.pageaside a:hover,
+.pagefooter a:hover
+{
+	color:${nav_background_color};
+	background:${nav_text_color};
+}

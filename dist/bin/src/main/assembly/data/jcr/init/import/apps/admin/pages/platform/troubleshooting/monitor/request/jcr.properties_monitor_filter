@@ -1,0 +1,23 @@
+row_columns={
+	monitorUrl=it.label.substring(1)
+	ouputstring="$ouputstring<tr><td><a href=\""+model.getPageUrl()+"?action=request&request="+monitorUrl+"\" title=\"$monitorUrl\">"
+	if(monitorUrl.length()<60){
+		ouputstring="$ouputstring$monitorUrl"
+	}else{
+		ouputstring="$ouputstring"+	monitorUrl.substring(0,30)+"...."+monitorUrl.substring(monitorUrl.length()-30)
+	}
+	ouputstring="$ouputstring</a></td>"
+	ouputstring="$ouputstring<td>"+it.hits.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.avg.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.lastValue.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.total.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.min.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.max.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.maxActive.round()+"</td>"
+	ouputstring="$ouputstring<td>"+it.stdDev.round()+"</td>"
+	ouputstring="$ouputstring<td>"+model.displayTimePassed(it.firstAccess.time)+"</td>"
+	ouputstring="$ouputstring<td>"+model.displayTimePassed(it.lastAccess.time)+"</td></tr>"
+}
+row_filter={
+	return (it.startsWith("/") &&  it.indexOf("|")<0)
+}

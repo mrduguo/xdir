@@ -1,0 +1,40 @@
+<#macro page_header_title>
+    <title>Home - duguo.org</title>
+</#macro>
+<table style="width:100%;border:solid 0px;">
+	<tr>
+		<td style="border:solid 0px;"><#include "recent_updates"></td>
+		<td style="width:100px;border:solid 0px;">
+			<div style="padding:15px 5px 0 10px;">
+			<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+			<script>
+			new TWTR.Widget({
+			  version: 2,
+			  type: 'profile',
+			  rpp: 6,
+			  interval: 30000,
+			  width: 250,
+			  height: 300,
+			  theme: {
+				shell: {
+				  background: '#333333',
+				  color: '#ffffff'
+				},
+				tweets: {
+				  background: '#000000',
+				  color: '#ffffff',
+				  links: '#767676'
+				}
+			  },
+			  features: {
+				scrollbar: false,
+				loop: false,
+				live: false,
+				behavior: 'all'
+			  }
+			}).render().setUser('mrduguo').start();
+			</script>
+			</div>
+		</td>
+	</tr>
+</table>

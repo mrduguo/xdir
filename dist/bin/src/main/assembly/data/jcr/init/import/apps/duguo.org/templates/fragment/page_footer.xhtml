@@ -1,0 +1,15 @@
+<#macro page_footer>
+    <h3>Site</h3>
+    <div class="list">
+        <ul>
+            <li class="desktopviewlink">
+                <#if (pagePaths?size>1)>
+                    <a href="${pagePath}.html">Desktop View</a>
+                <#else>
+                    <a href="${pagePath}/index.html">Desktop View</a>
+                </#if>
+            </li>
+            <li><a href="http://github.com/mrduguo/xdir">Powered by XDir</a></li>
+        </ul>
+    </div>
+</#macro>

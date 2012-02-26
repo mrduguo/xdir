@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="XDir Functional Tests" verbose="1" >
+  <test name="Public Demo Site Tests" >
+    <classes>
+       <class name="org.duguo.xdir.tests.functional.demo.CrawlPublicLinksIT" />
+    </classes>
+  </test>
+  <test name="Private Admin Site Tests" >
+    <classes>
+       <class name="org.duguo.xdir.tests.functional.admin.resources.JcrManagerIT" />
+       <class name="org.duguo.xdir.tests.functional.admin.resources.FileManagerIT" />
+       <class name="org.duguo.xdir.tests.functional.admin.CrawlPrivateLinksIT" />
+    </classes>
+  </test>
+</suite>
