@@ -28,7 +28,6 @@
 # Optional ENV vars
 # -----------------
 #   XDIR_HOME - location of XDir's installed home dir
-#   XDIR_CONF - location of XDir's configuration dir, default to $XDir_HOME/data/conf
 #   XDIR_OPTS - parameters passed to the Java VM when running server
 #     e.g. to debug Maven itself, use
 #if [ "x$1" = "xstart" ] ; then
@@ -102,16 +101,6 @@ locateHome() {
 }
 
 
-
-locateConf() {
-	if [ "x$XDIR_CONF" = "x" ]; then
-		XDIR_CONF=$XDIR_HOME/data/conf
-	fi
-	if [ ! -f "$XDIR_CONF/osgi.jvm" ]; then
-		die "XDIR_CONF is not valid: $XDIR_CONF"
-	fi
-}
-
 locateJava() {
     # Setup the Java Virtual Machine
 
@@ -137,7 +126,7 @@ locateJava() {
 
 setupClasspath() {
     # Add the jars in the boot dir
-    CLASSPATH="$XDIR_HOME/boot"
+    CLASSPATH="$XDIR_HOME/data/classes"
     for file in $XDIR_HOME/boot/*.jar
     do
         if [ -z "$CLASSPATH" ]; then
@@ -149,41 +138,6 @@ setupClasspath() {
 }
 
 
-loadXdirBootOpts() {
-   
-	FINAL_COMMAND=
-	while read line; do
-	if [ ! -z "$line" ] && [ ${line:0:1} != "#" ]
-	then
-	    case "$line" in
-		REPLACE_JAVA_CMD)
-		    FINAL_COMMAND="$FINAL_COMMAND $JAVA"
-		    ;;
-		REPLACE_JAVA_CLASSPATH)
-		    FINAL_COMMAND="$FINAL_COMMAND -classpath $CLASSPATH"
-		    ;;
-		REPLACE_XDIR_HOME)
-		    FINAL_COMMAND="$FINAL_COMMAND -Dxdir.dir.home=$XDIR_HOME"
-		    ;;
-		REPLACE_XDIR_CONF)
-		    FINAL_COMMAND="$FINAL_COMMAND -Dxdir.dir.conf=$XDIR_CONF"
-		    ;;
-		REPLACE_XDIR_OPTS)
-		    FINAL_COMMAND="$FINAL_COMMAND $XDIR_OPTS"
-		    ;;
-		REPLACE_XDIR_ARGS)
-		    FINAL_COMMAND="$FINAL_COMMAND $@"
-		    ;;
-		*)
-		    FINAL_COMMAND="$FINAL_COMMAND $line"
-		    ;;
-	    esac
-	fi
-	done <$XDIR_CONF/osgi.jvm
-
-}
-
-
 init(){
     # Determine if there is special OS handling we must perform
     detectOS
@@ -191,19 +145,16 @@ init(){
     # Locate the XDir home directory
     locateHome
 
-    # Locate the XDir configuration directory
-    locateConf
-
     # Locate the Java VM to execute
     locateJava
+
+    setupClasspath
 }
 
 main() {
     init
-    setupClasspath
 
-    # Load xdir boot options
-    loadXdirBootOpts "$@"
+    FINAL_COMMAND="$JAVA  -classpath $CLASSPATH -Dxdir.dir.home=$XDIR_HOME -Dxdir.dir.conf=$XDIR_HOME/data/classes $XDIR_OPTS org.duguo.xdir.osgi.bootstrap.Main $@"
 
     #echo $FINAL_COMMAND
     if [ "$ACTION" = "start" ]; then

@@ -65,11 +65,6 @@ limitations under the License.
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.duguo.xdir</groupId>
-            <artifactId>xdir-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.duguo.xdir.service.template</groupId>
             <artifactId>xdir-service-template-htmlcompressor</artifactId>
             <version>${project.version}</version>

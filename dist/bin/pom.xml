@@ -83,11 +83,6 @@
                                             <version>${project.version}</version>
                                         </dependency>
                                         <dependency>
-                                            <groupId>org.duguo.xdir</groupId>
-                                            <artifactId>xdir-util</artifactId>
-                                            <version>${project.version}</version>
-                                        </dependency>
-                                        <dependency>
                                             <groupId>org.duguo.xdir.service.codec</groupId>
                                             <artifactId>xdir-service-codec-group</artifactId>
                                             <version>${project.version}</version>

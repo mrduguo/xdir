@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 public abstract class AbstractProperties implements Map<Object, Object>
 {
     @Resource(name="",description="")
-    protected static final String KEY_XDIR_DIR_HOME            = "xdir.dir.home";
+    public static final String KEY_XDIR_DIR_HOME            = "xdir.dir.home";
     protected static final String KEY_XDIR_DIR_CONF            = "xdir.dir.conf";
     protected static final String KEY_XDIR_DIR_DATA            = "xdir.dir.data";
     protected static final String KEY_XDIR_DIR_VAR             = "xdir.dir.var";

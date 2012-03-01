@@ -24,9 +24,9 @@ import org.duguo.xdir.spi.security.User;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.core.internal.jcr.SessionCallback;
 import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.util.bean.BeanUtil;
-import org.duguo.xdir.util.bean.BeanUtil.GetterSetterCallback;
-import org.duguo.xdir.util.codec.IdUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil.GetterSetterCallback;
+import org.duguo.xdir.spi.util.codec.IdUtil;
 
 
 public class AccountManagerApplication extends JcrTemplateAwareApplication implements AccountService

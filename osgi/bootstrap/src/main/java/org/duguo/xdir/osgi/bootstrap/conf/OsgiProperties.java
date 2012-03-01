@@ -2,7 +2,6 @@ package org.duguo.xdir.osgi.bootstrap.conf;
 
 import java.io.File;
 
-import org.duguo.xdir.osgi.bootstrap.command.FileUtils;
 
 
 public class OsgiProperties extends AbstractProperties
@@ -30,7 +29,7 @@ public class OsgiProperties extends AbstractProperties
     }
     
     public String retriveXdirDirConf(){
-        return retriveHomeRelatedDir( KEY_XDIR_DIR_CONF,"data/conf");
+        return retriveHomeRelatedDir( KEY_XDIR_DIR_CONF,"data/classes");
     }
     
     public String retriveXdirDirData(){
@@ -74,7 +73,6 @@ public class OsgiProperties extends AbstractProperties
                 confFileName=retriveXdirDirConf()+"/"+confFileName;             
             }
         }
-        FileUtils.verifyExistFile( confFileName );
         put( KEY_XDIR_OSGI_CMD_CONF, confFileName );
         return confFileName;
     }

@@ -1,6 +1,7 @@
 package org.duguo.xdir.core.internal.app.register;
 
 
+import java.lang.management.ManagementFactory;
 import java.util.*;
 
 import javax.jcr.Node;
@@ -8,6 +9,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.duguo.xdir.core.internal.app.SimplePathApplication;
 import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
 import org.duguo.xdir.core.internal.config.PropertiesService;
@@ -24,6 +26,16 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationRegisterImpl.class);
     private PropertiesService propertiesService;
+
+    public void init()throws Exception{
+        reload();
+        long jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
+
+        String startupMessage = "XDir server started in "+ DurationFormatUtils.formatDurationWords(jvmUpTime,true,true);
+        System.out.println(startupMessage);
+        logger.info(startupMessage);
+
+    }
 
     public void reload() throws Exception {
         if (logger.isTraceEnabled())
@@ -44,6 +56,7 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
             StringBuilder appsString = new StringBuilder();
             printAppsTree("root", getRootApplication(), appsString, 0);
             logger.info("registered apps\n{}", appsString);
+
             if (logger.isDebugEnabled())
                 logger.debug("loaded applications from [{}]", appsRoot);
         } finally {

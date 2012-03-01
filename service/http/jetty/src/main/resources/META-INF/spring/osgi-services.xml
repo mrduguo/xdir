@@ -18,7 +18,7 @@
       <value>
         xdir.port.http=8080
         xdir.port.https=8443
-        xdir.web.log.file=${xdir.dir.logs}/access.log
+        xdir.web.log.file=${xdir.dir.home}/var/logs/access.log
         xdir.web.webroot=${xdir.dir.data}/webroot
         xdir.web.https.keystorefile=${xdir.dir.conf}/xdir-service-web/xdirplatform.org.selfcert.keystore
         xdir.web.https.keystorepassword=nGT5i0epmZZulvrYytKH8y062izCjGa3

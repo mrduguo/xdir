@@ -7,7 +7,6 @@ import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.spi.security.Role;
 import org.duguo.xdir.security.api.authentication.Authenticator;
 import org.duguo.xdir.security.impl.authentication.UserImpl;
-import org.duguo.xdir.util.http.HttpUtil;
 
 import java.util.Set;
 

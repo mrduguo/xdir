@@ -28,13 +28,7 @@ public interface RuntimeProvider
     /**
      * start system bundles at bundles/system/*
      */
-    public void startSystemBundles() throws BundleException;
-
-
-    /**
-     * start user bundles at bundles/installed/*
-     */
-    public boolean startUserBundles() throws BundleException;
+    public void startBundles() throws BundleException;
 
     /**
      * hot deploy passed bundle files as a single group

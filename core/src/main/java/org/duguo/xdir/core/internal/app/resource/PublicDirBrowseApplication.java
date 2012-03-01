@@ -8,7 +8,7 @@ import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.template.freemarker.StringTemplateUtils;
 import org.duguo.xdir.spi.model.GetAndPut;
-import org.duguo.xdir.util.datetime.DateTimeUtil;
+import org.duguo.xdir.spi.util.datetime.DateTimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

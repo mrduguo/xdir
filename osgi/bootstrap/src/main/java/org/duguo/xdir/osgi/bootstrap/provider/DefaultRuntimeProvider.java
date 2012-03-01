@@ -13,18 +13,15 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
-import org.duguo.xdir.osgi.spi.conditional.ConditionalService;
-import org.duguo.xdir.osgi.spi.util.ClassUtil;
-import org.duguo.xdir.osgi.bootstrap.conditional.ConditionalServiceImpl;
-import org.duguo.xdir.osgi.bootstrap.conditional.term.BundleTerm;
-import org.duguo.xdir.osgi.bootstrap.conditional.term.ServiceTerm;
 import org.duguo.xdir.osgi.bootstrap.event.BunldeEventListener;
 import org.duguo.xdir.osgi.bootstrap.launcher.RuntimeContext;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DefaultRuntimeProvider extends AbstractRuntimeProvider
 {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultRuntimeProvider.class);
 	
 
     public static final String KEY_EXTRA_SYSTEM_PACKAGES="org.osgi.framework.system.packages.extra";
@@ -37,11 +34,11 @@ public class DefaultRuntimeProvider extends AbstractRuntimeProvider
         
         setupFrameworkSpecificConfiguration();
 
-        Logger.debug( "Creating OSGi framework" );
+        logger.debug( "Creating OSGi framework" );
         framework = factory.newFramework( runtimeContext.getConfiguration());
         runtimeContext.setFramework( framework );
         initBundlesCache();
-        Logger.debug( "Created OSGi framework" );        
+        logger.debug( "Created OSGi framework" );
     }
 
     protected void setupExtraSystemPackages() {
@@ -53,12 +50,12 @@ public class DefaultRuntimeProvider extends AbstractRuntimeProvider
         	
         	setupExtraSystemPackagesScanExtendedKeys(extraSystemPackages);
         	
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Setup  ["+KEY_EXTRA_SYSTEM_PACKAGES+"] with value ["+extraSystemPackages+"]" );
+            if(logger.isDebugEnabled())
+                logger.debug( "Setup  ["+KEY_EXTRA_SYSTEM_PACKAGES+"] with value ["+extraSystemPackages+"]" );
             runtimeContext.getConfiguration().put( KEY_EXTRA_SYSTEM_PACKAGES, extraSystemPackages.toString() );
         }else{
-        	if(Logger.isDebugEnabled())
-                Logger.debug( "User already provided  ["+KEY_EXTRA_SYSTEM_PACKAGES+"] with value ["+runtimeContext.getConfiguration().get(KEY_EXTRA_SYSTEM_PACKAGES)+"]" );
+        	if(logger.isDebugEnabled())
+                logger.debug( "User already provided  ["+KEY_EXTRA_SYSTEM_PACKAGES+"] with value ["+runtimeContext.getConfiguration().get(KEY_EXTRA_SYSTEM_PACKAGES)+"]" );
         }
 		
 	}
@@ -110,41 +107,22 @@ public class DefaultRuntimeProvider extends AbstractRuntimeProvider
 
     public void startFramework() throws BundleException
     {
-        Logger.debug( "Starting OSGi framework" );
+        if(logger.isTraceEnabled()) logger.trace( "> startFramework" );
         framework.start();
-        waitBundleStartStatus( framework, Bundle.ACTIVE );
-        Logger.debug( "Started OSGi framework" );
+        waitBundleStartStatus(framework, Bundle.ACTIVE);
         
         BunldeEventListener bunldeEventListener=new BunldeEventListener();
         runtimeContext.setBunldeEventListener( bunldeEventListener );
-      
-        createConditionalService();
+        if(logger.isTraceEnabled()) logger.trace( "< startFramework" );
+
     }
 
-
-    protected void createConditionalService() {
-    	ConditionalService conditionalService=ClassUtil.loadRequiredInstanceFromSystemProperty(ConditionalService.class, ConditionalServiceImpl.class, ConditionalServiceImpl.KEY_XDIR_OSGI_CONDITIONAL_IMPL);
-    	runtimeContext.conditionalService=conditionalService;
-    	conditionalService.registTerm("service", new ServiceTerm(framework));
-    	conditionalService.registTerm("bundle", new BundleTerm(framework));
-	}
-
-	public void startSystemBundles() throws BundleException
+	public void startBundles() throws BundleException
     {
-        Logger.debug( "Starting system bundles" );
+        if(logger.isTraceEnabled()) logger.trace( "> startBundles" );
         String bundleGroups=runtimeContext.getConfiguration().retriveXdirOsgiBundlesSystem();
         runBundleGroups( bundleGroups,false);
-        Logger.debug( "Started system bundles" );
-    }
-
-
-    public boolean startUserBundles() throws BundleException
-    {
-        Logger.debug( "Starting user bundles" );
-        String bundleGroups=runtimeContext.getConfiguration().retriveXdirOsgiBundlesUser();
-        boolean success=runBundleGroups( bundleGroups,true);
-        Logger.debug( "Started user bundles" );
-        return success;
+        if(logger.isTraceEnabled()) logger.trace( "< startBundles" );
     }
     
     public void hotDeployBundles(List<String> bundleFiles)throws BundleException{

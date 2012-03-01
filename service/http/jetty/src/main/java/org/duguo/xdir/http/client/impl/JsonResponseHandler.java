@@ -10,7 +10,7 @@ import org.apache.http.client.ResponseHandler;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonTextConverter;
 import org.duguo.xdir.http.json.JsonUtil;
-import org.duguo.xdir.util.io.FileUtil;
+import org.duguo.xdir.spi.util.io.FileUtil;
 
 public class JsonResponseHandler implements ResponseHandler<Json> {
 

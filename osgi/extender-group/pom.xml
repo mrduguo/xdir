@@ -84,28 +84,6 @@
             <version>${lib.springframework.version}</version>
         </dependency>
 
-        <!--Logs Libs-->
-        <dependency>
-            <groupId>org.apache.log4j</groupId>
-            <artifactId>com.springsource.org.apache.log4j</artifactId>
-            <version>${lib.log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${lib.slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${lib.slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${lib.slf4j.version}</version>
-        </dependency>
-
         <!--Others Libs-->
         <dependency>
             <groupId>org.objectweb.asm</groupId>

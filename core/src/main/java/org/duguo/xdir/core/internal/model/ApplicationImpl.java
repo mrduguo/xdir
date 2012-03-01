@@ -9,7 +9,7 @@ import org.duguo.xdir.core.internal.app.resource.ResourceService;
 import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.duguo.xdir.core.internal.jcr.JcrService;
 import org.duguo.xdir.core.internal.site.Site;
-import org.duguo.xdir.util.http.HttpUtil;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 
 
 public class ApplicationImpl extends AbstractGetAndPut

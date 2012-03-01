@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.duguo.xdir.core.internal.cache.CacheableResponse;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
-import org.duguo.xdir.util.datetime.DateTimeUtil;
+import org.duguo.xdir.spi.util.datetime.DateTimeUtil;
 
 public abstract class AbstractActionModel extends AbstractPageModel
 {

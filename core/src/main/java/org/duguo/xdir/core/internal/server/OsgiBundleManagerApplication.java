@@ -23,112 +23,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
-import org.duguo.xdir.util.thread.Action;
-import org.duguo.xdir.util.thread.ThreadUtil;
 
 public class OsgiBundleManagerApplication extends DefaultAdminApplication
 {
     
     private static final Logger logger = LoggerFactory.getLogger( OsgiBundleManagerApplication.class );
-    private OsgiFrameworkAdaptor osgiFrameworkAdaptor;
     private MultipartRequestResolver multipartRequestResolver;
-    
-    public void performDeploy(ModelImpl model)throws Exception {
-        HttpServletRequest fileUploadHttpServletRequest=multipartRequestResolver.resolveMultipartRequest( model.getRequest() );
-        model.setRequest( fileUploadHttpServletRequest );
-        String deployFileName=(String)model.getRequest().getParameterMap().get("deploy_filefileName");
-        String targetGroup=(String)model.getRequest().getParameterMap().get("deploy_group");
-        File sourceFile=null;
-        try{
-            if(deployFileName!=null){
-                if(logger.isDebugEnabled())
-                    logger.debug("uploaded file [{}] to deploy",deployFileName);
-                sourceFile=(File)model.getRequest().getParameterMap().get("deploy_file");
-            }else{
-                String deployPath=fileUploadHttpServletRequest.getParameter( "deploy_path" );
-                if(deployPath!=null && deployPath.trim().length()>0){
-                    deployPath=getPropertiesService().resolveStringValue( deployPath );
-                    if(logger.isDebugEnabled())
-                        logger.debug("deploy files at path [{}]",deployPath);
-                    
-                    sourceFile=new File(deployPath);
-                    if(!sourceFile.exists()){
-                        InputStream inputStream=readResourceAsStream( deployPath );
-                        if(inputStream!=null){
-                            try{
-                                sourceFile=multipartRequestResolver.createTempFile();
-                                FileOutputStream fileOuttputStream=new FileOutputStream( sourceFile );
-                                try{
-                                    IOUtils.copy( inputStream, fileOuttputStream );
-                                    if(logger.isDebugEnabled())
-                                        logger.debug("remote file downloaded from [{}]",deployPath);
-                                }finally{
-                                    fileOuttputStream.close();
-                                }
-                            }finally{
-                                inputStream.close();
-                            }
-                        }
-                    }
-                }
-            }
-            if(sourceFile!=null && sourceFile.exists()){
-                deployFile(sourceFile,targetGroup);
-            }else{
-                model.setStatus("deploy source doesn't exist");
-            }
-        }catch(Exception ex){
-            model.setStatus( "failed to perform deploy ["+ex.getMessage()+"]" );
-            logger.error( "failed to perform deploy",ex );
-        }
-    }
-    
-    public void deployFile(File sourceFile,String targetGroup)throws Exception
-    {
-        List<File> filesToDeploy = scanSourceFilesToDeploy( sourceFile );
-        try{
-            Map<String,Object> bundlesToDeploy = copySourceFilesToGroup( targetGroup, filesToDeploy);
-            if(bundlesToDeploy.size()==1){
-                Object bundleObject=bundlesToDeploy.values().iterator().next();
-                if(bundleObject instanceof Bundle){
-                    Bundle bundle=(Bundle)bundleObject;
-                    if(logger.isDebugEnabled())
-                        logger.debug("deployed file is exist bundle [{}-{}], going to update",bundle.getSymbolicName(),bundle.getVersion().toString());
-                    bundle.update();
-                    if(logger.isDebugEnabled())
-                        logger.debug("bundle [{}] updated",bundle.getBundleId());                
-                    return;
-                }
-            }else{
-                boolean hasExistBundle=false;
-                for(Object bundleObject:bundlesToDeploy.values()){
-                    if(bundleObject instanceof Bundle){
-                        if(hasExistBundle){
-                            throw new RuntimeException("you are not allowed to updated multiple bundles at the same time");
-                        }
-                        bundleObject=true;
-                    }
-                }
-            }
-            
-            
-            String[] newBundleFiles=new String[bundlesToDeploy.size()];
-            bundlesToDeploy.keySet().toArray( newBundleFiles );
-            String status= osgiFrameworkAdaptor.hotDeployFiles( newBundleFiles);
-            if(status!=null){
-                throw new RuntimeException("deploy ["+sourceFile.getPath()+"] failed with status ["+status+"]");
-            }
-        }finally{
-            // deletet deployed file from deploy folder
-            String dirVar= getPropertiesService().resolveStringValue( "${xdir.dir.var}");
-            for(File currentFile:filesToDeploy){
-                if(currentFile.getPath().startsWith( dirVar )){
-                    currentFile.delete();
-                }
-            }            
-        }
 
-    }
 
     private Map<String,Object> copySourceFilesToGroup( String targetGroup, List<File> filesToDeploy )
         throws IOException
@@ -203,15 +104,5 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
     public void setMultipartRequestResolver( MultipartRequestResolver multipartRequestResolver )
     {
         this.multipartRequestResolver = multipartRequestResolver;
-    }
-
-    public OsgiFrameworkAdaptor getOsgiFrameworkAdaptor()
-    {
-        return osgiFrameworkAdaptor;
-    }
-
-    public void setOsgiFrameworkAdaptor( OsgiFrameworkAdaptor osgiFrameworkAdaptor )
-    {
-        this.osgiFrameworkAdaptor = osgiFrameworkAdaptor;
     }
 }

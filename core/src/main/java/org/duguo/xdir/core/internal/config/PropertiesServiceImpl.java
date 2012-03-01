@@ -12,7 +12,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.StringValueResolver;
 import org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver;
-import org.duguo.xdir.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
 
 public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer implements PropertiesService,DynamicService
 {
@@ -22,8 +22,7 @@ public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer impleme
     
     public String resolveStringValue(String strVal) {
         String value=valueResolver.resolveStringValue( strVal );
-        if(logger.isDebugEnabled())
-            logger.debug( "resolved string [{}] as [{}]",strVal,value );
+        if(logger.isDebugEnabled()) logger.debug( "resolved string [{}] as [{}]",strVal,value );
         return value;
     }
     
@@ -32,8 +31,7 @@ public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer impleme
         if(value==null){
             value=mergedProperties.getProperty( key );
         }
-        if(logger.isDebugEnabled())
-            logger.debug( "retrived key value [{}] as [{}]",key,value );
+        if(logger.isDebugEnabled()) logger.debug( "retrieved key value [{}] as [{}]",key,value );
         return value;
     }
         
@@ -45,8 +43,7 @@ public class PropertiesServiceImpl extends PropertyPlaceholderConfigurer impleme
         String relativePath=rawPath;
         relativePath = resolvePathFromProperties( rawPath, relativePath, System.getProperties() );
         relativePath = resolvePathFromProperties( rawPath, relativePath, mergedProperties );
-        if(logger.isDebugEnabled())
-            logger.debug( "resolved [{}] as relative path [{}]",rawPath,relativePath );
+        if(logger.isDebugEnabled()) logger.debug( "resolved [{}] as relative path [{}]",rawPath,relativePath );
         return relativePath;
     }
 

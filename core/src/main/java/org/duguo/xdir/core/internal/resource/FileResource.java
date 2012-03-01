@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.duguo.xdir.util.io.FileUtil;
+import org.duguo.xdir.spi.util.io.FileUtil;
 
 public class FileResource implements Resource
 {

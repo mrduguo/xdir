@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.duguo.xdir.util.http.HttpUtil;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 
 
 public abstract class AbstractAliasSupportServlet implements Servlet

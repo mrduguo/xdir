@@ -6,7 +6,7 @@ import org.duguo.xdir.core.internal.cache.CacheService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.Resource;
 import org.duguo.xdir.core.internal.resource.ResourceLoader;
-import org.duguo.xdir.util.io.FileUtil;
+import org.duguo.xdir.spi.util.io.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +14,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 
 public class ResourceApplication extends JcrTemplateAwareApplication implements ResourceService {

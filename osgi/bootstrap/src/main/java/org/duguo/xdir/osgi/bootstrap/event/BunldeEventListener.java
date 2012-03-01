@@ -6,11 +6,14 @@ import java.util.Set;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+
 import org.duguo.xdir.osgi.bootstrap.provider.BundleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BunldeEventListener implements BundleListener
 {
+    private static final Logger logger = LoggerFactory.getLogger(BunldeEventListener.class);
     public static final int EVENT_MANUAL_INSTALLED=8888;
     
     private Set<Long> startingQueue=new HashSet<Long>();
@@ -42,8 +45,8 @@ public class BunldeEventListener implements BundleListener
     }
     
     public void bundleChanged( BundleEvent event )
-    {    if(Logger.isDebugEnabled())
-        Logger.debug( BundleUtils.bundleDisplayString( event.getBundle()," event "+parseEventName(event.getType()) +" received: starting queue ["+startingQueue.size()+"] failed queue ["+failedBundles.size()+"]") );
+    {    if(logger.isDebugEnabled())
+        logger.debug( BundleUtils.bundleDisplayString( event.getBundle()," event "+parseEventName(event.getType()) +" received: starting queue ["+startingQueue.size()+"] failed queue ["+failedBundles.size()+"]") );
     
     
         processEvent( event.getType(),event.getBundle() );
@@ -80,8 +83,8 @@ public class BunldeEventListener implements BundleListener
             default:
                 break;
         }
-        if(Logger.isDebugEnabled())
-            Logger.debug( BundleUtils.bundleDisplayString( bundle," event "+parseEventName(eventType) +" received: starting queue ["+startingQueue.size()+"] failed queue ["+failedBundles.size()+"]") );
+        if(logger.isDebugEnabled())
+            logger.debug( BundleUtils.bundleDisplayString( bundle," event "+parseEventName(eventType) +" received: starting queue ["+startingQueue.size()+"] failed queue ["+failedBundles.size()+"]") );
         
     }
     

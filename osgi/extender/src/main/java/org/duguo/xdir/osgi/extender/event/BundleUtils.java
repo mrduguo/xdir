@@ -6,13 +6,6 @@ import org.slf4j.Logger;
 public class BundleUtils
 {
 
-    public static void errorBundleEvent(Logger logger,BundleContext bundleContext,String message){
-        logger.error( buildBundleMessage( bundleContext, message ));
-    }
-    
-    public static void errorBundleEvent(Logger logger,BundleContext bundleContext,String message,Throwable ex){
-        logger.error( buildBundleMessage( bundleContext, message ),ex);
-    }
     
     public static void debugBundleEvent(Logger logger,BundleContext bundleContext,String message){
         if(logger.isDebugEnabled()){

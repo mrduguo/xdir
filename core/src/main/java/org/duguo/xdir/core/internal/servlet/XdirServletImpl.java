@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.duguo.xdir.core.internal.cache.CacheService;
 import org.duguo.xdir.core.internal.cache.CacheableResponse;
-import org.duguo.xdir.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.app.Application;

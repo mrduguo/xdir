@@ -43,12 +43,6 @@
       <version>${project.version}</version>
       <scope>xdir/30-common</scope>
     </dependency>
-    <dependency>
-      <groupId>org.duguo.xdir</groupId>
-      <artifactId>xdir-util</artifactId>
-      <version>${project.version}</version>
-      <scope>xdir/30-common</scope>
-    </dependency>
 
     <!-- Apache Commons -->
     <dependency>

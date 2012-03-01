@@ -7,8 +7,8 @@
     
     <bean id="serviceHolder" class="org.duguo.xdir.core.internal.app.ServiceHolder"/>
   
-  <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl" init-method="reload">
-    <property name="servletService" ref="servletService"/>
+  <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl" init-method="init">
+    <property name="servletService" ref="servletService"
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="propertiesService" ref="propertiesService"/>
     <property name="rootApplication" ref="rootApplication"/>
@@ -65,14 +65,9 @@
   </bean>  
   
   <bean id="osgiBundleManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiBundleManagerApplication" parent="defaultAdminApplicationPrototype">
-    <property name="osgiFrameworkAdaptor" ref="osgiFrameworkAdaptor" />
     <property name="multipartRequestResolver" ref="multipartRequestResolver"/>
   </bean>
-  
-  <bean id="osgiFrameworkAdaptor" lazy-init="false" class="org.duguo.xdir.core.internal.server.OsgiFrameworkAdaptorImpl">
-    <property name="bootstrapFrameworkListener" ref="bootstrapFrameworkListener" />
-  </bean>    
-  
+
   
     
   <bean id="osgiSpringManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiSpringManagerApplication" parent="defaultAdminApplicationPrototype">

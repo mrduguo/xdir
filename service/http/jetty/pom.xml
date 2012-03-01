@@ -60,11 +60,6 @@
             <artifactId>xdir-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.duguo.xdir</groupId>
-            <artifactId>xdir-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- OSGi core libs -->
         <dependency>

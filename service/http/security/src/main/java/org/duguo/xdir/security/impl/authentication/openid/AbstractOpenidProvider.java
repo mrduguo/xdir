@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonUtil;
 import org.duguo.xdir.security.impl.authentication.AbstractAuthService;
-import org.duguo.xdir.util.http.HttpUtil;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 
 
 

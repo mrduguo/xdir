@@ -11,7 +11,6 @@
   <!-- ======================================= -->
 
   <bean id="configurationScanner" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwareConditionalSpringConfigurationScanner">
-  	<property name="conditionalService" ref="conditionalService"/>
   </bean>
 
   <bean id="confFolderAwarePropertiesPostProcessor" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwarePropertiesPostProcessor" />
@@ -27,7 +26,6 @@
   <bean id="applicationContextCreator" class="org.duguo.xdir.osgi.extender.event.TrackableOsgiApplicationContextCreator">
     <property name="configurationScanner" ref="configurationScanner" />
     <property name="osgiApplicationContextTracker" ref="osgiApplicationContextTracker" />
-    <property name="consoleLogger" ref="consoleLogger" />
   </bean>
 
   <bean id="osgiApplicationContextListener" class="org.duguo.xdir.osgi.extender.event.OsgiApplicationContextListener">

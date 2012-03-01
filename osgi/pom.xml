@@ -33,7 +33,6 @@ limitations under the License.
     <!-- SUB MODULES                             -->
     <!-- ======================================= -->
     <modules>
-        <module>spi</module>
         <module>bootstrap</module>
         <module>boot-group</module>
         <module>extender</module>

@@ -1,20 +1,16 @@
 package org.duguo.xdir.osgi.bootstrap.launcher;
 
 import org.duguo.xdir.osgi.bootstrap.i18n.Messages;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+
 import org.duguo.xdir.osgi.bootstrap.provider.HandledException;
 import org.duguo.xdir.osgi.bootstrap.provider.MessageHolderException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class BootstrapStarterThread extends AbstractBootstrapThread
+public class BootstrapStarterThread
 {
-    private static final String BOOTSTRAP_STARTER_NAME = "bootstrap-starter";
-    
-
-    private static final String KEY_XDIR_STATUS_BOOTSTRAP    = "xdir.status.bootstrap";
-    private static final String VALUE_XDIR_STATUS_BOOTSTRAP_FAILED    = "failed";
-    private static final String VALUE_XDIR_STATUS_BOOTSTRAP_SYSTEM    = "system";
-    private static final String VALUE_XDIR_STATUS_BOOTSTRAP_USER      = "user";
-    private static final String VALUE_XDIR_STATUS_BOOTSTRAP_STARTED   = "started";
+    protected RuntimeContext runtimeContext;
+    private static final Logger logger = LoggerFactory.getLogger(BootstrapStarterThread.class);
     
     /**
      * 0  = STARTING
@@ -24,7 +20,7 @@ public class BootstrapStarterThread extends AbstractBootstrapThread
     private int status=0;
     
     public BootstrapStarterThread(RuntimeContext runtimeContext){
-        super( runtimeContext, BOOTSTRAP_STARTER_NAME );
+        this.runtimeContext=runtimeContext;
     }
     
     public boolean isFailed(){
@@ -39,77 +35,23 @@ public class BootstrapStarterThread extends AbstractBootstrapThread
         return status==0;
     }
 
-    @Override
-    public synchronized void run()
+    public synchronized void start() throws Exception
     {
         startFramework();
-        if(isFailed()){
-            return;
-        }
-        
-        startSystemBundles();
-        if(isFailed()){
-            return;
-        }    
-        startUserBundles();
-        status=1;
+        startBundles();
     }
 
-    private void startUserBundles()
+    private void startBundles()throws Exception
     {
-        try{
-            runtimeContext.getConfiguration().put( KEY_XDIR_STATUS_BOOTSTRAP, VALUE_XDIR_STATUS_BOOTSTRAP_USER );    
-            boolean success=runtimeContext.getRuntimeProvider().startUserBundles();
-            if(success){
-                runtimeContext.getBootstrapEventListener().onUserBundlesStarted();                
-            }else{
-                runtimeContext.getBootstrapEventListener().onUserBundlesFailed();       
-                Logger.log(Messages.WARN_XDIR_RUNTIME_USER_FAILED);          
-            }
-            runtimeContext.getConfiguration().put( KEY_XDIR_STATUS_BOOTSTRAP, VALUE_XDIR_STATUS_BOOTSTRAP_STARTED );
-        }catch(Throwable ex){
-            runtimeContext.getBootstrapEventListener().onUserBundlesFailed();
-            Logger.log(ex);
-            Logger.log(Messages.WARN_XDIR_RUNTIME_USER_FAILED);
-            Logger.showLogFileLocation();
-        }
+        if(logger.isTraceEnabled()) logger.trace("> startBundles");
+        runtimeContext.getRuntimeProvider().startBundles();
+        if(logger.isTraceEnabled()) logger.trace("< startBundles");
     }
 
-    private void startSystemBundles()
+    private void startFramework() throws Exception
     {
-        try{
-            runtimeContext.getConfiguration().put( KEY_XDIR_STATUS_BOOTSTRAP, VALUE_XDIR_STATUS_BOOTSTRAP_SYSTEM );
-            runtimeContext.getRuntimeProvider().startSystemBundles();
-            runtimeContext.getBootstrapEventListener().onSystemBundlesStarted();
-        }catch(Throwable ex){
-            runtimeContext.getConfiguration().put( KEY_XDIR_STATUS_BOOTSTRAP, VALUE_XDIR_STATUS_BOOTSTRAP_FAILED );
-            if(ex instanceof MessageHolderException){
-                Logger.log( ex.getMessage());
-            }else if(!(ex instanceof HandledException)){
-                Logger.log(ex);
-            }
-            Logger.log(Messages.ERROR_XDIR_RUNTIME_SYSTEM_FAILED);
-            runtimeContext.getBootstrapEventListener().onSystemBundlesFailed();
-            Logger.showLogFileLocation();
-            status=-1;
-        }
-    }
-
-    private void startFramework()
-    {
-        try{
-            runtimeContext.getRuntimeProvider().startFramework();
-            runtimeContext.getBootstrapEventListener().onRuntimeStarted();
-        }catch(Throwable ex){
-            if(ex instanceof MessageHolderException){
-                Logger.log( ex.getMessage());
-            }else if(!(ex instanceof HandledException)){
-                Logger.log(ex);
-            }
-            Logger.log(Messages.ERROR_XDIR_RUNTIME_FRAMEWORK_FAILED);
-            runtimeContext.getBootstrapEventListener().onRuntimeFailed();
-            Logger.showLogFileLocation();
-            status=-1;
-        }
+        if(logger.isTraceEnabled()) logger.trace("> startFramework");
+        runtimeContext.getRuntimeProvider().startFramework();
+        if(logger.isTraceEnabled()) logger.trace("< startFramework");
     }
 }

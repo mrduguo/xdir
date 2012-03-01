@@ -32,12 +32,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
-import org.duguo.xdir.util.bean.BeanUtil;
-import org.duguo.xdir.util.bean.BundleUtil;
-import org.duguo.xdir.util.datetime.DateTimeUtil;
-import org.duguo.xdir.util.io.FileUtil;
-import org.duguo.xdir.util.thread.Action;
-import org.duguo.xdir.util.thread.ThreadUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BundleUtil;
+import org.duguo.xdir.spi.util.datetime.DateTimeUtil;
+import org.duguo.xdir.spi.util.io.FileUtil;
+import org.duguo.xdir.spi.util.thread.Action;
+import org.duguo.xdir.spi.util.thread.ThreadUtil;
 
 
 public class OsgiConfManagerApplication extends DefaultAdminApplication implements InitializingBean

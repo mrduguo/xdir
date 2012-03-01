@@ -22,7 +22,7 @@ import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.model.PathInfoImpl;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
-import org.duguo.xdir.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
 
 
 public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory

@@ -1,129 +1,94 @@
 package org.duguo.xdir.osgi.bootstrap.conf;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
-
+import org.apache.log4j.xml.DOMConfigurator;
 import org.duguo.xdir.osgi.bootstrap.command.FileUtils;
 import org.duguo.xdir.osgi.bootstrap.i18n.Messages;
 import org.duguo.xdir.osgi.bootstrap.i18n.MessagesInitialiser;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
 
 
 /**
  * Factory to load OSGi configuration file from XDIR_DIR_HOME/osgi.properties by default.
- *  
- * @author Guo Du
  *
+ * @author Guo Du
  */
-public class OsgiPropertiesFactory
-{
+public class OsgiPropertiesFactory {
+    private static final Logger logger = LoggerFactory.getLogger(OsgiPropertiesFactory.class);
 
-    public OsgiProperties createOsgiProperties( String... args )
-    {
-        setupDebugFlagFromArgs(args);
+    public OsgiProperties createOsgiProperties() {
         OsgiProperties configuration = new OsgiProperties();
-        verifyXdirDirHome( configuration );
-        
-        loadConfigFile( configuration );
-        MessagesInitialiser.init( Messages.class,configuration.retriveXdirDirConf()+"/osgi.messages");
-        
-        setupDebugFlagFromConf( configuration );
-        
-        
-        // fix for log4j
-        setupLog4jProperties(configuration);
-        
+        verifyXdirDirHome(configuration);
+
+        loadConfigFile(configuration);
+        MessagesInitialiser.init(Messages.class, configuration.getXdirDirHome() + "/data/conf/osgi.messages");
+
+
+        configLog4j();
+
         return configuration;
     }
 
-
-
-    private void setupDebugFlagFromConf( OsgiProperties configuration )
-    {
-        if(Logger.isDebugEnabled()){
-            configuration.putXdirOsgiDebug( "true" );
-        }else if(configuration.isDebugEnabled()){
-            Logger.setDebugEnabled( true );
-            Logger.debug( "Enabled debug from configuration file" );
-        }
-    }
-
-    private void setupDebugFlagFromArgs( String[] args )
-    {
-        for(String arg:args){
-            String cmd=arg.toLowerCase();
-            if ( "-debug".equals( cmd ) )
-            {
-                Logger.setDebugEnabled( true );
-                Logger.debug( "Parsed [-debug] from command line to enable debug" );
-            }
-        }
-    }
-
-    private void verifyXdirDirHome( OsgiProperties configuration )
-    {
+    private void verifyXdirDirHome(OsgiProperties configuration) {
         String xdirHome = configuration.getXdirDirHome();
-        if ( xdirHome == null )
-        {
-            try
-            {
+        if (xdirHome == null) {
+            try {
                 File bootstrapJarFile = FileUtils.retriveJarFileContainsClass(this.getClass());
                 xdirHome = bootstrapJarFile.getParentFile().getParentFile().getCanonicalPath();
-                configuration.setXdirDirHome(xdirHome );
-                if(Logger.isDebugEnabled())
-                    Logger.debug( "Detected XDIR_DIR_HOME ["+xdirHome+"] from jar file ["+bootstrapJarFile+"]" );
+                configuration.setXdirDirHome(xdirHome);
+                if (logger.isDebugEnabled())
+                    logger.debug("Detected XDIR_DIR_HOME [" + xdirHome + "] from jar file [" + bootstrapJarFile + "]");
+            } catch (Exception e) {
+                throw new RuntimeException(Messages.ERROR_XDIR_FILE_FAIL_RESOLVE_XDIRHOME, e);
             }
-            catch ( Exception e )
-            {
-                throw new RuntimeException(Messages.ERROR_XDIR_FILE_FAIL_RESOLVE_XDIRHOME, e );
-            }
-        }else{
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Retrived XDIR_DIR_HOME ["+xdirHome+"] from configuration" );
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Retrived XDIR_DIR_HOME [" + xdirHome + "] from configuration");
         }
-        FileUtils.verifyExistFolder( xdirHome);
+        FileUtils.verifyExistFolder(xdirHome);
         configuration.retriveXdirDirData();
     }
 
 
-    private void loadConfigFile( OsgiProperties configuration )
-    {
-        String configFileName =configuration.retriveXdirOsgiCmdConf();
-        File configFile = new File( configFileName);
-        if(configFile.exists() && configFile.isFile()){
-            try
-            {
-                Properties newProperties=new Properties();
-                FileInputStream fileInputStream = new FileInputStream( configFile);
-                newProperties.load( fileInputStream );
-                fileInputStream.close();
-                             
-                PropertiesUtils.replacePlaceHolders( configuration, newProperties );
-                if(Logger.isDebugEnabled())
-                    Logger.debug("OSGi configuration loaded from [{0}]",configFileName);
+    private void loadConfigFile(OsgiProperties configuration) {
+        try {
+            Properties newProperties = new Properties();
+            InputStream defaultConfig = OsgiProperties.class.getResourceAsStream("/osgi-default.properties");
+            newProperties.load(defaultConfig);
+            defaultConfig.close();
+
+            InputStream userConfig = OsgiProperties.class.getResourceAsStream("/osgi.properties");
+            if (userConfig != null) {
+                newProperties.load(userConfig);
+                userConfig.close();
             }
-            catch ( Exception e )
-            {    
-                throw new RuntimeException( Messages.format( Messages.ERROR_XDIR_CONF_LOAD_FILE_FAILED,configFileName),e);
-            }
-        }else{
-            Logger.log( Messages.WARN_XDIR_CONF_FILE_NOT_FOUND, configFileName);
+
+            PropertiesUtils.replacePlaceHolders(configuration, newProperties);
+            if (logger.isDebugEnabled())
+                logger.debug("OSGi configuration loaded");
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.ERROR_XDIR_CONF_LOAD_FILE_FAILED, e);
         }
     }
-    
-    private void setupLog4jProperties(OsgiProperties configuration ) {
-        File log4jConfig=new File(configuration.retriveXdirDirConf(),"log4j.xml");
-        if(!log4jConfig.exists()){
-            log4jConfig=new File(configuration.retriveXdirDirConf(),"log4j.properties");
-        }
-        if(log4jConfig.exists()){
-            if(Logger.isDebugEnabled())
-                Logger.debug("Setup log4j configuration at [{0}]",log4jConfig.toURI().toString());
-            System.setProperty("log4j.configuration",log4jConfig.toURI().toString());
+
+
+    private static void configLog4j() {
+        String log4jConfiguration = System.getProperty("log4j.configuration", "/log4j.xml");
+        URL log4jResourceUrl = OsgiPropertiesFactory.class.getResource(log4jConfiguration);
+        if (log4jResourceUrl != null) {
+            if (log4jResourceUrl.getProtocol().equals("file")) {
+                String delayConfig = System.getProperty("xdir.osgi.log.config.scan.delay","10000");
+                DOMConfigurator.configureAndWatch(log4jConfiguration, Long.parseLong(delayConfig));
+            }
         }
     }
+
 
 
 }

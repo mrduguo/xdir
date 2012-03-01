@@ -1,11 +1,12 @@
 <@page_overview_title/>
 <@groovy>
-	import org.duguo.xdir.util.bundle.BundleHeaderUtil
-	import org.duguo.xdir.util.bean.BeanUtil
+	import org.duguo.xdir.spi.util.bundle.BundleHeaderUtil
+	import org.duguo.xdir.spi.util.bean.BeanUtil
 	def ouputstring=""
 	bundlesBaseDir=System.getProperty("xdir.dir.bundles");
-	
+
 	bundle=model.get("bundle")
+
 	ouputstring="$ouputstring<table class=\"sortable fullwidth\"><thead><tr><th>Name</th><th>Value</th></thead><tbody>"
 	ouputstring="$ouputstring<tr><td>ID</td><td>$bundle.bundleId</td></tr>"
 	ouputstring="$ouputstring<tr><td>Symbolic Name</td><td>$bundle.symbolicName</td></tr>"
@@ -19,26 +20,26 @@
 		ouputstring="$ouputstring<tr><td>Location</td><td>$bundleLocation</td></tr>"
 	}
 	ouputstring="$ouputstring<tr><td>Group</td><td>$bundleGroup</td></tr>"
-	ouputstring="$ouputstring<tr><td>State</td><td>"+org.duguo.xdir.util.bean.BundleUtil.displayBundleStatus(bundle.state)+"</td></tr>"
+	ouputstring="$ouputstring<tr><td>State</td><td>"+org.duguo.xdir.spi.util.bean.BundleUtil.displayBundleStatus(bundle.state)+"</td></tr>"
 	ouputstring="$ouputstring<tr><td>Version</td><td>$bundle.version</td></tr>"
-	
-	
+
+
 	<#include "../support/osgiframework">
 	<@framework_get_fragment_host/>
 	if(fragmentHost!=null){
 				ouputstring="$ouputstring<tr><td>Fragment Host</td><td><a href=\"${pagePath}/../"+fragmentHost.bundleId+"${format}\">"+fragmentHost.bundleId+" : "+fragmentHost.symbolicName+"</a></td></tr>"
 	}
 	<@framework_list_bundle_details/>
-	
+
 	registeredServices=bundle.registeredServices
 	<@list_services "registeredServices","Registered Services"/>
 
 	servicesInUse=bundle.servicesInUse
 	<@list_services "servicesInUse","Used Services"/>
-	
+
 	ouputstring="$ouputstring</tbody></table>"
-		
-	
+
+
 	ouputstring="$ouputstring<h3>Headers</h3><table class=\"sortable fullwidth\"><thead><tr><th>Name</th><th>Value</th></thead><tbody>"
 	bundle.headers.keys().each{
 		ouputstring="$ouputstring<tr><td>$it</td><td>"
@@ -58,7 +59,7 @@
 					ouputstring="$ouputstring</li>"
 				}
 				ouputstring="$ouputstring</ul>"
-				
+
 			}else{
 				ouputstring="$ouputstring"+bundle.headers.get(it)
 			}
@@ -68,17 +69,19 @@
 		ouputstring="$ouputstring</td></tr>"
 	}
 	ouputstring="$ouputstring</tbody></table>"
-	
+
 	return ouputstring
 </@groovy>
 <#macro page_overview_title>
 	<h1>
 		<div>
 			<a href="../../jvm/inspector/index${format}?action=inspect&objectpath=app.retriveBundleById(${bundle.bundleId})" class="button">Inspect</a>
-			<#if bundle.state==32>
-				<a href="${pageContext}/index${format}?action=bundleaction&bundleaction=stop&bundleinfo=${bundle.bundleId}" class="button">Stop</a>
-			<#else>
-                <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=start&bundleinfo=${bundle.bundleId}" class="button">Start</a>
+            <#if bundle.bundleId!=0>
+                <#if bundle.state==32>
+                    <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=stop&bundleinfo=${bundle.bundleId}" class="button">Stop</a>
+                <#else>
+                    <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=start&bundleinfo=${bundle.bundleId}" class="button">Start</a>
+                </#if>
             </#if>
             <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=update&bundleinfo=${bundle.bundleId}" class="button">Update</a>
         </div>

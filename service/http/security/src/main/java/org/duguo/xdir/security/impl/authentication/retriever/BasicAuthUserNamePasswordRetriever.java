@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.authentication.LoginRetriever;
-import org.duguo.xdir.util.codec.Base64;
+import org.duguo.xdir.spi.util.codec.Base64;
 
 
 public class BasicAuthUserNamePasswordRetriever implements LoginRetriever{

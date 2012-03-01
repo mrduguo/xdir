@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.duguo.xdir.http.json.Json;
-import org.duguo.xdir.util.http.HttpUtil;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 
 public class OpenId2DirectedIdentityProvider extends AbstractOpenidProvider{
     

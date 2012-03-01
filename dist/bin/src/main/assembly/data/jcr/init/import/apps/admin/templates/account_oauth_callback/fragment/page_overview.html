@@ -2,7 +2,7 @@
 <#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
     <@groovy>
     import org.expressme.openid.*;
-    import org.duguo.xdir.util.codec.IdUtil;
+    import org.duguo.xdir.spi.util.codec.IdUtil;
     import org.duguo.xdir.spi.security.Role;
     def result=""
     def oauthParams=new HashMap()

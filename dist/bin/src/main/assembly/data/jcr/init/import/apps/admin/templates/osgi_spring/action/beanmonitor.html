@@ -9,7 +9,7 @@ ${model.put("serviceReference",app.retriveSpringServiceReference(pageProperties[
 Updated with monitor for beans:
 <pre>
 <@groovy>
-	import org.duguo.xdir.util.bean.BeanUtil
+	import org.duguo.xdir.spi.util.bean.BeanUtil
 	def ouputstring=""
 	serviceReference=model.get("serviceReference")
 	serviceId=serviceReference.getProperty("service.id")

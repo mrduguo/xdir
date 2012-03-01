@@ -7,7 +7,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -19,8 +18,8 @@ import org.springframework.core.io.Resource;
 import org.osgi.framework.Constants;
 import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.duguo.xdir.core.internal.app.BestPathMatchApplication;
-import org.duguo.xdir.util.collection.MapUtil;
-import org.duguo.xdir.util.io.FileUtil;
+import org.duguo.xdir.spi.util.collection.MapUtil;
+import org.duguo.xdir.spi.util.io.FileUtil;
 
 
 public class DefaultAdminApplication extends BestPathMatchApplication implements BundleContextAware

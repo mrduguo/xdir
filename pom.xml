@@ -28,11 +28,10 @@ limitations under the License.
     <!-- SUB MODULES                             -->
     <!-- ======================================= -->
     <modules>
-        <module>spi</module>
-        <module>util</module>
-        <module>core</module>
         <module>osgi</module>
+        <module>spi</module>
         <module>service</module>
+        <module>core</module>
         <module>dist</module>
     </modules>
 
@@ -56,7 +55,7 @@ limitations under the License.
         <lib.template.freemarker.version>2.3.15</lib.template.freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skipTests>true</skipTests>
+        <skipTests>false</skipTests>
     </properties>
 
     <!-- =====================================

@@ -1,13 +1,13 @@
 <#include "../support/bean.html">
 <@page_overview_title/>
 <@groovy>
-	import org.duguo.xdir.util.bean.BeanUtil
-	import org.duguo.xdir.util.io.FileUtil
+	import org.duguo.xdir.spi.util.bean.BeanUtil
+	import org.duguo.xdir.spi.util.io.FileUtil
 	def ouputstring=""
-	
+
 	<@bean_inspect_memorymxbean/>
 	<@bean_inspect_memorypoolmxbean/>
-	
+
 
 	return ouputstring
 </@groovy>

@@ -10,8 +10,4 @@
 
   <osgi:list id="bundleListeners" interface="org.osgi.framework.BundleListener" />
 
-  <osgi:reference id="consoleLogger" interface="org.duguo.xdir.osgi.spi.ConsoleLogger"/>
-
-  <osgi:reference id="conditionalService" interface="org.duguo.xdir.osgi.spi.conditional.ConditionalService"/>
-
 </beans>

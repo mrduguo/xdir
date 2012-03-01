@@ -12,8 +12,6 @@
   
   
   <osgi:service ref="accountService" interface="org.duguo.xdir.spi.security.AccountService" depends-on="accountService"/>
-    
-  <osgi:reference id="bootstrapFrameworkListener" interface="org.osgi.framework.FrameworkListener" bean-name="bootstrapFrameworkListener" />
 
   <osgi:reference id="defaultHttpClientService" interface="org.duguo.xdir.http.client.HttpClientService"/>
 

@@ -8,10 +8,13 @@ import org.osgi.framework.launch.FrameworkFactory;
 import org.duguo.xdir.osgi.bootstrap.api.RuntimeProvider;
 import org.duguo.xdir.osgi.bootstrap.i18n.Messages;
 import org.duguo.xdir.osgi.bootstrap.launcher.RuntimeContext;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class RuntimeProviderFactory
 {
+    private static final Logger logger = LoggerFactory.getLogger(RuntimeProviderFactory.class);
     
     private static final String OSGI_CMD_IMPL_RUNTIME_FACTORY="runtime.factory";
     private static final String OSGI_CMD_IMPL_RUNTIME_PROVIDER="runtime.provider";
@@ -76,18 +79,16 @@ public class RuntimeProviderFactory
             String factoryClassName=runtimeContext.getConfiguration().getXdirOsgiCmdImpl(OSGI_CMD_IMPL_RUNTIME_FACTORY);
             if(factoryClassName.indexOf( ".felix." )>0){
                 providerClassName=FelixRuntimeProvider.class.getName();
-            }else if(factoryClassName.indexOf( ".eclipse." )>0){
-                providerClassName=EquinoxRuntimeProvider.class.getName();
             }else{
-                Logger.log(Messages.WARN_XDIR_RUNTIME_PROVIDER_DEFAULT,providerClassName);
+                logger.info(Messages.WARN_XDIR_RUNTIME_PROVIDER_DEFAULT, providerClassName);
                 providerClassName=DefaultRuntimeProvider.class.getName();
             }
             runtimeContext.getConfiguration().setXdirOsgiCmdImpl( OSGI_CMD_IMPL_RUNTIME_PROVIDER,providerClassName );    
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Framework provider class name ["+providerClassName+"] generated from factory class ["+factoryClassName+"]" );
+            if(logger.isDebugEnabled())
+                logger.debug( "Framework provider class name ["+providerClassName+"] generated from factory class ["+factoryClassName+"]" );
         }else{
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Framework provider class name ["+providerClassName+"] loaded from configuration" );
+            if(logger.isDebugEnabled())
+                logger.debug( "Framework provider class name ["+providerClassName+"] loaded from configuration" );
         }
         return providerClassName;
     }
@@ -108,11 +109,11 @@ public class RuntimeProviderFactory
                 throw new RuntimeException(Messages.format( Messages.ERROR_XDIR_RUNTIME_FACTORY_NOT_FOUND,factoryConfigurationSource),ex);
             }
             runtimeContext.getConfiguration().setXdirOsgiCmdImpl( OSGI_CMD_IMPL_RUNTIME_FACTORY,factoryClassName );  
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Framework factory class name ["+factoryClassName+"] loaded from resource ["+factoryConfigurationSource+"]" );
+            if(logger.isDebugEnabled())
+                logger.debug( "Framework factory class name ["+factoryClassName+"] loaded from resource ["+factoryConfigurationSource+"]" );
         }else{
-            if(Logger.isDebugEnabled())
-                Logger.debug( "Framework factory class name ["+factoryClassName+"] loaded from configuration" );
+            if(logger.isDebugEnabled())
+                logger.debug( "Framework factory class name ["+factoryClassName+"] loaded from configuration" );
         }
         return factoryClassName;
     }

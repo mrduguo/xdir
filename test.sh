@@ -1,5 +1,5 @@
 #!/bin/bash  -x
-mvn clean install -Ddeploy-build $@
+mvn clean install $@
 
 #  params:
 #  -DwaitForStop -Dfirefox

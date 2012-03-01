@@ -5,15 +5,12 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.apache.commons.lang.StringUtils;
-import org.duguo.xdir.jcr.utils.JcrRepositoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
@@ -21,10 +18,9 @@ import org.duguo.xdir.core.internal.app.ParentAwareApplication;
 import org.duguo.xdir.core.internal.jcr.JcrFactory;
 import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.jcr.utils.JcrRepositoryUtils.RepoPath;
 import org.duguo.xdir.http.service.ServletService;
-import org.duguo.xdir.util.bean.BeanUtil;
-import org.duguo.xdir.util.bean.BeanUtil.GetterSetterCallback;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BeanUtil.GetterSetterCallback;
 
 
 public abstract class AbstractApplicationRegister implements BeanFactoryAware,ApplicationService {

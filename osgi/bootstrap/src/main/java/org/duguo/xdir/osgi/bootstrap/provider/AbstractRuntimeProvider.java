@@ -14,14 +14,16 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
 import org.duguo.xdir.osgi.bootstrap.api.RuntimeProvider;
-import org.duguo.xdir.osgi.bootstrap.event.BunldeEventListener;
 import org.duguo.xdir.osgi.bootstrap.i18n.Messages;
 import org.duguo.xdir.osgi.bootstrap.launcher.RuntimeContext;
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class AbstractRuntimeProvider implements RuntimeProvider
 {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractRuntimeProvider.class);
 
     protected RuntimeContext runtimeContext;
     protected Framework framework;
@@ -52,8 +54,8 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
     protected boolean runBundleGroups( String bundleGroups, boolean ignoreException ) throws BundleException
     {
         boolean isSuccess = true;
-        if ( Logger.isDebugEnabled() )
-            Logger.debug( "Run bundle groups [" + bundleGroups + "] with ignore exception flag ["
+        if ( logger.isDebugEnabled() )
+            logger.debug( "Run bundle groups [" + bundleGroups + "] with ignore exception flag ["
                 + ( ignoreException ? "on" : "off" ) + "]" );
         File bundlesRootFolder = new File( runtimeContext.getConfiguration().retriveXdirOsgiBundlesBase() );
         Set<String> installedUserBundles = new HashSet<String>();
@@ -64,8 +66,8 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
                 isSuccess = false;
             }
         }
-        if ( Logger.isDebugEnabled() )
-            Logger.debug( "Run bundle groups [" + bundleGroups + "] finished with  [" + installedUserBundles.size()
+        if ( logger.isDebugEnabled() )
+            logger.debug( "Run bundle groups [" + bundleGroups + "] finished with  [" + installedUserBundles.size()
                 + "] bundles installed" );
         return isSuccess;
     }
@@ -146,9 +148,8 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
                     }
                     bundleInstances.add( installedBundle );
                     putBundleInCache( installedBundle );
-                    runtimeContext.getBunldeEventListener().processEvent( BunldeEventListener.EVENT_MANUAL_INSTALLED, installedBundle );
-                    if ( Logger.isDebugEnabled() )
-                        Logger.debug( "Installed bundle file [" + bundleFile.getName() + "]" );
+                    if ( logger.isDebugEnabled() )
+                        logger.debug( "Installed bundle file [" + bundleFile.getName() + "]" );
                 }
                 else
                 {
@@ -168,8 +169,8 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
             if ( !BundleUtils.isFragment( installedBundle ) )
             {
                 installedBundle.start();
-                if ( Logger.isDebugEnabled() )
-                    Logger.debug( "Starting bundle [" + installedBundle.getSymbolicName() + ":"
+                if ( logger.isDebugEnabled() )
+                    logger.debug( "Starting bundle [" + installedBundle.getSymbolicName() + ":"
                         + installedBundle.getVersion().toString() + "]" );
             }
         }
@@ -190,14 +191,14 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
                         Bundle currentBundle = runtimeContext.getFramework().getBundleContext().getBundle( bundleId );
                         if ( BundleUtils.isFragment( currentBundle ) )
                         {
-                            Logger.log( Messages.ERROR_XDIR_RUNTIME_BUNDLE_START_TIMEOUT, currentBundle
-                                .getSymbolicName(), currentBundle.getVersion().toString(), BundleUtils
-                                .parseBundleStatus( currentBundle.getState() ) );
+                            logger.error(Messages.ERROR_XDIR_RUNTIME_BUNDLE_START_TIMEOUT, currentBundle
+                                    .getSymbolicName()+":"+currentBundle.getVersion().toString()+":"+ BundleUtils
+                                    .parseBundleStatus(currentBundle.getState()));
                         }
                         else
                         {
-                            Logger.log( Messages.ERROR_XDIR_RUNTIME_BUNDLE_START_TIMEOUT, currentBundle
-                                .getSymbolicName(), currentBundle.getVersion().toString(), BundleUtils
+                            logger.error( Messages.ERROR_XDIR_RUNTIME_BUNDLE_START_TIMEOUT, currentBundle
+                                .getSymbolicName()+":"+ currentBundle.getVersion().toString()+":"+ BundleUtils
                                 .parseBundleStatus( currentBundle.getState() ) );
                         }
                     }
@@ -212,13 +213,13 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
                     Bundle currentBundle = runtimeContext.getFramework().getBundleContext().getBundle( bundleId );
                     if ( BundleUtils.isFragment( currentBundle ) )
                     {
-                        Logger.log( Messages.ERROR_XDIR_RUNTIME_FRAGMENT_FAILED, currentBundle.getSymbolicName(),
-                            String.valueOf( currentBundle.getVersion().toString() ) );
+                        logger.error(Messages.ERROR_XDIR_RUNTIME_FRAGMENT_FAILED, currentBundle.getSymbolicName(),
+                                String.valueOf(currentBundle.getVersion().toString()));
                     }
                     else
                     {
-                        Logger.log( Messages.ERROR_XDIR_RUNTIME_BUNDLE_FAILED, currentBundle.getSymbolicName(),
-                            String.valueOf( currentBundle.getVersion().toString() ) );
+                        logger.error(Messages.ERROR_XDIR_RUNTIME_BUNDLE_FAILED, currentBundle.getSymbolicName(),
+                                String.valueOf(currentBundle.getVersion().toString()));
                     }
                 }
                 throw new HandledException();
@@ -261,11 +262,7 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
             String filePath = fileToTest.getPath();
             if ( fileToTest.isDirectory() && !installedUserBundles.contains( filePath ) )
             {
-            	String folderName=fileToTest.getName();
-            	if(!runtimeContext.conditionalService.isConditionalString(folderName) ||
-            		runtimeContext.conditionalService.eval(folderName)){
             		foldersToRun.add( filePath );
-            	}
             }
         }
         if ( foldersToRun.size() > 0 )
@@ -294,21 +291,18 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
             String filePath = fileToTest.getPath();
             String fileName=fileToTest.getName();
             if ( fileToTest.isFile() && !installedUserBundles.contains( filePath ) ){
-            	if(!runtimeContext.conditionalService.isConditionalString(fileName) ||
-            		runtimeContext.conditionalService.eval(fileName.substring(0,fileName.lastIndexOf(".")))){
 		            if (fileName.endsWith( ".jar" ))
 		            {
 		                    bundlesToRun.add( filePath );
 		                    installedUserBundles.add( filePath );            		
 	            	}
-	            }
             }
         }
         if ( bundlesToRun.size() > 0 )
         {
             String groupName = scanFolder.getPath().substring( bundlesRootFolder.getPath().length() + 1 );
-            if ( Logger.isDebugEnabled() )
-                Logger.debug( "Starting bundle group [" + groupName + "]" );
+            if ( logger.isDebugEnabled() )
+                logger.debug( "Starting bundle group [" + groupName + "]" );
             try
             {
                 if ( ignoreException )
@@ -327,11 +321,11 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
                         }
                         else if ( ex instanceof MessageHolderException )
                         {
-                            Logger.log( ex.getMessage() );
+                            logger.info(ex.getMessage());
                         }
-                        else if ( Logger.hasMessageCode( ex.getMessage() ) )
+                        else
                         {
-                            Logger.log( ex );
+                            logger.info(ex.getMessage());
                         }
                     }
                 }
@@ -346,11 +340,11 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
             {
                 if ( isSuccess )
                 {
-                    Logger.log( Messages.INFO_XDIR_BUNDLES_GROUP_STARTED, groupName, String.valueOf( bundlesToRun.size() ) );
+                    if(logger.isDebugEnabled()) logger.debug("Bundle group [{}:{}] started", groupName, String.valueOf(bundlesToRun.size()));
                 }
                 else
                 {
-                    Logger.log( Messages.ERROR_XDIR_RUNTIME_GROUP_FAILED, groupName );
+                    logger.info(Messages.ERROR_XDIR_RUNTIME_GROUP_FAILED, groupName);
                 }
             }
         }
@@ -366,8 +360,7 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
         {
             if ( ignoreException )
             {
-                Logger.log( Messages.WARN_XDIR_BUNDLE_DUPLICATED_BUNDLE, bundleVersionAndName, existBundleUri,
-                    newBundleUri );
+                logger.info(Messages.WARN_XDIR_BUNDLE_DUPLICATED_BUNDLE, bundleVersionAndName, existBundleUri);
             }
             else
             {
@@ -378,8 +371,8 @@ public abstract class AbstractRuntimeProvider implements RuntimeProvider
         }
         else
         {
-            if ( Logger.isDebugEnabled() )
-                Logger.debug( "Bundle file [" + newBundleUri + "] already started previously" );
+            if ( logger.isDebugEnabled() )
+                logger.debug( "Bundle file [" + newBundleUri + "] already started previously" );
         }
     }
 

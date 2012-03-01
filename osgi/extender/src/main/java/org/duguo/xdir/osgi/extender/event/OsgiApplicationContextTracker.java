@@ -25,7 +25,7 @@ public class OsgiApplicationContextTracker
             for(BundleListener bundleListener:bundleListeners){
                 bundleListener.bundleChanged( event );   
             }
-            logger.info( "LAZY_ACTIVATION delived to bootstrapBundleListener" );
+            if(logger.isDebugEnabled()) logger.debug( "LAZY_ACTIVATION delivered to bootstrapBundleListener" );
         }
         BundleUtils.debugBundleEvent( logger, bundleContext, "lazy started" );
     }

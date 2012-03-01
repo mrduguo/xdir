@@ -9,7 +9,7 @@
 	return ouputstring
 </@groovy>
 <#macro bean_inspect_runtime bean_name field_includes>
-	import org.duguo.xdir.util.bean.BeanUtil
+	import org.duguo.xdir.spi.util.bean.BeanUtil
 	field_includes=[<#list field_includes?split(",") as x><#if x_index!=0>,</#if>"${x}"</#list>]
 	ouputstring="$ouputstring<table class=\"sortable\"><thead><tr><th>Name</th><th>Value</th></thead><tbody>"
 	ouputstring="$ouputstring<tr><td>"+BeanUtil.displayFieldName("currentTime")+"</td><td>"+model.timestampForDisplay(0)+"</td></tr>"

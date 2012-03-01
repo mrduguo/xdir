@@ -6,27 +6,22 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.duguo.xdir.core.internal.cache.CacheService;
 import org.duguo.xdir.spi.model.GetAndPut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
-import org.duguo.xdir.spi.security.SecurityService;
 import org.duguo.xdir.core.internal.app.resource.ResourceService;
 import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.duguo.xdir.core.internal.exception.ResourceNotFoundException;
 import org.duguo.xdir.core.internal.jcr.JcrFactory;
-import org.duguo.xdir.core.internal.jcr.JcrService;
 import org.duguo.xdir.core.internal.jcr.SessionCallback;
 import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
 import org.duguo.xdir.core.internal.utils.RequestUtils;
-import org.duguo.xdir.http.client.HttpClientService;
-import org.duguo.xdir.util.http.HttpUtil;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 
 
 public class JcrTemplateAwareApplication extends SimplePathApplication implements ApplicationContextAware{

@@ -1,16 +1,20 @@
 package org.duguo.xdir.osgi.bootstrap.conf;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.duguo.xdir.osgi.bootstrap.log.Logger;
+
 
 
 public class PropertiesUtils
 {
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
     private static final String DELIM_START = "${";
     private static final String DELIM_STOP = "}";
 
@@ -28,12 +32,12 @@ public class PropertiesUtils
             String key = ( String ) e.nextElement();
             if(!configuration.containsKey( key )){
                 String value = substVars( key, newProperties.getProperty( key ), configuration,newProperties, null );
-                if ( Logger.isDebugEnabled() )
-                    Logger.debug( "Setup configuration for key [" + key + "] with value [" + value + "]" );
+                if ( logger.isDebugEnabled() )
+                    logger.debug( "Setup configuration for key [" + key + "] with value [" + value + "]" );
                 configuration.put( key, value );
             }else{
-                if(Logger.isDebugEnabled())
-                    Logger.debug( "Cannot override system properties "+key+" from configuration file" );
+                if(logger.isDebugEnabled())
+                    logger.debug( "Cannot override system properties "+key+" from configuration file" );
             }
         }
     }
@@ -112,8 +116,8 @@ public class PropertiesUtils
             
             // Ignore unknown property values.
             if(substValue==null){
-                if(Logger.isDebugEnabled())
-                    Logger.debug( "Unknown property placeholder ["+variable+"] in ["+key+"], set to empty string" );
+                if(logger.isDebugEnabled())
+                    logger.debug( "Unknown property placeholder ["+variable+"] in ["+key+"], set to empty string" );
                 substValue="";
             }
         }

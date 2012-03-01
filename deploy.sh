@@ -1,2 +1,2 @@
 #!/bin/sh -x
-mvn clean install -Ddeploy-build -Ddeploy-to-server
+mvn clean install -Ddeploy-to-server

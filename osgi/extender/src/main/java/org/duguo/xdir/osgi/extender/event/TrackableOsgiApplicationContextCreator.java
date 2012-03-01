@@ -8,7 +8,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.eclipse.gemini.blueprint.context.DelegatedExecutionOsgiBundleApplicationContext;
 import org.eclipse.gemini.blueprint.extender.support.DefaultOsgiApplicationContextCreator;
-import org.duguo.xdir.osgi.spi.ConsoleLogger;
 
 
 public class TrackableOsgiApplicationContextCreator extends DefaultOsgiApplicationContextCreator implements
@@ -22,7 +21,6 @@ public class TrackableOsgiApplicationContextCreator extends DefaultOsgiApplicati
 
     private OsgiApplicationContextTracker osgiApplicationContextTracker;
     private BundleContext bundleContext;
-    private ConsoleLogger consoleLogger;
 
     public void afterPropertiesSet() throws Exception
     {
@@ -30,9 +28,7 @@ public class TrackableOsgiApplicationContextCreator extends DefaultOsgiApplicati
         {
             baseExtenderStarted = true;
             osgiApplicationContextTracker.onLazyStarted( bundleContext );
-            if(consoleLogger!=null){
-            	consoleLogger.log("info.xdir.extender.started");
-            }
+            if(logger.isInfoEnabled()) logger.info("OSGi blueprint extender started");
         }
     }
 
@@ -63,13 +59,4 @@ public class TrackableOsgiApplicationContextCreator extends DefaultOsgiApplicati
     {
         this.bundleContext = bundleContext;
     }
-
-	public ConsoleLogger getConsoleLogger() {
-		return consoleLogger;
-	}
-
-
-	public void setConsoleLogger(ConsoleLogger consoleLogger) {
-		this.consoleLogger = consoleLogger;
-	}
 }
