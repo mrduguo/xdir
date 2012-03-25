@@ -1,6 +1,6 @@
 table_header="<thead><tr><th>Label</th><th>Hits</th><th>Avg</th><th>Total</th><th>Min</th><th>Max</th><th>First Accessed</th><th>Last Accessed</th></tr></thead>"
 row_columns={
-	ouputstring="$ouputstring<tr><td><a href=\""+model.getApp().getBaseUrl()+"/troubleshooting/logs/access"+model.getFormat()+"?action=filter&filter=+"+it.label.substring(12)+"+\">"+it.label+"</a></td>"
+	ouputstring="$ouputstring<tr><td>"+it.label+"</td>"
 	ouputstring="$ouputstring<td>"+it.hits.round()+"</td>"
 	ouputstring="$ouputstring<td>"+it.avg.round()+"</td>"
 	ouputstring="$ouputstring<td>"+it.total.round()+"</td>"

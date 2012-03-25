@@ -1,9 +1,8 @@
 package org.duguo.xdir.core.internal.cache;
 
+import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import javax.servlet.ServletOutputStream;
 
 public class CacheOutputStream extends ServletOutputStream {
 	private OutputStream content;

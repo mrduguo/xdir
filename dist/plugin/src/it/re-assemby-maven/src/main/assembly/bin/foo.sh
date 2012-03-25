@@ -170,7 +170,7 @@ loadXdirBootOpts() {
 		    FINAL_COMMAND="$FINAL_COMMAND -classpath $CLASSPATH"
 		    ;;
 		REPLACE_XDIR_HOME)
-		    FINAL_COMMAND="$FINAL_COMMAND -Dxdir.dir.home=$XDIR_HOME"
+		    FINAL_COMMAND="$FINAL_COMMAND -Dxdir.home=$XDIR_HOME"
 		    ;;
 		REPLACE_XDIR_CONF)
 		    FINAL_COMMAND="$FINAL_COMMAND -Dxdir.dir.conf=$XDIR_CONF"

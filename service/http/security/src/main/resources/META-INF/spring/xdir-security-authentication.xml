@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans   
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util  
-       http://www.springframework.org/schema/util/spring-util.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-  <bean id="loginManager" class="org.duguo.xdir.security.impl.authentication.manager.LoginManagerImpl">
+<bean id="loginManager" class="org.duguo.xdir.security.impl.authentication.manager.LoginManagerImpl">
     <property name="accountService" ref="accountService"/>
     <property name="rememberMeEncoder" ref="rememberMeEncoder"/>
     <property name="rememberMexpireInDays" value="${xdir.security.rememberme.expire.in.days}"/>
@@ -25,8 +23,8 @@
   <bean id="chainedValidator" class="org.duguo.xdir.security.impl.authentication.validator.ChainedValidator">
     <property name="validators">
       <list>
-          <ref bean="accountServiceUserValidator"/>
           <ref bean="inMemoryUserValidator"/>
+          <ref bean="accountServiceUserValidator"/>
       </list>
     </property>
   </bean>
@@ -72,6 +70,7 @@
       <property name="localIpAddress">
           <set>
               <value>127.0.0.1</value>
+              <value>0:0:0:0:0:0:0:1</value>
               <value>0:0:0:0:0:0:0:1%0</value>
           </set>
       </property>

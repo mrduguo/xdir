@@ -1,19 +1,18 @@
 package org.duguo.xdir.spi.util.bean;
 
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
+
 import java.io.File;
 import java.util.Dictionary;
 import java.util.List;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
 
 
 public class BundleUtil
 {
 
-    public static void scanSingleBundle(String bundleFileNameBase, File baseFolder,List<String> bundleFiles) throws BundleException
+    public static void scanSingleBundle(String bundleFileNameBase, File baseFolder,List<String> bundleFiles) throws Exception
     {
         if ( baseFolder.exists() )
         {
@@ -64,5 +63,4 @@ public class BundleUtil
         }
         return String.valueOf( status );
     }
-    
 }

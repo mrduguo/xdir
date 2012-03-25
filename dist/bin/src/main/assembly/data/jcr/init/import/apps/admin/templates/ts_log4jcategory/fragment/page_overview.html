@@ -2,7 +2,6 @@
 <@page_overview_title/>
 <@groovy>
 	import org.duguo.xdir.spi.util.bean.BeanUtil
-	import org.duguo.xdir.spi.util.io.FileUtil
 	def ouputstring=""
 	rootLogger=org.apache.log4j.LogManager.getRootLogger()
 	loggerRepository=org.apache.log4j.LogManager.getLoggerRepository()
@@ -82,5 +81,5 @@
 </@groovy>
 <@page_overview_content/>
 <#macro page_overview_title>
-	<h1><div><a href="${pageUrl}?action=reset" class="button">Reload from log4j.xml</a></div>${pageTitle}</h1>
+	<h1>${pageTitle}</h1>
 </#macro>

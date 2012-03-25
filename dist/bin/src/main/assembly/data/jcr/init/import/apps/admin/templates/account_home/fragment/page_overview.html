@@ -4,7 +4,7 @@ ${app.loadAccount(model)}
 <#macro account_info accountNode>
 	<div class="subtitle">
 		<span>User Id: ${accountNode["_user_id"].displayableValue}</span>
-		<span> | Storage Path: <a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/admin/resources/jcr${account.path}${format}">${account.path}</a></span>
+		<span> | Storage Path: <a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/admin/resources/jcr${account.path}${format}">${account.path}</a></span>
 	</div>
 	<div>
 		<h2>Profile</h2>

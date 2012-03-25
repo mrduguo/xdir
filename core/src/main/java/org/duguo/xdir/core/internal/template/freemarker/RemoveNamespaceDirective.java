@@ -1,18 +1,13 @@
 package org.duguo.xdir.core.internal.template.freemarker;
 
-import java.io.IOException;
-import java.util.Map;
-
+import freemarker.core.Environment;
+import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import freemarker.core.Environment;
-import freemarker.template.SimpleScalar;
-import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateModel;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Remove the predefined marcro form the context

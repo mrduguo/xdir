@@ -1,20 +1,19 @@
 package org.duguo.xdir.http.service.impl;
 
 
-import java.io.IOException;
-import java.net.URL;
+import org.duguo.xdir.http.support.AbstractAliasSupportServlet;
+import org.eclipse.jetty.util.resource.Resource;
+import org.osgi.service.http.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.util.resource.Resource;
-import org.osgi.service.http.HttpContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.http.support.AbstractAliasSupportServlet;
+import java.io.IOException;
+import java.net.URL;
 
 
 public class HttpContextAwareResourcesServlet extends AbstractAliasSupportServlet

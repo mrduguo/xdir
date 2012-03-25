@@ -1,11 +1,11 @@
 package org.duguo.xdir.security.impl.authentication.restriction;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.duguo.xdir.security.api.authentication.Authenticator;
 import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.spi.security.Role;
-import org.duguo.xdir.security.api.authentication.Authenticator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RoleRequiredAuthenticator implements Authenticator{
     

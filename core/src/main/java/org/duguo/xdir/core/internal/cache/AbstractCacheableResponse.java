@@ -1,8 +1,7 @@
 package org.duguo.xdir.core.internal.cache;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 public abstract class AbstractCacheableResponse {
 

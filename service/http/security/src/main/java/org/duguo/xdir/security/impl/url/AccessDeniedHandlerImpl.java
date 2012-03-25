@@ -1,13 +1,12 @@
 package org.duguo.xdir.security.impl.url;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
+import org.duguo.xdir.security.api.url.AccessDeniedHandler;
+import org.duguo.xdir.spi.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.model.Model;
-import org.duguo.xdir.security.api.url.AccessDeniedHandler;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler{

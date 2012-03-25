@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version
+  2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+  the specific language governing permissions and limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.duguo.xdir.rest</groupId>
+        <artifactId>xdir-rest</artifactId>
+        <version>0.9.2-SNAPSHOT</version>
+    </parent>
+    <groupId>org.duguo.xdir.rest</groupId>
+    <artifactId>xdir-rest-jersey</artifactId>
+    <version>0.9.2-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <name>XDir Platform REST (Jersey)</name>
+
+
+    <!-- ======================================= -->
+    <!-- BUILD CONFIGURATIONS                    -->
+    <!-- ======================================= -->
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <DynamicImport-Package>*</DynamicImport-Package>
+                        <Export-Package>org.duguo.xdir.rest.jersey*
+                        </Export-Package>
+                        <Import-Package>
+                            org.osgi.service.http,
+                            javax.servlet*;version="[2.4.0, 4.0.0)",
+                            org.slf4j*;version="[1.5.6, 2.0.0)",
+                            *;resolution:=optional
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+
+                <configuration>
+
+                    <encoding>UTF-8</encoding>
+                    <verbose>false</verbose>
+                    <show>public</show>
+                    <subpackages>org.duguo.xdir.rest.jersey.model:org.duguo.xdir.rest.jersey.api.resource</subpackages>
+
+                    <doclet>com.sun.jersey.wadl.resourcedoc.ResourceDoclet</doclet>
+                    <docletArtifacts>
+                        <docletArtifact>
+                            <groupId>com.sun.jersey.contribs</groupId>
+                            <artifactId>wadl-resourcedoc-doclet</artifactId>
+                            <version>${lib.jersey.version}</version>
+                        </docletArtifact>
+                        <docletArtifact>
+                            <groupId>com.sun.jersey</groupId>
+                            <artifactId>jersey-server</artifactId>
+                            <version>${lib.jersey.version}</version>
+                        </docletArtifact>
+                        <docletArtifact>
+                            <groupId>xerces</groupId>
+                            <artifactId>xercesImpl</artifactId>
+                            <version>2.6.1</version>
+                        </docletArtifact>
+                    </docletArtifacts>
+                    <additionalparam>-output ${project.build.directory}/resourcedoc.xml  -processors org.duguo.xdir.rest.jersey.util.ExampleDocProcessor</additionalparam>
+
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.sun.jersey.contribs</groupId>
+                <artifactId>maven-wadl-plugin</artifactId>
+                <version>${lib.jersey.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wadlFile>${project.build.outputDirectory}/wadl/application.wadl</wadlFile>
+                    <formatWadlFile>true</formatWadlFile>
+                    <baseUri>http://rest.if/</baseUri>
+                    <packagesResourceConfig>
+                        <param>org.duguo.xdir.rest.jersey.api.resource</param>
+                    </packagesResourceConfig>
+                    <wadlGenerators>
+                        <wadlGeneratorDescription>
+                            <className>com.sun.jersey.server.wadl.generators.WadlGeneratorApplicationDoc</className>
+                            <properties>
+                                <property>
+                                    <name>applicationDocsFile</name>
+                                    <value>${basedir}/src/main/doc/application-doc.xml</value>
+                                </property>
+                            </properties>
+                        </wadlGeneratorDescription>
+                        <wadlGeneratorDescription>
+                            <className>com.sun.jersey.server.wadl.generators.resourcedoc.WadlGeneratorResourceDocSupport</className>
+                            <properties>
+                                <property>
+                                    <name>resourceDocFile</name>
+                                    <value>${project.build.directory}/resourcedoc.xml</value>
+                                </property>
+                            </properties>
+                        </wadlGeneratorDescription>
+                        <wadlGeneratorDescription>
+                            <className>org.duguo.xdir.rest.jersey.util.ExampleWadlGenerator</className>
+                            <properties>
+                                <property>
+                                    <name>resourceDocFile</name>
+                                    <value>${project.build.directory}/resourcedoc.xml</value>
+                                </property>
+                            </properties>
+                        </wadlGeneratorDescription>
+                    </wadlGenerators>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>generate-application-html</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import javax.xml.transform.*
+                                import javax.xml.transform.stream.*
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(new File("${basedir}/src/main/doc/wadl_documentation.xsl")));
+                                transformer.transform(new StreamSource(new File("${basedir}/target/classes/wadl/application.wadl")), new StreamResult(new File("${basedir}/target/classes/wadl/application.html")));
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- ======================================= -->
+    <!-- DEPENDENCIES                            -->
+    <!-- ======================================= -->
+    <dependencies>
+
+        <!-- Xdir API -->
+        <dependency>
+            <groupId>org.duguo.xdir</groupId>
+            <artifactId>xdir-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- HTTP Service support -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>com.springsource.javax.servlet</artifactId>
+            <version>${lib.servlet.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.duguo.xdir.service.http</groupId>
+            <artifactId>xdir-service-http-jetty</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.duguo.xdir.service.http</groupId>
+            <artifactId>xdir-service-http-jersey</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <!-- wadl util, move out of rest module later -->
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>maven-wadl-plugin</artifactId>
+            <version>${lib.jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>wadl-resourcedoc-doclet</artifactId>
+            <version>${lib.jersey.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

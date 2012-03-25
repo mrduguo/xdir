@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/osgi
+       http://www.springframework.org/schema/osgi/spring-osgi-2.0.xsd">
+
+    <osgi:reference id="defaultHttpService" bean-name="defaultHttpService" interface="org.osgi.service.http.HttpService">
+        <osgi:listener bind-method="onBind" unbind-method="onUnbind" ref="servletService"/>
+    </osgi:reference>
+    <bean id="servletService" class="org.duguo.xdir.http.service.impl.ServletServiceImpl">
+        <property name="servlets">
+            <map>
+                <entry key="${xdir.http.jersey.servlet.context}/*" value-ref="jerseyServlet"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <value>
+                xdir.http.jersey.servlet.context=/rest
+            </value>
+        </property>
+    </bean>
+
+
+</beans>

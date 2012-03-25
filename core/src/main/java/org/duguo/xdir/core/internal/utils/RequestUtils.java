@@ -1,18 +1,12 @@
 package org.duguo.xdir.core.internal.utils;
 
 
-
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.jcr.utils.JcrPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import java.util.*;
 
 public class RequestUtils
 {

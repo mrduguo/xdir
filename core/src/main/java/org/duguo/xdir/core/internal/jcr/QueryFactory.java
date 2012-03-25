@@ -1,12 +1,10 @@
 package org.duguo.xdir.core.internal.jcr;
 
-import java.util.Map;
-
-import javax.jcr.Node;
-
-
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.model.TextNode;
+
+import javax.jcr.Node;
+import java.util.Map;
 
 public interface QueryFactory {
 	

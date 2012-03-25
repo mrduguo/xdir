@@ -1,16 +1,15 @@
 package org.duguo.xdir.security.impl.codec.crypt;
 
-import java.security.spec.KeySpec;
+import org.duguo.xdir.security.api.codec.StringEncoder;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.DESedeKeySpec;
-
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
-import org.duguo.xdir.security.api.codec.StringEncoder;
+import java.security.spec.KeySpec;
 
 public class KeyFactoryBean implements FactoryBean<SecretKey>,InitializingBean {
 	

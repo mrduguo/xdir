@@ -56,6 +56,11 @@
             <version>${lib.slf4j.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${lib.slf4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.log4j</groupId>
             <artifactId>com.springsource.org.apache.log4j</artifactId>
             <version>${lib.log4j.version}</version>

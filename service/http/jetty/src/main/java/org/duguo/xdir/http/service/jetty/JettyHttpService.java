@@ -1,13 +1,7 @@
 package org.duguo.xdir.http.service.jetty;
 
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.Map;
-
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-
+import org.duguo.xdir.http.service.impl.HttpContextAwareResourcesServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -18,10 +12,16 @@ import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.http.service.impl.HttpContextAwareResourcesServlet;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import java.util.*;
 
 
-public class JettyHttpService implements HttpService
+public class JettyHttpService implements HttpService, ApplicationContextAware
 {
 
     private static final Logger logger = LoggerFactory.getLogger( JettyHttpService.class );
@@ -29,6 +29,9 @@ public class JettyHttpService implements HttpService
     
     private ServletContextHandler servletContextHandler;
     private HttpContext defaultHttpContext;
+    private ApplicationContext applicationContext;
+    private int initOrder=1;
+    private boolean startWithUnavailable=false;
 
     public HttpContext createDefaultHttpContext()
     {
@@ -63,13 +66,26 @@ public class JettyHttpService implements HttpService
             throw new RuntimeException( "Servlet alias [" + alias + "] already registed and cannot register again" );
         }
 
-        ServletHolder servletHolder = new ServletHolder( servlet );
+        ServletHolder servletHolder =applicationContext.getBean("servletHolderPrototype",ServletHolder.class);
+        servletHolder.setServlet(servlet);
+        servletHolder.setInitOrder(initOrder);
         registedServlets.put( alias, servletHolder );
 
 
-        servletContextHandler.addServlet( servletHolder, alias );
-        if(logger.isDebugEnabled())
-            logger.debug( "registered servlet alias [" + alias + "]" );
+        servletContextHandler.addServlet(servletHolder, alias);
+        if(servletHolder.getUnavailableException()!=null && !startWithUnavailable){
+            logger.error("Failed to register servlet, will force exit",servletHolder.getUnavailableException());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // it will trigger shutdown hook
+                    // @link CustomListenerAdapterUtils doesn't propagate the exception to the host bundle
+                    System.exit(-1);
+                }
+            }).start();
+        }else{
+            if(logger.isDebugEnabled()) logger.debug( "registered servlet alias [" + alias + "]" );
+        }
     }
 
     public void unregister( String alias )
@@ -129,4 +145,16 @@ public class JettyHttpService implements HttpService
         this.defaultHttpContext = defaultHttpContext;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext=applicationContext;
+    }
+
+    public void setInitOrder(int initOrder) {
+        this.initOrder = initOrder;
+    }
+
+    public void setStartWithUnavailable(boolean startWithUnavailable) {
+        this.startWithUnavailable = startWithUnavailable;
+    }
 }

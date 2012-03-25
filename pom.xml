@@ -44,14 +44,17 @@ limitations under the License.
         <lib.osgi.compendium.version>4.2.0</lib.osgi.compendium.version>
         <lib.springframework.version>3.0.6.RELEASE</lib.springframework.version>
         <lib.gemini.blueprint.version>1.0.0.RELEASE</lib.gemini.blueprint.version>
-        <!--<lib.felix.version>3.2.2</lib.felix.version>-->
-        <lib.felix.version>2.0.4</lib.felix.version>
+        <lib.felix.version>4.0.2</lib.felix.version>
+        <!--<lib.felix.version>2.0.4</lib.felix.version>-->
         <lib.junit.version>4.9</lib.junit.version>
         <lib.slf4j.version>1.6.2</lib.slf4j.version>
         <lib.log4j.version>1.2.16</lib.log4j.version>
-        <lib.http.jetty.version>7.1.4.v20100610</lib.http.jetty.version>
+        <lib.commoms.lang.version>2.6</lib.commoms.lang.version>
+        <lib.httpcomponents.version>4.1.2</lib.httpcomponents.version>
+        <lib.http.jetty.version>7.6.1.v20120215</lib.http.jetty.version><!--8.1.1.v20120215-->
         <lib.jcr.api.version>2.0</lib.jcr.api.version>
         <lib.jcr.jackrabbit.version>2.1.0</lib.jcr.jackrabbit.version>
+        <lib.jersey.version>1.12</lib.jersey.version>
         <lib.template.freemarker.version>2.3.15</lib.template.freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

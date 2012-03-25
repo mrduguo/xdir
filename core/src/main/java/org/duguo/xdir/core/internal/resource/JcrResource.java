@@ -1,10 +1,9 @@
 package org.duguo.xdir.core.internal.resource;
 
-import java.io.InputStream;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
 import javax.jcr.Property;
-
-import org.duguo.xdir.jcr.utils.JcrNodeUtils;
+import java.io.InputStream;
 
 public class JcrResource implements Resource
 {

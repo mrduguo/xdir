@@ -1,16 +1,15 @@
 package org.duguo.xdir.core.internal.template.freemarker;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import freemarker.cache.TemplateLoader;
 import org.duguo.xdir.core.internal.exception.ResourceNotFoundException;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.ResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import freemarker.cache.TemplateLoader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class FreeMarkerJcrTemplateLoader implements TemplateLoader {
 	

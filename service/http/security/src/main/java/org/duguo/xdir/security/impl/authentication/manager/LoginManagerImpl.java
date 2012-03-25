@@ -1,17 +1,17 @@
 package org.duguo.xdir.security.impl.authentication.manager;
 
+import org.duguo.xdir.security.api.authentication.LoginManager;
+import org.duguo.xdir.security.api.codec.StringEncoder;
+import org.duguo.xdir.spi.security.AccountService;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.duguo.xdir.spi.security.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.AccountService;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.spi.security.User;
-import org.duguo.xdir.security.api.authentication.LoginManager;
-import org.duguo.xdir.security.api.codec.StringEncoder;
 
 
 public class LoginManagerImpl implements LoginManager {

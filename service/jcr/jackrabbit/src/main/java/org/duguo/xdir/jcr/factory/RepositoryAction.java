@@ -1,8 +1,7 @@
 package org.duguo.xdir.jcr.factory;
 
-import java.util.Map;
-
 import javax.jcr.Repository;
+import java.util.Map;
 
 public interface RepositoryAction
 {

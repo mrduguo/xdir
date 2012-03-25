@@ -1,11 +1,11 @@
 package org.duguo.xdir.security.impl.authentication.retriever;
 
-import javax.servlet.http.HttpSession;
-
+import org.duguo.xdir.security.api.authentication.LoginRetriever;
+import org.duguo.xdir.spi.security.LoginEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.security.api.authentication.LoginRetriever;
+
+import javax.servlet.http.HttpSession;
 
 
 public class AuthorisedLoginRetriever implements LoginRetriever{

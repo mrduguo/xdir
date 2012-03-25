@@ -1,9 +1,9 @@
 package org.duguo.xdir.spi.model.support;
 
+import org.duguo.xdir.spi.model.GetAndPut;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.duguo.xdir.spi.model.GetAndPut;
 
 
 /**

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans   
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util  
-       http://www.springframework.org/schema/util/spring-util.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
     
     <bean id="serviceHolder" class="org.duguo.xdir.core.internal.app.ServiceHolder"/>
   
   <bean id="applicationService" class="org.duguo.xdir.core.internal.app.register.ApplicationRegisterImpl" init-method="init">
-    <property name="servletService" ref="servletService"
     <property name="jcrFactory" ref="jcrFactory"/>
     <property name="propertiesService" ref="propertiesService"/>
     <property name="rootApplication" ref="rootApplication"/>
@@ -76,8 +73,8 @@
   <bean id="osgiConfManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiConfManagerApplication" parent="defaultAdminApplicationPrototype">
     <property name="additionalConfigurations">
       <list>
-        <value>${xdir.dir.data}/jcr/template/repository.xml</value>
-        <value>${xdir.dir.data}/jcr/template/repository/nodetypes/custom_nodetypes.xml</value>
+        <value>${xdir.home}/data/jcr/template/repository.xml</value>
+        <value>${xdir.home}/data/jcr/template/repository/nodetypes/custom_nodetypes.xml</value>
       </list>
     </property>
     <property name="ignoredFiles" value=".*log"/>

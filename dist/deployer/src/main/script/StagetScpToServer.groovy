@@ -49,10 +49,10 @@ if (previousDeployment != null) {
     println "previousDeployment is:"+previousDeployment
     deployScript("previousDeployment='$previousDeployment'")
     deployScript('cp -r overlay/* \$tempDeployment/')
-    deployScript('cp \$previousDeployment/data/conf/osgi.properties \$tempDeployment/data/classes/osgi.properties')
+    deployScript('cp \$previousDeployment/data/conf/osgi.properties \$tempDeployment/data/conf/osgi.properties')
     deployScript('wget -O \$previousDeployment/backup-apps.zip http://127.0.0.1/admin/resources/jcr/apps.jcr')
     deployScript('jar -xf \$previousDeployment/backup-apps.zip')
-    deployScript('cp -r apps/duguo.org \$tempDeployment/data/jcr/init/import/apps')
+//    deployScript('cp -r apps/duguo.org \$tempDeployment/data/jcr/init/import/apps')
     deployScript('echo "favicon.ico/_hidden_node=true" >> \$tempDeployment/data/jcr/init/import/apps/duguo.org/pages/jcr.properties')
     deployScript('cp -r apps/admin/org/users \$tempDeployment/data/jcr/init/import/apps/admin/org')
     deployScript('cp -r apps/admin/pages/account/login \$tempDeployment/data/jcr/init/import/apps/admin/pages/account')

@@ -1,9 +1,9 @@
 package org.duguo.xdir.security.impl.codec;
 
-import java.util.Map;
-
 import org.duguo.xdir.security.api.codec.EncoderService;
 import org.duguo.xdir.security.api.codec.StringEncoder;
+
+import java.util.Map;
 
 public class EncoderServiceImpl implements EncoderService{
 	

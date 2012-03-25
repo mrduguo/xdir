@@ -1,19 +1,19 @@
 package org.duguo.xdir.http.client.impl;
 
-import java.util.Map;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.duguo.xdir.spi.service.DynamicService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.client.HttpClientService;
 import org.duguo.xdir.http.client.HttpClientUtil;
 import org.duguo.xdir.http.json.Json;
+import org.duguo.xdir.spi.service.DynamicService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class DefaultHttpClientService implements HttpClientService,DynamicService{
 	

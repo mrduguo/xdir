@@ -1,22 +1,21 @@
 package org.duguo.xdir.core.internal.app.resource;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.IOUtils;
+import org.duguo.xdir.core.internal.model.FormatService;
+import org.duguo.xdir.core.internal.model.ModelImpl;
+import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
 import org.duguo.xdir.core.internal.server.DefaultAdminApplication;
+import org.duguo.xdir.core.internal.template.TemplateEngine;
+import org.duguo.xdir.core.internal.utils.RequestUtils;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.duguo.xdir.core.internal.model.FormatService;
-import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
-import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.core.internal.utils.RequestUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class FileManagerApplication extends DefaultAdminApplication
 {
@@ -28,7 +27,7 @@ public class FileManagerApplication extends DefaultAdminApplication
     {
         String basePath= JcrNodeUtils.getPropertyIfExist(model.getNode(), "_fs_path");
         if(basePath!=null){
-            basePath=getPropertiesService().resolveStringValue( basePath );
+            basePath=getPropertiesService().resolvePlaceholders( basePath );
             File baseFolder=new File(basePath);
             if(baseFolder.exists()){
                 model.put( "baseFolder", baseFolder );

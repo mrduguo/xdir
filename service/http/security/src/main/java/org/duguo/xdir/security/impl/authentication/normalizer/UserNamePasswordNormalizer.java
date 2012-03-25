@@ -1,9 +1,9 @@
 package org.duguo.xdir.security.impl.authentication.normalizer;
 
+import org.duguo.xdir.security.api.authentication.LoginNormalizer;
+import org.duguo.xdir.spi.security.LoginEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.security.api.authentication.LoginNormalizer;
 
 
 

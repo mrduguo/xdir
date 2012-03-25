@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
-  xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util  
-       http://www.springframework.org/schema/util/spring-util.xsd
+
+
        http://www.springframework.org/schema/osgi  
        http://www.springframework.org/schema/osgi/spring-osgi-2.0.xsd">
 
-  
-  <osgi:service ref="jcrRepositoryFactory" interface="javax.jcr.RepositoryFactory" depends-on="jcrRepositoryFactory"/>
+
+    <osgi:service ref="jcrRepositoryFactory" interface="javax.jcr.RepositoryFactory" depends-on="jcrRepositoryFactory"/>
 
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="properties">
       <value>
         xdir.jcr.username=username
         xdir.jcr.password=password
-        xdir.jcr.repo.path=${xdir.dir.data}/jcr/repo
+        xdir.jcr.repo.path=${xdir.home}/data/jcr/repo
         xdir.jcr.pool.maxactive=10
         xdir.jcr.pool.exhaustedaction=1
         xdir.jcr.pool.maxwait=2000

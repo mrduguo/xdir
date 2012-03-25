@@ -1,5 +1,10 @@
 package org.duguo.xdir.core.internal.resource;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +13,6 @@ import java.security.Principal;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 public class FileUploadHttpServletRequest implements HttpServletRequest{
 	private HttpServletRequest httpServletRequest;

@@ -1,8 +1,8 @@
 package org.duguo.xdir.core.internal.app;
 
-import java.util.Map;
-
 import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import java.util.Map;
 public interface Application
 {
     public static final int STATUS_REGISGERED_CONTROLLER=1;

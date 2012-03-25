@@ -35,11 +35,6 @@
 
         <!-- JCR Service support -->
         <dependency>
-            <groupId>javax.jcr</groupId>
-            <artifactId>jcr</artifactId>
-            <version>${lib.jcr.api.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-api</artifactId>
             <version>${lib.jcr.jackrabbit.version}</version>

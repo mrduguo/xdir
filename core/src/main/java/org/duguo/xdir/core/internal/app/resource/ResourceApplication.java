@@ -1,12 +1,12 @@
 package org.duguo.xdir.core.internal.app.resource;
 
+import org.apache.commons.io.IOUtils;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.core.internal.cache.CacheService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.resource.Resource;
 import org.duguo.xdir.core.internal.resource.ResourceLoader;
-import org.duguo.xdir.spi.util.io.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,10 +74,10 @@ public class ResourceApplication extends JcrTemplateAwareApplication implements 
 
             InputStream inputStream = resource.getAsInputStream();
             try {
-                FileUtil.writeStream(inputStream, model.getResponse().getOutputStream());
+                IOUtils.copy(inputStream, model.getResponse().getOutputStream());
                 handleStatus = STATUS_SUCCESS;
             } finally {
-                inputStream.close();
+                IOUtils.closeQuietly(inputStream);
             }
         }
         return handleStatus;

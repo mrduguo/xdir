@@ -1,8 +1,5 @@
 package org.duguo.xdir.spi.service;
 
-import org.duguo.xdir.spi.model.Model;
-
-
 /**
  * service provided to transform string to another format
  */

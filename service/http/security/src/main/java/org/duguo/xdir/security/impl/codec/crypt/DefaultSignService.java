@@ -1,12 +1,12 @@
 package org.duguo.xdir.security.impl.codec.crypt;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.apache.commons.codec.binary.Base64;
+import org.duguo.xdir.security.api.codec.SignService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.security.api.codec.SignService;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class DefaultSignService implements SignService {
 	  

@@ -1,0 +1,21 @@
+<#assign groovy = "org.duguo.xdir.core.internal.template.freemarker.GroovyDirective"?new()>
+<@groovy>
+import javax.xml.transform.stream.*
+import javax.xml.transform.*
+
+def serverBase="http://if:8080"
+def writer = new StringWriter();
+def xml=new URL("$serverBase/application.wadl").text
+def xslt=model.node.getProperty("_xsl").getString()
+def transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(new StringReader(xslt)))
+transformer.setURIResolver(new URIResolver(){
+@Override
+public Source resolve(String href, String base) throws TransformerException {
+    def tmpText=new URL("$serverBase/$href").text
+    return new StreamSource(new StringReader(tmpText))
+ }
+});
+transformer.transform(new StreamSource(new StringReader(xml)), new StreamResult(writer))
+println "writer:"+writer
+	return writer.toString()
+</@groovy>

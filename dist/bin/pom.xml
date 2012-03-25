@@ -49,22 +49,7 @@
                                     </dependencies>
                                 </fileSet>
                                 <fileSet>
-                                    <outputDirectory>bundles/installable</outputDirectory>
-                                    <dependencies>
-                                        <dependency>
-                                            <groupId>org.apache.felix</groupId>
-                                            <artifactId>org.apache.felix.shell</artifactId>
-                                            <version>1.4.1</version>
-                                        </dependency>
-                                        <dependency>
-                                            <groupId>org.apache.felix</groupId>
-                                            <artifactId>org.apache.felix.shell.tui</artifactId>
-                                            <version>1.4.1</version>
-                                        </dependency>
-                                    </dependencies>
-                                </fileSet>
-                                <fileSet>
-                                    <outputDirectory>bundles/system/extender</outputDirectory>
+                                    <outputDirectory>bundles/extender</outputDirectory>
                                     <dependencies>
                                         <dependency>
                                             <groupId>org.duguo.xdir.osgi</groupId>
@@ -75,7 +60,7 @@
                                     </dependencies>
                                 </fileSet>
                                 <fileSet>
-                                    <outputDirectory>bundles/system/xdir/common</outputDirectory>
+                                    <outputDirectory>bundles/service/010-spi</outputDirectory>
                                     <dependencies>
                                         <dependency>
                                             <groupId>org.duguo.xdir</groupId>
@@ -83,23 +68,42 @@
                                             <version>${project.version}</version>
                                         </dependency>
                                         <dependency>
+                                            <groupId>javax.servlet</groupId>
+                                            <artifactId>com.springsource.javax.servlet</artifactId>
+                                            <version>${lib.servlet.api.version}</version>
+                                        </dependency>
+                                        <dependency>
+                                            <groupId>javax.jcr</groupId>
+                                            <artifactId>jcr</artifactId>
+                                            <version>${lib.jcr.api.version}</version>
+                                        </dependency>
+                                    </dependencies>
+                                </fileSet>
+                                <fileSet>
+                                    <outputDirectory>bundles/service/030-codec</outputDirectory>
+                                    <dependencies>
+                                        <dependency>
                                             <groupId>org.duguo.xdir.service.codec</groupId>
                                             <artifactId>xdir-service-codec-group</artifactId>
                                             <version>${project.version}</version>
                                             <type>pom</type>
                                         </dependency>
+                                    </dependencies>
+                                </fileSet>
+                                <fileSet>
+                                    <outputDirectory>bundles/service/040-db</outputDirectory>
+                                    <dependencies>
                                         <dependency>
                                             <groupId>org.duguo.xdir.service.db</groupId>
                                             <artifactId>xdir-service-db-group</artifactId>
                                             <version>${project.version}</version>
                                             <type>pom</type>
                                         </dependency>
-                                        <dependency>
-                                            <groupId>org.duguo.xdir.service.http</groupId>
-                                            <artifactId>xdir-service-http-group</artifactId>
-                                            <version>${project.version}</version>
-                                            <type>pom</type>
-                                        </dependency>
+                                    </dependencies>
+                                </fileSet>
+                                <fileSet>
+                                    <outputDirectory>bundles/service/050-jcr</outputDirectory>
+                                    <dependencies>
                                         <dependency>
                                             <groupId>org.duguo.xdir.service.jcr</groupId>
                                             <artifactId>xdir-service-jcr-group</artifactId>
@@ -109,7 +113,24 @@
                                     </dependencies>
                                 </fileSet>
                                 <fileSet>
-                                    <outputDirectory>bundles/system/xdir/platform</outputDirectory>
+                                    <outputDirectory>bundles/service/060-http</outputDirectory>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.duguo.xdir.service.http</groupId>
+                                            <artifactId>xdir-service-http-group</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>pom</type>
+                                        </dependency>
+                                        <!--<dependency>-->
+                                            <!--<groupId>org.duguo.xdir.service.http</groupId>-->
+                                            <!--<artifactId>xdir-service-rest-group</artifactId>-->
+                                            <!--<version>${project.version}</version>-->
+                                            <!--<type>pom</type>-->
+                                        <!--</dependency>-->
+                                    </dependencies>
+                                </fileSet>
+                                <fileSet>
+                                    <outputDirectory>bundles/xdir</outputDirectory>
                                     <dependencies>
                                         <dependency>
                                             <groupId>org.duguo.xdir</groupId>

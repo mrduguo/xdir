@@ -1,12 +1,12 @@
 package org.duguo.xdir.core.internal.resource;
 
 
-import javax.jcr.Node;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.spi.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jcr.Node;
 
 
 public class JcrAwareResourceLoader implements ResourceLoader

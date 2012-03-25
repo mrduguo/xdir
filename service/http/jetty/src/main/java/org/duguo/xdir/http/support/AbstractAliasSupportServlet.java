@@ -1,14 +1,14 @@
 package org.duguo.xdir.http.support;
 
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-
+import org.duguo.xdir.spi.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.duguo.xdir.spi.util.http.HttpUtil;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 
 public abstract class AbstractAliasSupportServlet implements Servlet

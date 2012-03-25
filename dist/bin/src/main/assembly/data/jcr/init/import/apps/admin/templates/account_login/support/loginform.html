@@ -21,7 +21,7 @@
         <tr>
             <td colspan="2">
                 <button type="submit" class="button"  tabindex="4">Login</button>&nbsp;
-                <a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}/")}" class="button"  tabindex="5">Cancel</a>
+                <a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.url}/")}" class="button"  tabindex="5">Cancel</a>
             </td>
         </tr>
     </table>

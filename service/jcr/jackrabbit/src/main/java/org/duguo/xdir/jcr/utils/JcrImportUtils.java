@@ -1,20 +1,19 @@
 package org.duguo.xdir.jcr.utils;
 
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.jcr.*;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.jcr.Binary;
+import javax.jcr.ImportUUIDBehavior;
+import javax.jcr.Node;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class JcrImportUtils

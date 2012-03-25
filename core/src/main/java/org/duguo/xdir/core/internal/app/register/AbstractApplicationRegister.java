@@ -1,26 +1,26 @@
 package org.duguo.xdir.core.internal.app.register;
 
 
-import java.lang.reflect.Method;
-import java.util.*;
-
-import javax.jcr.Node;
-
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.core.internal.app.ParentAwareApplication;
 import org.duguo.xdir.core.internal.jcr.JcrFactory;
 import org.duguo.xdir.core.internal.site.Site;
 import org.duguo.xdir.core.internal.template.TemplateEngine;
-import org.duguo.xdir.http.service.ServletService;
 import org.duguo.xdir.spi.util.bean.BeanUtil;
 import org.duguo.xdir.spi.util.bean.BeanUtil.GetterSetterCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.util.Assert;
+
+import javax.jcr.Node;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public abstract class AbstractApplicationRegister implements BeanFactoryAware,ApplicationService {
@@ -28,7 +28,6 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware,Ap
     private static final Logger logger = LoggerFactory.getLogger(AbstractApplicationRegister.class);
 
     protected BeanFactory beanFactory;
-    protected ServletService servletService;
     protected JcrFactory jcrFactory;
 
     protected JcrTemplateAwareApplication rootApplication;
@@ -153,11 +152,6 @@ public abstract class AbstractApplicationRegister implements BeanFactoryAware,Ap
 
     public void setBeanFactory(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
-    }
-
-
-    public void setServletService(ServletService servletService) {
-        this.servletService = servletService;
     }
 
 

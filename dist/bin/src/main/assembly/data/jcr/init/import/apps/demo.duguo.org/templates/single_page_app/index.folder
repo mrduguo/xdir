@@ -1,0 +1,6 @@
+<#if (!streamNodeIfIsFile())>
+<#include "jquery-mobile.ftl">
+</#if>
+<#macro page_body>
+	<#include "pages.ftl">
+</#macro>

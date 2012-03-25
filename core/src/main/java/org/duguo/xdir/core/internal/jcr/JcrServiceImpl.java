@@ -1,13 +1,6 @@
 package org.duguo.xdir.core.internal.jcr;
 
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
-
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.duguo.xdir.core.internal.exception.XdirException;
@@ -21,6 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.*;
+import java.io.*;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrService,DynamicService {
     private static final Logger logger = LoggerFactory.getLogger(JcrServiceImpl.class);
@@ -66,15 +65,25 @@ public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrServi
             return;
         }
 
+        String tempNodeName="tmp-"+System.currentTimeMillis();
+        Node tmpNode=model.getNode().addNode(tempNodeName);
         if (originalFileName.endsWith("-jcr.xml")) {
-            importJcrXmlFile(model, localFile);
+            importJcrXmlFile(model,tmpNode, localFile);
         } else {
-            importFolderOrZipFile(model, originalFileName, localFile);
+            importFolderOrZipFile(model,tmpNode, originalFileName, localFile);
         }
+        
+        Node nodeToBeImported=(Node)tmpNode.getNodes().next();
+        if(model.getNode().hasNode(nodeToBeImported.getName())){
+            model.getNode().getNode(nodeToBeImported.getName()).remove();
+        }
+        model.getSession().save();
+        model.getSession().move(nodeToBeImported.getPath(), model.getNode().getPath()+"/"+nodeToBeImported.getName());
+        tmpNode.remove();
         saveNode(model);
     }
 
-    private void importFolderOrZipFile(ModelImpl model, String originalFileName, File jcrFolder) throws Exception {
+    private void importFolderOrZipFile(ModelImpl model,Node parentNode, String originalFileName, File jcrFolder) throws Exception {
         File unzipTargetFolder = null;
         try {
             if (originalFileName.endsWith("-jcr.zip")) {
@@ -100,17 +109,17 @@ public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrServi
                 jcrFolder =unzipTargetFolder;
                 if (logger.isDebugEnabled()) logger.debug("extracted zip files to {}", jcrFolder.getAbsolutePath());
             }
-            JcrImportUtils.importFolder(model.getNode(), jcrFolder);
+            JcrImportUtils.importFolder(parentNode, jcrFolder);
             if (logger.isDebugEnabled()) logger.debug("imported files to {}", model.getNode().getPath());
         } finally {
             FileUtils.deleteQuietly(unzipTargetFolder);
         }
     }
 
-    private void importJcrXmlFile(ModelImpl model, File jcrXmlFile) throws IOException, RepositoryException {
+    private void importJcrXmlFile(ModelImpl model,Node parentNode, File jcrXmlFile) throws IOException, RepositoryException {
         FileInputStream fileInputStream = new FileInputStream(jcrXmlFile);
         try {
-            model.getSession().importXML(model.getNode().getPath(), fileInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
+            model.getSession().importXML(parentNode.getPath(), fileInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
         } finally {
             IOUtils.closeQuietly(fileInputStream);
         }
@@ -161,7 +170,16 @@ public class JcrServiceImpl extends AbstractUpdateJcrService implements JcrServi
             PropertyIterator propertyIterator = node.getProperties();
             while (propertyIterator.hasNext()) {
                 Property property = (Property) propertyIterator.next();
-                _properties.put(property.getName(), JcrNodeUtils.getPropertyStringValue(property));
+                String propertyStringValue = JcrNodeUtils.getPropertyStringValue(property);
+                if(propertyStringValue.indexOf("\n")>=0){
+                    String singlePropertyPath = entryPath + "/"+JcrImportUtils.PROPERTIES_FILE_PREFIX+property.getName();
+                    if (logger.isTraceEnabled()) logger.trace("add multi line string properties as file {}", singlePropertyPath);
+                    zipOutputStream.putNextEntry(new ZipEntry(singlePropertyPath));
+                    IOUtils.write(propertyStringValue,zipOutputStream);
+                    zipOutputStream.closeEntry();
+                }else{
+                    _properties.put(property.getName(), propertyStringValue);
+                }
             }
             if (_properties.get("jcr:primaryType").contains("unstructured")) {
                 _properties.remove("jcr:primaryType");

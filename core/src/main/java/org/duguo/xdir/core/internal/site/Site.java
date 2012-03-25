@@ -1,9 +1,9 @@
 package org.duguo.xdir.core.internal.site;
 
+import org.duguo.xdir.core.internal.app.Application;
+
 import java.util.List;
 import java.util.Map;
-
-import org.duguo.xdir.core.internal.app.Application;
 
 public class Site
 {

@@ -31,7 +31,7 @@
 #   XDIR_OPTS - parameters passed to the Java VM when running server
 #     e.g. to debug Maven itself, use
 #if [ "x$1" = "xstart" ] ; then
-#    XDIR_OPTS="-Dfile.encoding=UTF-8 -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=127.0.0.1:8000"
+#    XDIR_OPTS="-Ddebug -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=127.0.0.1:8000"
 #fi
 PROGNAME="$0"
 ACTION="$1"
@@ -126,7 +126,7 @@ locateJava() {
 
 setupClasspath() {
     # Add the jars in the boot dir
-    CLASSPATH="$XDIR_HOME/data/classes"
+    CLASSPATH="$XDIR_HOME/data/conf"
     for file in $XDIR_HOME/boot/*.jar
     do
         if [ -z "$CLASSPATH" ]; then
@@ -154,9 +154,9 @@ init(){
 main() {
     init
 
-    FINAL_COMMAND="$JAVA  -classpath $CLASSPATH -Dxdir.dir.home=$XDIR_HOME -Dxdir.dir.conf=$XDIR_HOME/data/classes $XDIR_OPTS org.duguo.xdir.osgi.bootstrap.Main $@"
+    FINAL_COMMAND="$JAVA  -classpath $CLASSPATH -Dfile.encoding=UTF-8 -Dxdir.home=$XDIR_HOME $XDIR_OPTS org.duguo.xdir.osgi.bootstrap.Main $@"
 
-    #echo $FINAL_COMMAND
+    #echo "FINAL_COMMAND: $FINAL_COMMAND"
     if [ "$ACTION" = "start" ]; then
         mkdir -p $XDIR_HOME/var/logs
 	    nohup $FINAL_COMMAND >& $XDIR_HOME/var/logs/console.log </dev/null &

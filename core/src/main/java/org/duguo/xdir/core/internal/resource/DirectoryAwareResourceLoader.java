@@ -1,11 +1,11 @@
 package org.duguo.xdir.core.internal.resource;
 
 
-import java.io.File;
-
+import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import java.io.File;
 
 public class DirectoryAwareResourceLoader extends JcrAwareResourceLoader {
     

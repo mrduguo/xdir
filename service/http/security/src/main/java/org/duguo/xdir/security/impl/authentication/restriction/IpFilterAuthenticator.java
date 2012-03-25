@@ -1,13 +1,13 @@
 package org.duguo.xdir.security.impl.authentication.restriction;
 
 
-import java.util.List;
-
+import org.duguo.xdir.security.api.authentication.Authenticator;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.security.api.authentication.Authenticator;
-import org.duguo.xdir.spi.util.http.HttpUtil;
+
+import java.util.List;
 
 public class IpFilterAuthenticator implements Authenticator{
     

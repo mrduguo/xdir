@@ -1,14 +1,14 @@
 package org.duguo.xdir.osgi.bootstrap;
 
 
-import org.duguo.xdir.osgi.bootstrap.api.Server;
-import org.duguo.xdir.osgi.bootstrap.provider.ServerImpl;
+import org.duguo.xdir.osgi.bootstrap.conf.PropertiesUtils;
+import org.duguo.xdir.osgi.bootstrap.osgiserver.DefaultOsgiServer;
+import org.duguo.xdir.osgi.bootstrap.spi.Server;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.*;
 
 /**
  * The Main class to boot the OSGi server
@@ -70,7 +70,33 @@ public class Main {
     }
 
     private void startServer(ServerSocket serverSocket) throws Exception {
-        final Server server = (Server)Class.forName(System.getProperty("xdir.osgi.server.impl.class",ServerImpl.class.getName())).newInstance();
+        PropertiesUtils.loadOsgiProperties();
+        final Server server = (Server)Class.forName(System.getProperty("xdir.osgi.server.impl.class",DefaultOsgiServer.class.getName())).newInstance();
+        Thread shutdownHook = addShutdownHook(server);
+        startServerInBootstrap(server);
+        waitForStopRequest(server, serverSocket,shutdownHook);
+    }
+
+    private void startServerInBootstrap(final Server server) {
+        Thread bootstrap=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    System.out.println("Server starting ...");
+                    server.start();
+                }catch (Exception ex){
+                    PropertiesUtils.logSystemProperties();
+                    ex.printStackTrace();
+                    exit(-1, "Server start failed");
+                }
+                PropertiesUtils.logSystemProperties();
+            }
+        });
+        bootstrap.setName("bootstrap");
+        bootstrap.start();
+    }
+
+    private Thread addShutdownHook(final Server server) {
         Thread shutdownHook=new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,50 +107,30 @@ public class Main {
                 }
             }
         });
+        shutdownHook.setName("shutdown-hook");
         Runtime.getRuntime().addShutdownHook(shutdownHook);
-        try{
-            server.start();
-        }catch (Exception ex){
-            ex.printStackTrace();
-            exit(-1, "Start server failed");
-        }
-        waitForStopRequest(server, serverSocket,shutdownHook);
+        return shutdownHook;
     }
 
     private void waitForStopRequest(final Server server,ServerSocket serverSocket,Thread shutdownHook) throws Exception {
         Socket clientSocket = null;
         try {
-            System.out.println("Server started");
             clientSocket = serverSocket.accept();
             System.out.println("Received stop request and shutting down server ...");
             Runtime.getRuntime().removeShutdownHook(shutdownHook);
-            stopServerWithTimeout(server, clientSocket);
+           stopServer(server, clientSocket);
         } finally {
             System.out.println("Server stopped");
             closeClientStopRequestAndExit(clientSocket,0,null);
         }
     }
 
-    private void stopServerWithTimeout(final Server server, Socket clientSocket) throws InterruptedException, ExecutionException, IOException {
-        final Exception[] stopException=new Exception[1];
-        Future taskResult= Executors.newSingleThreadExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    server.stop();
-                } catch (Exception ex) {
-                    stopException[0]=ex;
-                }
-            }
-        });
+    private void stopServer(Server server, Socket clientSocket) throws Exception {
         try{
-            taskResult.get(Long.parseLong(System.getProperty("xdir.osgi.stop.timeout","10")), TimeUnit.SECONDS);
-            if(stopException[0]!=null){
-                stopException[0].printStackTrace();
-                closeClientStopRequestAndExit(clientSocket, -1, "Server stop failed with exception: " + stopException[0].getMessage());
-            }
-        }catch (TimeoutException timeout){
-            closeClientStopRequestAndExit(clientSocket, -1, "Server stop timeout, will force exit");
+            server.stop();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            closeClientStopRequestAndExit(clientSocket, -1, "Server stop failed, will force exit");
         }
     }
 
@@ -171,6 +177,9 @@ public class Main {
             command = args[0];
             if(!SUPPORTED_COMMANDS.contains(command)){
                 exit(-1,command+" is not a supported ["+SUPPORTED_COMMANDS+"] command");
+            }
+            if(args.length>1 && args[1].equals("-debug")){
+                System.setProperty("debug","true");
             }
         } else {
             command = "start";

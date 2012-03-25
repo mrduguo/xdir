@@ -1,10 +1,9 @@
 package org.duguo.xdir.http.json.impl.parser;
 
+import junit.framework.TestCase;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.impl.JsonArrayImpl;
 import org.duguo.xdir.http.json.impl.JsonMapImpl;
-
-import junit.framework.TestCase;
 
 public class XmlConverterUtilTest extends TestCase {
 

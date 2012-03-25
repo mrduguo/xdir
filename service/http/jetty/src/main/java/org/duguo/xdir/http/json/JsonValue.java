@@ -2,8 +2,6 @@ package org.duguo.xdir.http.json;
 
 import java.util.Date;
 
-import org.duguo.xdir.http.json.Json;
-
 public interface JsonValue extends Json{
 
 	public Object get();

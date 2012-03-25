@@ -3,7 +3,7 @@
 	import org.duguo.xdir.spi.util.bundle.BundleHeaderUtil
 	import org.duguo.xdir.spi.util.bean.BeanUtil
 	def ouputstring=""
-	bundlesBaseDir=System.getProperty("xdir.dir.bundles");
+	bundlesBaseDir=System.getProperty("xdir.home")+"/bundles";
 
 	bundle=model.get("bundle")
 
@@ -16,7 +16,7 @@
 	if(pathIndex>=0){
 		bundleGroup=bundleGroup.substring(pathIndex+bundlesBaseDir.length()+1)
 		bundleGroup=bundleGroup.substring(0,bundleGroup.lastIndexOf("/"))
-		bundleLocation=bundle.location.replace(bundlesBaseDir,"\$"+"{xdir.dir.bundles}")
+		bundleLocation=bundle.location.replace(bundlesBaseDir,"\$"+"{xdir.home}/bundles")
 		ouputstring="$ouputstring<tr><td>Location</td><td>$bundleLocation</td></tr>"
 	}
 	ouputstring="$ouputstring<tr><td>Group</td><td>$bundleGroup</td></tr>"
@@ -82,8 +82,8 @@
                 <#else>
                     <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=start&bundleinfo=${bundle.bundleId}" class="button">Start</a>
                 </#if>
+                <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=update&bundleinfo=${bundle.bundleId}" class="button">Update</a>
             </#if>
-            <a href="${pageContext}/index${format}?action=bundleaction&bundleaction=update&bundleinfo=${bundle.bundleId}" class="button">Update</a>
         </div>
 		${pageTitle}
 	</h1>

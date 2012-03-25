@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.fail;
 
 @Listeners(ITListener.class)
 public abstract class AbstractUIIT {
@@ -130,9 +130,6 @@ public abstract class AbstractUIIT {
     protected static void assertXDirPageNormalStatus() {
         try {
             String pageSourceCode = _webDriver.getPageSource();
-            if (!pageSourceCode.contains("Powered by XDir")) {
-                fail("page source code  doesn't contain link [Powered by XDir]:"+pageSourceCode);
-            }
             if (pageSourceCode.contains("HTTP 500 - Internal Server Error")) {
                 fail("HTTP 500 - Internal Server Error");
             }

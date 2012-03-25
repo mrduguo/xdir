@@ -1,26 +1,21 @@
 package org.duguo.xdir.core.internal.jcr;
 
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import org.duguo.xdir.core.internal.model.ModelImpl;
+import org.duguo.xdir.core.internal.model.TextNode;
+import org.duguo.xdir.core.internal.utils.RequestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
-import javax.jcr.Value;
+import javax.jcr.*;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.model.TextNode;
-import org.duguo.xdir.core.internal.utils.RequestUtils;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class QueryFactoryImpl implements QueryFactory{

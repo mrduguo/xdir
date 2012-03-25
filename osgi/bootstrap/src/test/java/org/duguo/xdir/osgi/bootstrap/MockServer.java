@@ -1,6 +1,6 @@
 package org.duguo.xdir.osgi.bootstrap;
 
-import org.duguo.xdir.osgi.bootstrap.api.Server;
+import org.duguo.xdir.osgi.bootstrap.spi.Server;
 
 import java.util.concurrent.Callable;
 

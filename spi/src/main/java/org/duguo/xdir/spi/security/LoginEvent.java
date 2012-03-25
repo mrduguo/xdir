@@ -1,10 +1,9 @@
 package org.duguo.xdir.spi.security;
 
-import java.util.Map;
+import org.duguo.xdir.spi.event.Event;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.duguo.xdir.spi.event.Event;
+import java.util.Map;
 
 public interface LoginEvent extends Event{
 

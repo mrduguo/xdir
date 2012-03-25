@@ -1,7 +1,7 @@
 package org.duguo.xdir.security.impl.authentication.authenticator;
 
-import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.authentication.Authenticator;
+import org.duguo.xdir.spi.security.LoginEvent;
 
 public class ChainedAuthenticator implements Authenticator{
 

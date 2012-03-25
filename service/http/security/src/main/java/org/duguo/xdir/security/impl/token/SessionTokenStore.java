@@ -1,9 +1,9 @@
 package org.duguo.xdir.security.impl.token;
 
+import org.duguo.xdir.security.api.token.TokenStore;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.duguo.xdir.security.api.token.TokenStore;
 
 
 public class SessionTokenStore implements TokenStore {

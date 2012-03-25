@@ -1,9 +1,9 @@
 package org.duguo.xdir.core.internal.app.resource;
 
 
-import java.util.List;
-
 import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import java.util.List;
 
 
 public interface ResourceService

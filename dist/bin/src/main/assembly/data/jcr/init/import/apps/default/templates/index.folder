@@ -11,7 +11,7 @@
           <#list app.children?keys?sort as child>
            <#if child=="admin">
               <li>
-               <a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/admin/">${child}</a>
+               <a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/admin/">${child}</a>
                <span> - XDir Platform Admin Console</span>
               </li>
            <#elseif child!="s">

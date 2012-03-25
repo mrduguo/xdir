@@ -1,9 +1,9 @@
 package org.duguo.xdir.http.json.impl;
 
-import java.util.List;
-
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonArray;
+
+import java.util.List;
 
 public class JsonArrayNull extends JsonArrayImpl{
 	

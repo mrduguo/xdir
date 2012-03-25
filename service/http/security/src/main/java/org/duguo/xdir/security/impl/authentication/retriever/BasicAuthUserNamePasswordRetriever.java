@@ -1,12 +1,12 @@
 package org.duguo.xdir.security.impl.authentication.retriever;
 
-import java.util.StringTokenizer;
-
+import org.duguo.xdir.security.api.authentication.LoginRetriever;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.duguo.xdir.spi.util.codec.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.security.api.authentication.LoginRetriever;
-import org.duguo.xdir.spi.util.codec.Base64;
+
+import java.util.StringTokenizer;
 
 
 public class BasicAuthUserNamePasswordRetriever implements LoginRetriever{

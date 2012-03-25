@@ -1,38 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans   
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util  
-       http://www.springframework.org/schema/util/spring-util.xsd">
-
-  <!-- ======================================= -->
-  <!-- XDIR_DIR_CONF                           -->
-  <!-- Configuration folder support            -->
-  <!-- ======================================= -->
-
-  <bean id="configurationScanner" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwareConditionalSpringConfigurationScanner">
-  </bean>
-
-  <bean id="confFolderAwarePropertiesPostProcessor" class="org.duguo.xdir.osgi.extender.conf.ConfFolderAwarePropertiesPostProcessor" />
-
-  <bean id="extenderProperties" class="org.duguo.xdir.osgi.extender.conf.SystemProperties" />
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-  <!-- ======================================= -->
-  <!-- LAZY_ACTIVATION                         -->
-  <!-- Event support                           -->
-  <!-- ======================================= -->
+  <bean id="confFolderAwarePropertiesPostProcessor" class="org.duguo.xdir.osgi.extender.SystemPropertiesPostProcessor" />
 
-  <bean id="applicationContextCreator" class="org.duguo.xdir.osgi.extender.event.TrackableOsgiApplicationContextCreator">
+  <bean id="applicationContextCreator" class="org.duguo.xdir.osgi.extender.TractableOsgiApplicationContextCreator">
     <property name="configurationScanner" ref="configurationScanner" />
-    <property name="osgiApplicationContextTracker" ref="osgiApplicationContextTracker" />
+    <property name="osgiBundleApplicationContextListener" ref="osgiApplicationContextListener" />
   </bean>
 
-  <bean id="osgiApplicationContextListener" class="org.duguo.xdir.osgi.extender.event.OsgiApplicationContextListener">
-    <property name="osgiApplicationContextTracker" ref="osgiApplicationContextTracker" />
-  </bean>
+  <bean id="configurationScanner" class="org.duguo.xdir.osgi.extender.ConfFolderAwareSpringConfigurationScanner"/>
 
-  <bean id="osgiApplicationContextTracker" class="org.duguo.xdir.osgi.extender.event.OsgiApplicationContextTracker">
+  <bean id="osgiApplicationContextListener" class="org.duguo.xdir.osgi.extender.LazyStartOsgiApplicationContextListener">
     <property name="bundleListeners" ref="bundleListeners" />
   </bean>
 

@@ -3,11 +3,10 @@ package org.duguo.xdir.core.internal.template.freemarker;
 import groovy.lang.DelegatingMetaClass;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
-
+import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.spi.model.GetAndPut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.http.json.Json;
 
 
 public class GroovyPropertyAccessSupport{

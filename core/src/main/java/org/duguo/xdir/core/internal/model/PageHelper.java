@@ -1,18 +1,15 @@
 package org.duguo.xdir.core.internal.model;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.duguo.xdir.core.internal.template.freemarker.StringTemplateUtils;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PageHelper {
 

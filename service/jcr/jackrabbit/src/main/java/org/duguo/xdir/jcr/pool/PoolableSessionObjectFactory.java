@@ -1,11 +1,11 @@
 package org.duguo.xdir.jcr.pool;
 
-import javax.jcr.Repository;
-import javax.jcr.Session;
-
 import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.jcr.Repository;
+import javax.jcr.Session;
 
 public class PoolableSessionObjectFactory extends
         BaseKeyedPoolableObjectFactory {

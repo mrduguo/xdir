@@ -1,15 +1,14 @@
 package org.duguo.xdir.http.json.impl.parser;
 
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonMap;
 import org.duguo.xdir.http.json.JsonParser;
 import org.duguo.xdir.http.json.impl.JsonMapImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 
 /**

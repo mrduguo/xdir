@@ -1,8 +1,8 @@
 package org.duguo.xdir.core.internal.model;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.FactoryBean;
+
+import java.util.Map;
 
 public class FormatsMap implements FactoryBean<Map<String, String[]>>
 {

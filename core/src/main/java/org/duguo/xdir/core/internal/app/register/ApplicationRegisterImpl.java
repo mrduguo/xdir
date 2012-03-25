@@ -1,39 +1,65 @@
 package org.duguo.xdir.core.internal.app.register;
 
 
-import java.lang.management.ManagementFactory;
-import java.util.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.duguo.xdir.core.internal.app.Application;
+import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
+import org.duguo.xdir.core.internal.app.SimplePathApplication;
+import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
+import org.duguo.xdir.core.internal.config.PropertiesService;
+import org.eclipse.gemini.blueprint.context.BundleContextAware;
+import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.duguo.xdir.core.internal.app.SimplePathApplication;
-import org.duguo.xdir.core.internal.app.resource.ResourceApplication;
-import org.duguo.xdir.core.internal.config.PropertiesService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.core.internal.app.Application;
-import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
-import org.duguo.xdir.jcr.utils.JcrRepositoryUtils;
-import org.duguo.xdir.jcr.utils.JcrRepositoryUtils.RepoPath;
-import org.springframework.util.Assert;
+import java.lang.management.ManagementFactory;
+import java.util.Map;
 
 
-public class ApplicationRegisterImpl extends AbstractApplicationRegister {
+public class ApplicationRegisterImpl extends AbstractApplicationRegister implements BundleContextAware{
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationRegisterImpl.class);
     private PropertiesService propertiesService;
+    private BundleContext bundleContext;
 
     public void init()throws Exception{
         reload();
         long jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
 
-        String startupMessage = "XDir server started in "+ DurationFormatUtils.formatDurationWords(jvmUpTime,true,true);
-        System.out.println(startupMessage);
-        logger.info(startupMessage);
+        setupXdirServerInfo(jvmUpTime);
+
+    }
+    private void setupXdirServerInfo(long jvmUpTime) {
+        StringBuilder startupMessage =new StringBuilder();
+        startupMessage.append("XDir server started in ");
+        startupMessage.append(DurationFormatUtils.formatDurationWords(jvmUpTime, true, true));
+
+        String serverVersion = bundleContext.getBundle().getVersion().toString();
+        if(System.getProperty("xdir.server.version")==null) System.setProperty("xdir.server.version",serverVersion);
+        appendInfoLine(startupMessage, "XDir Core Version", serverVersion);
+
+        String serverBuildTime = DateFormatUtils.format(bundleContext.getBundle().getLastModified(), "yyyy-MM-dd HH:mm:ss");
+        if(System.getProperty("xdir.server.build.time")==null) System.setProperty("xdir.server.build.time",serverBuildTime);
+        appendInfoLine(startupMessage, "XDir Core Build Time", serverBuildTime);
+
+        appendInfoLine(startupMessage, "XDir Home", System.getProperty("xdir.home"));
+        appendInfoLine(startupMessage, "XDir Log", System.getProperty("xdir.log.file"));
+        appendInfoLine(startupMessage, "Default Url", System.getProperty("xdir.web.base.url")+"/");
+        appendInfoLine(startupMessage, "Admin  Url", System.getProperty("xdir.web.base.secureurl") + "/admin/");
+        System.setProperty("xdir.server.started.msg",startupMessage.toString());
+    }
+
+    private void appendInfoLine(StringBuilder startupMessage, String header, String value) {
+        startupMessage.append("\n");
+        startupMessage.append(StringUtils.rightPad(header, 21));
+        startupMessage.append("= ");
+        startupMessage.append(value);
 
     }
 
@@ -55,7 +81,7 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
             StringBuilder appsString = new StringBuilder();
             printAppsTree("root", getRootApplication(), appsString, 0);
-            logger.info("registered apps\n{}", appsString);
+            if(logger.isDebugEnabled()) logger.debug("registered apps\n{}", appsString);
 
             if (logger.isDebugEnabled())
                 logger.debug("loaded applications from [{}]", appsRoot);
@@ -123,7 +149,7 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
         if (application != rootApplication) {
             if (appNode.hasProperty("_application_virtual_hosts")) {
                 String rawVirtualHosts = appNode.getProperty("_application_virtual_hosts").getString();
-                rawVirtualHosts = propertiesService.resolveStringValue(rawVirtualHosts);
+                rawVirtualHosts = propertiesService.resolvePlaceholders(rawVirtualHosts);
                 String[] virtualHosts = rawVirtualHosts.split(",");
                 for (String virtualHost : virtualHosts) {
                     registerAppToParent(parentApp, virtualHost.trim(), application);
@@ -220,5 +246,10 @@ public class ApplicationRegisterImpl extends AbstractApplicationRegister {
 
     public void setPropertiesService(PropertiesService propertiesService) {
         this.propertiesService = propertiesService;
+    }
+
+    @Override
+    public void setBundleContext(BundleContext bundleContext) {
+        this.bundleContext=bundleContext;
     }
 }

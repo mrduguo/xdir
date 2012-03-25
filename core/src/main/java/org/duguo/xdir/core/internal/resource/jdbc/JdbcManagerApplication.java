@@ -1,21 +1,20 @@
 package org.duguo.xdir.core.internal.resource.jdbc;
 
 
-import java.io.File;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.jcr.RepositoryFactory;
-import javax.sql.DataSource;
-
+import org.duguo.xdir.core.internal.app.BestPathMatchApplication;
+import org.duguo.xdir.core.internal.model.ModelImpl;
+import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.eclipse.gemini.blueprint.context.BundleContextAware;
-import org.duguo.xdir.core.internal.app.BestPathMatchApplication;
-import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import javax.jcr.RepositoryFactory;
+import javax.sql.DataSource;
+import java.io.File;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JdbcManagerApplication extends BestPathMatchApplication implements BundleContextAware
 {

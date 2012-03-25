@@ -1,13 +1,13 @@
 package org.duguo.xdir.http.client.impl;
 
-import java.io.IOException;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonMap;
 import org.duguo.xdir.http.json.JsonUtil;
+
+import java.io.IOException;
 
 public class HeaderAwareResponseHandler extends JsonResponseHandler {
 	

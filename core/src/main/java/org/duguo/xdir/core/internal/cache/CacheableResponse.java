@@ -1,13 +1,14 @@
 package org.duguo.xdir.core.internal.cache;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.GZIPOutputStream;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CacheableResponse extends AbstractCacheableResponse implements HttpServletResponse {
 

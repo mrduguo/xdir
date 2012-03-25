@@ -1,15 +1,14 @@
 package org.duguo.xdir.tests.functional.admin;
 
 import org.duguo.xdir.tests.functional.AbstractJcrIT;
-import org.duguo.xdir.tests.functional.AbstractUIIT;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-
-import static org.testng.Assert.fail;
 
 public abstract class AbstractAdminIT extends AbstractJcrIT {
     private static Logger LOG = LoggerFactory.getLogger(AbstractAdminIT.class);
@@ -21,7 +20,9 @@ public abstract class AbstractAdminIT extends AbstractJcrIT {
     public void login(@Optional("superuser") String loginUsername, @Optional("superuser") String loginPassword) {
         detectAdminUrl();
         goAdmin();
-        //performLogin(loginUsername, loginPassword);
+        if(pageSourceContains("Or login with")){
+            performLogin(loginUsername, loginPassword);
+        }
     }
 
     private void performLogin(String loginUsername, String loginPassword) {

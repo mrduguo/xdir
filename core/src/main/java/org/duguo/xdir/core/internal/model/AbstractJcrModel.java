@@ -1,14 +1,12 @@
 package org.duguo.xdir.core.internal.model;
 
 
-import javax.jcr.Node;
-import javax.jcr.Session;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.IOUtils;
 import org.duguo.xdir.core.internal.app.JcrTemplateAwareApplication;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 
+import javax.jcr.Node;
+import javax.jcr.Session;
 import java.io.InputStream;
 
 public abstract class AbstractJcrModel extends AbstractServletModel {

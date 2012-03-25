@@ -1,4 +1,4 @@
 <#if !app.service.security.hasRole(model,10)>
-	${app.service.security.accessDenied(model,app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")+"/admin/account/login"+format+"?cause=401&go="+pageUrl)}
+	${app.service.security.accessDenied(model,app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")+"/admin/account/login"+format+"?cause=401&go="+pageUrl)}
 	<#stop "redirected to login"/>
 </#if>

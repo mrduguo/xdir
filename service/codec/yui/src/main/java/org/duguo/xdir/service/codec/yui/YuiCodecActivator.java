@@ -4,9 +4,12 @@ import org.duguo.xdir.spi.service.DynamicService;
 import org.duguo.xdir.spi.service.StringCodec;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 public class YuiCodecActivator implements BundleActivator {
@@ -27,10 +30,12 @@ public class YuiCodecActivator implements BundleActivator {
             registration.unregister();
     }
 
-    protected ServiceRegistration registerService(BundleContext bundleContext,Object serviceInstance) throws Exception {
+    protected ServiceRegistration registerService(BundleContext bundleContext,DynamicService serviceInstance) throws Exception {
+        Dictionary properties=new Hashtable();
+        properties.put(DynamicService.class.getName(),serviceInstance.getServiceName());
         return bundleContext.registerService(
                 new String[]{StringCodec.class.getName(), DynamicService.class.getName()},
                 serviceInstance,
-                null);
+                properties);
     }
 }

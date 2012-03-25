@@ -1,10 +1,10 @@
 package org.duguo.xdir.core.internal.resource;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import org.duguo.xdir.spi.util.io.FileUtil;
 
 public class FileResource implements Resource
 {
@@ -17,7 +17,7 @@ public class FileResource implements Resource
 
     public String getAsString() throws Exception
     {
-        return FileUtil.readFileAsString( dataFile );
+        return FileUtils.readFileToString(dataFile, "utf-8");
     }
 
     public InputStream getAsInputStream() throws Exception

@@ -1,9 +1,9 @@
 package org.duguo.xdir.http.json.impl;
 
-import java.util.Map;
-
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonMap;
+
+import java.util.Map;
 
 public class JsonMapNull extends JsonMapImpl{
 	

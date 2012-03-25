@@ -1,6 +1,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="XDir Functional Tests" verbose="1" >
-  <test name="Public Demo Site Tests" >
+  <test name="duguo.org Tests" >
+    <classes>
+       <class name="org.duguo.xdir.tests.functional.demo.CrawlPublicLinksIT" />
+    </classes>
+  </test>
+  <test name="Demo Site Tests" >
+    <parameter name="test.public.start.path"  value="demo.duguo.org/"/>
     <classes>
        <class name="org.duguo.xdir.tests.functional.demo.CrawlPublicLinksIT" />
     </classes>

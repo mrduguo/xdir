@@ -1,12 +1,12 @@
 package org.duguo.xdir.security.impl.codec;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.apache.commons.codec.binary.Hex;
+import org.duguo.xdir.security.api.codec.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.security.api.codec.StringEncoder;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class DigestStringEncoder implements StringEncoder {
 	

@@ -2,6 +2,6 @@
 	<#stop "redirected to secure url"/>
 </#if>
 <#if !(app.service.security.getUserId(model)??)>
-	${app.service.security.accessDenied(model,app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")+"/account/login"+format+"?go="+pageUrl)}
+	${app.service.security.accessDenied(model,app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")+"/account/login"+format+"?go="+pageUrl)}
 	<#stop "redirected to login"/>
 </#if>

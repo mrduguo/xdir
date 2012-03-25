@@ -1,23 +1,20 @@
 <#macro framework_get_fragment_host>
-	fragmentHost=bundle.currentModule?.dependentHosts
+	fragmentHost=bundle.adapt(org.osgi.framework.wiring.BundleWiring.class).getRequiredWires("osgi.wiring.host")
 	if(fragmentHost!=null && fragmentHost.size()>0){
-		fragmentHost=fragmentHost[0].bundle
+		fragmentHost=fragmentHost[0].provider.bundle
 	}else{
 		fragmentHost=null
 	}
 </#macro>
 <#macro framework_list_bundle_details>
-	fragmentsList=bundle.currentModule?.fragments
+	fragmentsList=bundle.adapt(org.osgi.framework.wiring.BundleWiring.class).getProvidedWires("osgi.wiring.host")
 	if(fragmentsList!=null && fragmentsList.size()>0){
+        def tmpList=fragmentsList
+        fragmentsList=new ArrayList()
+        tmpList.each{
+            fragmentsList.add(it.requirer.bundle)
+        }
 		<@framework_list_bundles "fragmentsList","Fragments"/>
-	}
-	dependentImporters=bundle.currentModule?.dependentImporters
-	if(dependentImporters!=null && dependentImporters.size()>0){
-		<@framework_list_bundles "dependentImporters","Importers"/>
-	}
-	dependentRequirers=bundle.currentModule?.dependentRequirers
-	if(dependentRequirers!=null && dependentRequirers.size()>0){
-		<@framework_list_bundles "dependentRequirers","Requirers"/>
 	}
 </#macro>
 <#macro framework_get_spring_application_context>
@@ -27,13 +24,10 @@
 </#macro>
 <#macro framework_list_all_services_support>
 	frameworkListAllServices={sourceObject->
-		services=BeanUtil.retriveFieldValue(sourceObject,"m_registry")
-		tempList=BeanUtil.retriveFieldValue(services,"m_serviceRegsMap").values()
+		tmpServices=model.app.listServiceReferences()
 		services=[]
-		tempList.each(){
-			it.each(){
-				services.add(it)
-			}
+    tmpServices.each(){key,value->
+			services.add(value)
 		}
 		return services
 	}

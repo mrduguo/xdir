@@ -1,8 +1,7 @@
 package org.duguo.xdir.core.internal.resource;
 
-import java.io.File;
-
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 public interface MultipartRequestResolver {
 

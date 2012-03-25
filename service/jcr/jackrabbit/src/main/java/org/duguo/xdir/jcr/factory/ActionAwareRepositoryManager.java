@@ -1,14 +1,13 @@
 package org.duguo.xdir.jcr.factory;
 
 
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.RepositoryFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Map;
 
 
 public class ActionAwareRepositoryManager implements RepositoryFactory

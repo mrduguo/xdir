@@ -8,14 +8,14 @@
 	if(monitorService==null){
 		model.pageNavLevel3.clear()
 		ouputstring="<div class=\"notice\"><div class=\"title\">Monitor service disabled</div>You may turn on monitor by <a href=\""
-		ouputstring=ouputstring+"../osgi/spring/xdir-core${format}?action=springeditconfform&resourcelocation=local.xml&configstring="
+		ouputstring=ouputstring+"../osgi/spring/xdir-core${format}?action=springeditconfform&resourcelocation=spring-override.xml&configstring="
 		ouputstring=ouputstring+freemarker.template.utility.StringUtil.URLEnc("<import resource=\"classpath:/META-INF/spring/troubleshooting/xdir-core-troubleshooting.xml\"/>","utf-8")
 		ouputstring="$ouputstring\">including xdir-core-troubleshooting.xml</a></div>"
 		return ouputstring
 	}
 	
 	<#if (pageProperties["_monitor_code"]??)>
-		${app.service.props.resolveStringValue(pageProperties["_monitor_code"].displayableValue)}
+		${app.service.props.resolvePlaceholders(pageProperties["_monitor_code"].rawValue)}
 	<#elseif (pageProperties["_monitor_filter"]??)>
 		monitorMap=new java.util.HashMap()
 		monitorNames=[]
@@ -36,7 +36,7 @@
 		row_filter={
 			return true
 		}
-		${app.service.props.resolveStringValue(pageProperties["_monitor_filter"].displayableValue)}
+		${app.service.props.resolvePlaceholders(pageProperties["_monitor_filter"].rawValue)}
 		ouputstring="$ouputstring<table class=\"fullwidth sortable\">$table_header<tbody>"
 		com.jamonapi.MonitorFactory.getRootMonitor().getMonitors().each(){
 			label=it.label

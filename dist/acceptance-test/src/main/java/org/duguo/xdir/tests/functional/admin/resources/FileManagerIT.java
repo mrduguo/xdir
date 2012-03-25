@@ -1,6 +1,5 @@
 package org.duguo.xdir.tests.functional.admin.resources;
 
-import org.apache.commons.io.FileUtils;
 import org.duguo.xdir.tests.functional.ITListener;
 import org.duguo.xdir.tests.functional.admin.AbstractAdminIT;
 import org.openqa.selenium.By;
@@ -8,14 +7,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class FileManagerIT extends AbstractAdminIT {
 

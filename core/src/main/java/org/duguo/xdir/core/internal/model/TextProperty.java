@@ -1,8 +1,8 @@
 package org.duguo.xdir.core.internal.model;
 
-import javax.jcr.Property;
-
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
+
+import javax.jcr.Property;
 
 public class TextProperty {
 	private Property property;

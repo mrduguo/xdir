@@ -4,9 +4,9 @@
 <@groovy>
 	StringBuilder ouputstring=new StringBuilder()
 	<#if (pageProperties["_log_file"]??)>
-		logfile="${app.service.props.resolveStringValue(pageProperties["_log_file"].displayableValue)}"
+		logfile="${app.service.props.resolvePlaceholders(pageProperties["_log_file"].displayableValue)}"
 	<#else>
-		logfile="${app.service.props.resolveStringValue("$"+"{xdir.dir.home}")+"/var/logs/"+node.name}.log"
+		logfile="${app.service.props.resolvePlaceholders("$"+"{xdir.home}")+"/var/logs/"+node.name}.log"
 	</#if>
 	logfile=new java.io.File(logfile)
 	if(logfile.exists()){
@@ -24,7 +24,7 @@
 					}
 					lineString="LINE "+lineNumber+": "+lineString
 				<#elseif (pageProperties["_log_filter"]??)>
-					${app.service.props.resolveStringValue(pageProperties["_log_filter"].rawValue)}
+					${app.service.props.resolvePlaceholders(pageProperties["_log_filter"].rawValue)}
 				</#if>
 				pageTotal++
 				if(pageTotal>=pageStart && pageTotal<=pageEnd){
@@ -37,7 +37,7 @@
 			<@pagination_links "paginationLinks",pageUrl+"?start"/>
 			
 			logfileinfo="<table class=\"fullwidth\"><tr><th>File</th><td>$logfile</td></tr>"
-			logfileinfo="$logfileinfo<tr><th>Size</th><td>"+org.duguo.xdir.spi.util.io.FileUtil.byteCountToDisplaySize(logfile.size())+"</td></tr>"
+			logfileinfo="$logfileinfo<tr><th>Size</th><td>"+org.apache.commons.io.FileUtils.byteCountToDisplaySize(logfile.size())+"</td></tr>"
 			logfileinfo="$logfileinfo<tr><th>Last Modified</th><td>"+model.timestampForDisplay(logfile.lastModified())+"</td></tr>"		
 			<#if (getStringParameter("filter")??)>
 				logfileinfo="$logfileinfo<tr><th>Filter</th><td>${getStringParameter("filter")}</td></tr>"					

@@ -1,8 +1,8 @@
 package org.duguo.xdir.core.internal.cache;
 
-import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class WebCacheDisabledService implements CacheService<String, Object> {
 

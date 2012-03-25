@@ -1,10 +1,10 @@
 package org.duguo.xdir.http.json.impl;
 
+import org.duguo.xdir.http.json.Json;
+import org.duguo.xdir.http.json.JsonMap;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.duguo.xdir.http.json.JsonMap;
-import org.duguo.xdir.http.json.Json;
 
 public class JsonMapImpl extends AbstractJson implements JsonMap {
 	

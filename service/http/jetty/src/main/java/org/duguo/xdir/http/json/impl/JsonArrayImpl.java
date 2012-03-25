@@ -1,11 +1,11 @@
 package org.duguo.xdir.http.json.impl;
 
+import org.duguo.xdir.http.json.Json;
+import org.duguo.xdir.http.json.JsonArray;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.duguo.xdir.http.json.JsonArray;
-import org.duguo.xdir.http.json.Json;
 
 public class JsonArrayImpl extends AbstractJson implements JsonArray{
 	

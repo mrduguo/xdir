@@ -1,11 +1,11 @@
 package org.duguo.xdir.jcr.jackrabbit;
 
-import javax.jcr.Repository;
-
 import org.apache.jackrabbit.core.TransientRepository;
+import org.duguo.xdir.jcr.pool.GenericPooledRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.jcr.pool.GenericPooledRepository;
+
+import javax.jcr.Repository;
 
 public class PooledRepository extends GenericPooledRepository{
     

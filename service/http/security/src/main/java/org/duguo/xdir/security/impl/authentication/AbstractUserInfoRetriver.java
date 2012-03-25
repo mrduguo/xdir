@@ -1,13 +1,13 @@
 package org.duguo.xdir.security.impl.authentication;
 
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonMap;
 import org.duguo.xdir.http.json.JsonUtil;
 import org.duguo.xdir.security.api.authentication.UserInfoRetriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public abstract class AbstractUserInfoRetriver implements UserInfoRetriver{
 

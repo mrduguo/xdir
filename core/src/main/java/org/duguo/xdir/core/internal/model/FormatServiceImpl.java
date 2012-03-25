@@ -1,11 +1,11 @@
 package org.duguo.xdir.core.internal.model;
 
-import java.io.IOException;
-import java.util.Map;
-
+import org.duguo.xdir.core.internal.template.TemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.core.internal.template.TemplateEngine;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class FormatServiceImpl implements FormatService {
     private static final Logger logger = LoggerFactory.getLogger(FormatServiceImpl.class);

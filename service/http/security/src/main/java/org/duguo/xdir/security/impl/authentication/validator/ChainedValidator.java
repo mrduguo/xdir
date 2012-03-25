@@ -1,9 +1,7 @@
 package org.duguo.xdir.security.impl.authentication.validator;
 
 import org.duguo.xdir.security.api.authentication.LoginValidator;
-import org.duguo.xdir.security.impl.authentication.UserImpl;
 import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.spi.security.Role;
 
 
 /**

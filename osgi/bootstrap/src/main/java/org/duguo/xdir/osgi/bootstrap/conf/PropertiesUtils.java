@@ -4,27 +4,56 @@ package org.duguo.xdir.osgi.bootstrap.conf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-
-
+import java.io.InputStream;
+import java.util.*;
 
 public class PropertiesUtils
 {
-    private static final Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
     private static final String DELIM_START = "${";
     private static final String DELIM_STOP = "}";
 
+    public static void loadOsgiProperties() {
+        try {
+            Properties newProperties = new Properties();
+            InputStream defaultConfig = PropertiesUtils.class.getResourceAsStream("/osgi-default.properties");
+            newProperties.load(defaultConfig);
+            defaultConfig.close();
 
-    public static String applyPlaceHoldersFromSystemProperties( String rawValue)
-    {
-    	String value = substVars( "", rawValue, System.getProperties(),System.getProperties(), null );
-    	return value;
+            InputStream userConfig = PropertiesUtils.class.getResourceAsStream("/osgi.properties");
+            if (userConfig != null) {
+                newProperties.load(userConfig);
+                userConfig.close();
+            }
+            PropertiesUtils.replacePlaceHolders(System.getProperties(), newProperties);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load configuration", e);
+        }
+
+        XdirLogConfig.configLog();
+        logSystemProperties();
     }
     
+    public static long getLongValue(String key){
+        return Long.parseLong(System.getProperty(key));
+    }
+
+    public static void logSystemProperties() {
+        Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+        if(logger.isDebugEnabled()){
+            List<String> keys=new ArrayList<String>();
+            keys.addAll(System.getProperties().stringPropertyNames());
+            Collections.sort(keys);
+            StringBuilder propsString=new StringBuilder("Loaded System Properties");
+            for(String key:keys){
+                propsString.append("\n");
+                propsString.append(key);
+                propsString.append("=");
+                propsString.append(System.getProperty(key));
+            }
+            logger.debug(propsString.toString());
+        }
+    }
+
     public static void replacePlaceHolders( Map<Object, Object> configuration,Properties newProperties )
     {
         for ( Enumeration e = newProperties.propertyNames(); e.hasMoreElements(); )
@@ -32,18 +61,12 @@ public class PropertiesUtils
             String key = ( String ) e.nextElement();
             if(!configuration.containsKey( key )){
                 String value = substVars( key, newProperties.getProperty( key ), configuration,newProperties, null );
-                if ( logger.isDebugEnabled() )
-                    logger.debug( "Setup configuration for key [" + key + "] with value [" + value + "]" );
                 configuration.put( key, value );
-            }else{
-                if(logger.isDebugEnabled())
-                    logger.debug( "Cannot override system properties "+key+" from configuration file" );
             }
         }
     }
 
 
-    @SuppressWarnings("unchecked")
     private static String substVars( String key, String val,Map<Object, Object> configuration, Properties configProps, Map cycleMap )
         throws IllegalArgumentException
     {
@@ -116,8 +139,7 @@ public class PropertiesUtils
             
             // Ignore unknown property values.
             if(substValue==null){
-                if(logger.isDebugEnabled())
-                    logger.debug( "Unknown property placeholder ["+variable+"] in ["+key+"], set to empty string" );
+                System.out.println("Unknown property placeholder [" + variable + "] in [" + key + "], set to empty string");
                 substValue="";
             }
         }

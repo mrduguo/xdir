@@ -1,10 +1,10 @@
 package org.duguo.xdir.security.impl.authentication.openid;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.impl.parser.RequestParametersParser;
 import org.duguo.xdir.security.impl.authentication.AbstractUserInfoRetriver;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class OpenIdUserInfoRetriver extends AbstractUserInfoRetriver{
 	

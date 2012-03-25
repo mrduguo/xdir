@@ -1,8 +1,6 @@
 package org.duguo.xdir.dist.plugin;
 
 
-import org.apache.maven.model.*;
-
 import java.util.List;
 
 public class FileSet {

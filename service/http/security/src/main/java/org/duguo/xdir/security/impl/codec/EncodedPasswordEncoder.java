@@ -1,7 +1,7 @@
 package org.duguo.xdir.security.impl.codec;
 
-import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.codec.StringEncoder;
+import org.duguo.xdir.spi.security.LoginEvent;
 
 public class EncodedPasswordEncoder extends UserNamePlusPasswordPasswordEncoder{
 	private StringEncoder stringEncoder;

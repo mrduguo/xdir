@@ -1,12 +1,12 @@
 package org.duguo.xdir.security.impl.authentication.authenticator;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
-import org.duguo.xdir.spi.security.Role;
 import org.duguo.xdir.security.api.authentication.Authenticator;
 import org.duguo.xdir.security.impl.authentication.UserImpl;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.duguo.xdir.spi.security.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 

@@ -1,11 +1,11 @@
 package org.duguo.xdir.security.impl.codec.crypt;
 
+import org.apache.commons.codec.binary.Base64;
+import org.duguo.xdir.security.api.codec.StringEncoder;
+import org.springframework.util.Assert;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
-
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.util.Assert;
-import org.duguo.xdir.security.api.codec.StringEncoder;
 
 public class SecretEncoder implements StringEncoder {
 	

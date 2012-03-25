@@ -1,10 +1,10 @@
 package org.duguo.xdir.http.json.impl.parser;
 
 
+import org.duguo.xdir.http.json.Json;
+
 import java.io.IOException;
 import java.io.Reader;
-
-import org.duguo.xdir.http.json.Json;
 
 
 

@@ -1,11 +1,10 @@
 package org.duguo.xdir.security.impl.authentication;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.spi.security.User;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public class LoginEventImpl implements LoginEvent{
 

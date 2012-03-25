@@ -1,8 +1,8 @@
 package org.duguo.xdir.security.api.authentication;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.duguo.xdir.http.json.Json;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface AuthService {
 

@@ -1,28 +1,16 @@
 package org.duguo.xdir.core.internal.server;
 
 
-import java.io.File;
-
-import org.duguo.xdir.jcr.utils.JcrNodeUtils;
-import org.osgi.framework.Constants;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import javax.jcr.Node;
-import javax.jcr.Session;
-
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.duguo.xdir.jcr.utils.JcrNodeUtils;
+import org.duguo.xdir.spi.util.bean.BeanUtil;
+import org.duguo.xdir.spi.util.bean.BundleUtil;
+import org.duguo.xdir.spi.util.datetime.DateTimeUtil;
+import org.duguo.xdir.spi.util.thread.Action;
+import org.duguo.xdir.spi.util.thread.ThreadUtil;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +20,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
-import org.duguo.xdir.spi.util.bean.BeanUtil;
-import org.duguo.xdir.spi.util.bean.BundleUtil;
-import org.duguo.xdir.spi.util.datetime.DateTimeUtil;
-import org.duguo.xdir.spi.util.io.FileUtil;
-import org.duguo.xdir.spi.util.thread.Action;
-import org.duguo.xdir.spi.util.thread.ThreadUtil;
+
+import javax.jcr.Node;
+import javax.jcr.Session;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Pattern;
 
 
 public class OsgiConfManagerApplication extends DefaultAdminApplication implements InitializingBean
@@ -86,7 +76,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
         String fileLocation=JcrNodeUtils.getPropertyIfExist( fileNode, "file_location" );
         String oldFileHash=JcrNodeUtils.getPropertyIfExist( fileNode, "file_hash" );
         Assert.notNull( fileLocation );
-        fileLocation=getPropertiesService().resolveStringValue( fileLocation );
+        fileLocation=getPropertiesService().resolvePlaceholders( fileLocation );
         if("conf_resource".equals( fileType )){
             fileContent=readResourceAsString( fileLocation );
             if(fileContent.length()>0){
@@ -119,8 +109,8 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
             logger.debug("scan conf to node [{}] started",baseNode.getPath());
         if(hasChange(baseNode)){
             String snapshotBase="snapshots/"+DateTimeUtil.currentTimestampKey();
-            String bundlesBase=getPropertiesService().resolveStringValue( "${xdir.dir.bundles}");
-            String confBase= getPropertiesService().resolveStringValue( "${xdir.dir.conf}");
+            String bundlesBase=getPropertiesService().resolvePlaceholders( "${xdir.home}/bundles");
+            String confBase= getPropertiesService().resolvePlaceholders( "${xdir.home}/data/conf");
             JcrNodeUtils.setNodeProperty( baseNode, snapshotBase+"/_type","conf_snapshot");
             JcrNodeUtils.setNodeProperty( baseNode, snapshotBase+"/_mm_no_children","true");
             for(Bundle bundle:getBundleContext().getBundles()){
@@ -131,7 +121,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
                     if(additionalConfigurations!=null){
                         scanFolders.addAll( additionalConfigurations );
                     }
-                    scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.home}/boot") );
+                    scanFolders.add( getPropertiesService().resolvePlaceholders( "${xdir.home}/boot") );
                     scanFolders.add( confBase);
                     JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/status/_type","conf_status_framework");
                     JcrNodeUtils.setNodeProperty( baseNode, bundleStorageBase+"/status/_system_properties", buildPropertiesAsString(System.getProperties()) );
@@ -252,7 +242,7 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
         for(Object confItem:scanFolders){
             i++;
             if(confItem instanceof URL){
-                String fileString=FileUtil.readStreamAsString( ((URL)confItem).openStream() );
+                String fileString= IOUtils.toString(((URL)confItem).openStream(), "utf-8");
                 String filePath=confItem.toString();
                 String fileName=filePath.substring( filePath.lastIndexOf( "/" )+1);
                 String currentHash=DigestUtils.md5DigestAsHex(fileString.getBytes());
@@ -341,9 +331,9 @@ public class OsgiConfManagerApplication extends DefaultAdminApplication implemen
     {
         String previousHash=JcrNodeUtils.getPropertyIfExist( baseNode, "conf_hash" );
         List<String> scanFolders=new ArrayList<String>();
-        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.home}/boot") );
-        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.bundles}") );
-        scanFolders.add( getPropertiesService().resolveStringValue( "${xdir.dir.conf}") );
+        scanFolders.add( getPropertiesService().resolvePlaceholders( "${xdir.home}/boot") );
+        scanFolders.add( getPropertiesService().resolvePlaceholders( "${xdir.home}/bundles") );
+        scanFolders.add( getPropertiesService().resolvePlaceholders( "${xdir.home}/data/conf") );
         if(additionalConfigurations!=null){
             scanFolders.addAll(additionalConfigurations);
         }

@@ -1,9 +1,15 @@
 package org.duguo.xdir.core.internal.server;
 
+import org.apache.commons.io.FileUtils;
+import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,18 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-import org.duguo.xdir.core.internal.model.ModelImpl;
-import org.duguo.xdir.core.internal.resource.MultipartRequestResolver;
 
 public class OsgiBundleManagerApplication extends DefaultAdminApplication
 {
@@ -34,7 +28,7 @@ public class OsgiBundleManagerApplication extends DefaultAdminApplication
     private Map<String,Object> copySourceFilesToGroup( String targetGroup, List<File> filesToDeploy )
         throws IOException
     {
-        String bundlesBase= getPropertiesService().resolveStringValue( "${xdir.dir.bundles}");
+        String bundlesBase= getPropertiesService().resolvePlaceholders( "${xdir.home}/bundles");
         Map<String,Object> bundlesToDeploy=new HashMap<String,Object>();
         for(File currentFile:filesToDeploy){
             JarFile jarFile=new JarFile(currentFile );

@@ -1,12 +1,8 @@
 package org.duguo.xdir.core.internal.jcr;
 
-import javax.jcr.LoginException;
-import javax.jcr.Node;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-
 import org.duguo.xdir.core.internal.model.ModelImpl;
+
+import javax.jcr.*;
 
 public interface JcrFactory
 {

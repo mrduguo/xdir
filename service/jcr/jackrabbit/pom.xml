@@ -108,6 +108,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>${lib.slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${lib.commoms.lang.version}</version>
+        </dependency>
 
     </dependencies>
 

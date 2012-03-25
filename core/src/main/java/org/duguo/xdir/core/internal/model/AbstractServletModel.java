@@ -1,21 +1,19 @@
 package org.duguo.xdir.core.internal.model;
 
 
+import org.apache.commons.io.FileUtils;
+import org.duguo.xdir.core.internal.utils.RequestUtils;
+import org.duguo.xdir.spi.model.Model;
+import org.duguo.xdir.spi.model.support.AbstractGetAndPut;
+import org.eclipse.jetty.io.WriterOutputStream;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.io.WriterOutputStream;
-import org.duguo.xdir.spi.model.Model;
-import org.duguo.xdir.spi.model.support.AbstractGetAndPut;
-import org.duguo.xdir.core.internal.utils.RequestUtils;
 
 public abstract class AbstractServletModel extends AbstractGetAndPut implements Model
 {

@@ -1,18 +1,13 @@
 package org.duguo.xdir.core.internal.template.freemarker;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import freemarker.core.StopException;
+import freemarker.template.*;
 import org.duguo.xdir.core.internal.app.Application;
 import org.duguo.xdir.core.internal.exception.ResourceNotFoundException;
 import org.duguo.xdir.core.internal.model.ModelImpl;
-
-import freemarker.core.StopException;
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class FreeMarkerTemplateEngine extends AbstractTemplateEngine {

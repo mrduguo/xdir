@@ -1,11 +1,11 @@
 package org.duguo.xdir.security.impl.authentication.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.AccountService;
-import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.authentication.LoginValidator;
 import org.duguo.xdir.security.api.codec.PasswordEncoder;
+import org.duguo.xdir.spi.security.AccountService;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AccountServiceUserValidator implements LoginValidator{
     private static final Logger logger = LoggerFactory.getLogger( AccountServiceUserValidator.class );

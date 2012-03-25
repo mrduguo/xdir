@@ -1,25 +1,25 @@
 package org.duguo.xdir.core.internal.server;
 
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.Hashtable;
-import java.util.Map;
-
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.duguo.xdir.core.internal.app.BestPathMatchApplication;
+import org.duguo.xdir.spi.util.collection.MapUtil;
+import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-import org.osgi.framework.Constants;
-import org.eclipse.gemini.blueprint.context.BundleContextAware;
-import org.duguo.xdir.core.internal.app.BestPathMatchApplication;
-import org.duguo.xdir.spi.util.collection.MapUtil;
-import org.duguo.xdir.spi.util.io.FileUtil;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 public class DefaultAdminApplication extends BestPathMatchApplication implements BundleContextAware
@@ -31,7 +31,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     public String readResourceAsString(String resourceLocation) throws Exception{
         InputStream resourceStream=readResourceAsStream(resourceLocation);
         if(resourceStream!=null){
-            String resourceString=FileUtil.readStreamAsString( resourceStream );
+            String resourceString= IOUtils.toString(resourceStream, "utf-8");
             if(logger.isDebugEnabled())
                 logger.debug("resource read from [{}]",resourceLocation);
             return resourceString;            
@@ -54,7 +54,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     
     public Resource loadResource(String resourceLocation) throws Exception{
         DefaultResourceLoader resourceLoader=new DefaultResourceLoader();
-        Resource resource=resourceLoader.getResource( getPropertiesService().resolveStringValue(resourceLocation) );
+        Resource resource=resourceLoader.getResource( getPropertiesService().resolvePlaceholders(resourceLocation) );
         if(resource.exists()){
             if(logger.isDebugEnabled())
                 logger.debug("resource [{}] found",resourceLocation);
@@ -67,7 +67,7 @@ public class DefaultAdminApplication extends BestPathMatchApplication implements
     }
     
     public void saveResource(String filePath,String textContent) throws Exception{
-        File realFile=new File(getPropertiesService().resolveStringValue(filePath));
+        File realFile=new File(getPropertiesService().resolvePlaceholders(filePath));
         String contentWithoutLr=textContent.replaceAll( "\r", "" );
         FileUtils.writeStringToFile( realFile, contentWithoutLr );
         if(logger.isDebugEnabled())

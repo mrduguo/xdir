@@ -13,13 +13,11 @@
   
 
   <bean id="cacheService" class="org.duguo.xdir.core.internal.cache.CacheServiceImpl" init-method="init">
-    <property name="baseDir" value="${xdir.dir.var}/cache/pages" />
+    <property name="baseDir" value="${xdir.home}/var/cache/pages" />
   </bean>
 
-
-
   <bean id="multipartRequestResolver" class="org.duguo.xdir.core.internal.resource.MultipartRequestResolverImpl">
-    <property name="tempDir" value="${xdir.dir.var}/upload" />
+    <property name="tempDir" value="${xdir.home}/var/upload" />
   </bean>
 
 

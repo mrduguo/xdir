@@ -2,9 +2,9 @@
 <@groovy>
 	import org.duguo.xdir.spi.util.bean.BeanUtil
 	def ouputstring=""
-	
+        new RuntimeException().printStackTrace()
 	ouputstring="$ouputstring<table class=\"sortable fullwidth\"><thead><tr><th class=\"nosort\">ID</th><th>Symbolic Name</th><th>Version</th><th>Group</th><th>Status</th></thead><tbody>"
-	bundlesBaseDir=System.getProperty("xdir.dir.bundles");
+bundlesBaseDir=System.getProperty("xdir.home")+"/bundles";
 	model.app.listBundles().each(){
 		bundle=it
 		ouputstring="$ouputstring<tr><td>$bundle.bundleId</td>"

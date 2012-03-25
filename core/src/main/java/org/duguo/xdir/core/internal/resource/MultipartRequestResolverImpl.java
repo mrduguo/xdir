@@ -1,17 +1,16 @@
 package org.duguo.xdir.core.internal.resource;
 
-import java.io.File;
-import java.util.Hashtable;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Hashtable;
+import java.util.List;
 
 public class MultipartRequestResolverImpl implements MultipartRequestResolver {
     

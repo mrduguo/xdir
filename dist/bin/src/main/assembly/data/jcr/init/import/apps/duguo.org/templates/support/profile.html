@@ -43,5 +43,5 @@
 			</#if>
 </#macro>
 <#macro profile_info_default_icon accountNode>
-			<img src="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}")+"/profiles/"+accountNode.getProperty("_user_id").getString()}/icon.png" class="icon" title="User Icon"/>
+			<img src="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.url}")+"/profiles/"+accountNode.getProperty("_user_id").getString()}/icon.png" class="icon" title="User Icon"/>
 </#macro>

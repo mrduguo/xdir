@@ -1,10 +1,10 @@
 package org.duguo.xdir.security.impl.url;
 
+import org.duguo.xdir.security.api.url.SecureUrlManager;
+import org.duguo.xdir.spi.model.Model;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.model.Model;
-import org.duguo.xdir.security.api.url.SecureUrlManager;
-import org.duguo.xdir.spi.util.http.HttpUtil;
 
 public class SecurityUrlManagerImpl implements SecureUrlManager
 {

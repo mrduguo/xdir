@@ -1,8 +1,8 @@
 package org.duguo.xdir.security.impl.authentication.restriction;
 
-import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.authentication.Authenticator;
 import org.duguo.xdir.security.impl.authentication.authenticator.ChainedAuthenticator;
+import org.duguo.xdir.spi.security.LoginEvent;
 
 public class RestrictionAwareAuthenticator extends ChainedAuthenticator{
     

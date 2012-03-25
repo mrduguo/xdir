@@ -1,13 +1,13 @@
 package org.duguo.xdir.security.impl.authentication.retriever;
 
 
-import javax.servlet.http.Cookie;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.security.api.authentication.LoginRetriever;
 import org.duguo.xdir.security.api.codec.StringEncoder;
+import org.duguo.xdir.spi.security.LoginEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.Cookie;
 
 public class RememberMeLoginRetriever implements LoginRetriever {
 

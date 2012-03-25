@@ -1,19 +1,12 @@
 package org.duguo.xdir.tests.functional;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.testng.Reporter;
-import org.testng.annotations.*;
 
 import java.io.File;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
 
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.fail;
 
 public abstract class AbstractJcrIT extends AbstractUIIT {
     private static Logger LOG = LoggerFactory.getLogger(AbstractJcrIT.class);

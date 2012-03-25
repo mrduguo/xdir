@@ -1,28 +1,19 @@
 package org.duguo.xdir.core.internal.jcr;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.jcr.LoginException;
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.RepositoryFactory;
-import javax.jcr.Session;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 import org.duguo.xdir.core.internal.config.PropertiesService;
 import org.duguo.xdir.core.internal.model.FormatService;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.duguo.xdir.core.internal.model.PathInfoImpl;
 import org.duguo.xdir.jcr.utils.JcrNodeUtils;
 import org.duguo.xdir.spi.util.bean.BeanUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+
+import javax.jcr.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
@@ -43,7 +34,7 @@ public class JcrFactoryImpl extends QueryFactoryImpl implements JcrFactory
                 propertyName=propertyName.substring( bindPrefix.length() );
                 propertyName=BeanUtil.underscoreNameToBeanName( propertyName );
                 String propertyValue=JcrNodeUtils.getPropertyStringValue( nodeProperty );
-                propertyValue=propertiesService.resolveStringValue( propertyValue );
+                propertyValue=propertiesService.resolvePlaceholders( propertyValue );
                 BeanUtil.bindFieldValueIfHasSetter(beanInstance,propertyName,propertyValue);
             }
         }

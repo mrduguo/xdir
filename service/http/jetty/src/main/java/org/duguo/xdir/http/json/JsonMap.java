@@ -3,8 +3,6 @@ package org.duguo.xdir.http.json;
 
 import java.util.Map;
 
-import org.duguo.xdir.http.json.Json;
-
 public interface JsonMap extends Json {
 	
 

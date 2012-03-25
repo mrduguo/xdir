@@ -1,11 +1,11 @@
 package org.duguo.xdir.http.json.impl;
 
-import java.util.Map;
-
+import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonArray;
 import org.duguo.xdir.http.json.JsonMap;
 import org.duguo.xdir.http.json.JsonValue;
-import org.duguo.xdir.http.json.Json;
+
+import java.util.Map;
 
 public abstract class AbstractJson implements Json{
 

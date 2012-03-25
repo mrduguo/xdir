@@ -1,11 +1,11 @@
 package org.duguo.xdir.security.api.authentication;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.spi.security.User;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public interface LoginManager {

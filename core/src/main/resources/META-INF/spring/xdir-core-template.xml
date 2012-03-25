@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans   
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util  
-       http://www.springframework.org/schema/util/spring-util.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-  <bean id="freeMarkerTemplateEngine" class="org.duguo.xdir.core.internal.template.freemarker.FreeMarkerTemplateEngine">
+<bean id="freeMarkerTemplateEngine" class="org.duguo.xdir.core.internal.template.freemarker.FreeMarkerTemplateEngine">
     <property name="templateStringLoader" ref="resourceLoader"/>
   </bean>
 
@@ -17,7 +15,6 @@
 		<value>org.duguo.xdir.http.json.impl.JsonArrayNull</value>
 		<value>org.duguo.xdir.http.json.impl.JsonMapImpl</value>
 		<value>org.duguo.xdir.http.json.impl.JsonMapNull</value>
-		<value>org.duguo.xdir.http.json.impl.JsonNull</value>
 		<value>org.duguo.xdir.http.json.impl.JsonNull</value>
 		<value>org.duguo.xdir.core.internal.app.ServiceHolder</value>
 		<value>org.duguo.xdir.security.impl.SecurityServiceImpl</value>

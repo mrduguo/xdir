@@ -1,13 +1,13 @@
 <span class="account">
 	&nbsp;|&nbsp;
 	<span class="accountlink">
-		<li><a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/account/index${format}">Account</a></li>
+		<li><a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/account/index${format}">Account</a></li>
 	</span>
 	<span class="login" style="display:none;">
-		<li><a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/account/login${format}">Login</a></li>
+		<li><a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/account/login${format}">Login</a></li>
 	</span>
 	<span class="logout" style="display:none;">
-		<li><a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/account/index${format}" class="user">user display name</a></li>
-		<li><a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.secureurl}")}/account/logout${format}" class="logoutlink">Logout</a></li>
+		<li><a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/account/index${format}" class="user">user display name</a></li>
+		<li><a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.secureurl}")}/account/logout${format}" class="logoutlink">Logout</a></li>
 	</span>
 </span>

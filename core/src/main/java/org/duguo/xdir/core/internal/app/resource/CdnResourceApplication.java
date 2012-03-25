@@ -1,11 +1,8 @@
 package org.duguo.xdir.core.internal.app.resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.duguo.xdir.core.internal.model.ModelImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URL;
 
 
 public class CdnResourceApplication extends ResourceApplication {

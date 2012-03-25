@@ -1,7 +1,10 @@
 package org.duguo.xdir.jcr.utils;
 
 import java.io.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A clone of {@link java.util.Properties} to support utf-8 encoded properties

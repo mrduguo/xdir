@@ -1,8 +1,8 @@
 package org.duguo.xdir.http.json.impl.parser;
 
-import java.io.IOException;
-
 import junit.framework.TestCase;
+
+import java.io.IOException;
 
 public class DefaultJsonParserTest extends TestCase {
 	

@@ -80,16 +80,16 @@
                                                 println line
                                                 if(line.contains("XDir server started"))
                                                     serverStatus="STARTED"
+                                                else if(line.contains("start failed"))
+                                                    serverStatus="FAILED"
                                             }
                                         }
 
-log.error("1")
                                         long timeout=20000
                                         while(true){
                                             if(serverStatus.equals("STARTED")){
                                                 break
                                             }else if(serverStatus.equals("FAILED")){
-log.error("2")
                                                 fail("server start failed")
                                             }else if(timeout<0){
                                                 fail("server start timeout")

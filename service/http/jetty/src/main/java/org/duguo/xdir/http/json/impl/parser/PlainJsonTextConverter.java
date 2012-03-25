@@ -1,13 +1,13 @@
 package org.duguo.xdir.http.json.impl.parser;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-
 import org.apache.http.util.CharArrayBuffer;
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonMap;
 import org.duguo.xdir.http.json.impl.JsonMapImpl;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 
 /**

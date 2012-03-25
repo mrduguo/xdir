@@ -1,13 +1,13 @@
 package org.duguo.xdir.security.impl.authentication.openid;
 
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.duguo.xdir.http.json.Json;
+import org.duguo.xdir.spi.util.http.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.duguo.xdir.http.json.Json;
-import org.duguo.xdir.spi.util.http.HttpUtil;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class OpenId2DirectedIdentityProvider extends AbstractOpenidProvider{
     

@@ -1,13 +1,13 @@
 package org.duguo.xdir.security.impl.authentication;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.duguo.xdir.http.client.HttpClientService;
 import org.duguo.xdir.security.api.authentication.AuthService;
 import org.duguo.xdir.security.api.authentication.UserInfoRetriver;
 import org.duguo.xdir.security.api.codec.SignService;
 import org.duguo.xdir.security.api.token.TokenStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAuthService implements AuthService{
     

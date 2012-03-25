@@ -1,16 +1,12 @@
 package org.duguo.xdir.security.impl;
 
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
+import org.duguo.xdir.security.impl.authentication.LoginEventImpl;
 import org.duguo.xdir.spi.model.Model;
 import org.duguo.xdir.spi.security.LoginEvent;
 import org.duguo.xdir.spi.security.Role;
 import org.duguo.xdir.spi.security.SecurityService;
 import org.duguo.xdir.spi.security.User;
-import org.duguo.xdir.security.impl.authentication.LoginEventImpl;
 import org.duguo.xdir.spi.service.DynamicService;
 
 public class SecurityServiceImpl extends AbstractSecurityService implements SecurityService,DynamicService

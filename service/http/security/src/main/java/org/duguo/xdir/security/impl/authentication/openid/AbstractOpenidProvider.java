@@ -1,13 +1,12 @@
 package org.duguo.xdir.security.impl.authentication.openid;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.duguo.xdir.http.json.Json;
 import org.duguo.xdir.http.json.JsonUtil;
 import org.duguo.xdir.security.impl.authentication.AbstractAuthService;
 import org.duguo.xdir.spi.util.http.HttpUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 

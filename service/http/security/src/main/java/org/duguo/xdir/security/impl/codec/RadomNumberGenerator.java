@@ -1,8 +1,8 @@
 package org.duguo.xdir.security.impl.codec;
 
-import java.util.Random;
-
 import org.duguo.xdir.security.api.codec.RadomGenerator;
+
+import java.util.Random;
 
 public class RadomNumberGenerator implements RadomGenerator {
 

@@ -7,6 +7,6 @@ ${app.service.security.logout(model)}
 	<@page_overview_content/>
 	<div class="tips">
 		<p>You logged out successfully.</p>
-		<p><a href="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}/")}" class="button">Ok</a></p>
+		<p><a href="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.url}/")}" class="button">Ok</a></p>
 	</div>
 </#if>
