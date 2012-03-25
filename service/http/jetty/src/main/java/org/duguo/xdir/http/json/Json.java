@@ -1,20 +1,5 @@
 package org.duguo.xdir.http.json;
 
-/*
-JsonMapImpl.metaClass.getProperty = { String name ->
-   delegate.get(name)
-}
-JsonArrayImpl.metaClass.getProperty = { String name ->
-   delegate.get(name)
-}
-
-
-json=model.app.httpClient.httpGetXml("http://duguo.com/en/.atom");
-System.out.println(JsonUtil.toText(json));
-System.out.println(JsonUtil.toXml(json));
-System.out.println("\n\n\n::"+json.feed.entry.get(2).title.text);
-
-*/
 
 public interface Json {
 	

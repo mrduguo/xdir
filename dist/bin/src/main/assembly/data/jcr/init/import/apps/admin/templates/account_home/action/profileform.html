@@ -56,5 +56,5 @@ ${app.loadAccount(model)}
 			</td></tr>			
 </#macro>
 <#macro profile_info_default_icon accountNode>
-			<img src="${app.service.props.resolveStringValue("$"+"{xdir.web.base.url}")+"/profiles/"+accountNode.getProperty("_user_id").getString()}/icon.png" title="User Icon"/>
+			<img src="${app.service.props.resolvePlaceholders("$"+"{xdir.web.base.url}")+"/profiles/"+accountNode.getProperty("_user_id").getString()}/icon.png" title="User Icon"/>
 </#macro>

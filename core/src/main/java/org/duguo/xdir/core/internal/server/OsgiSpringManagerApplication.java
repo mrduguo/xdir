@@ -1,19 +1,19 @@
 package org.duguo.xdir.core.internal.server;
 
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.duguo.xdir.core.internal.aop.MonitorService;
+import org.duguo.xdir.core.internal.utils.SpringBeanUtil;
+import org.eclipse.gemini.blueprint.context.support.AbstractOsgiBundleApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.eclipse.gemini.blueprint.context.support.AbstractOsgiBundleApplicationContext;
-import org.duguo.xdir.core.internal.aop.MonitorService;
-import org.duguo.xdir.core.internal.utils.SpringBeanUtil;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class OsgiSpringManagerApplication extends DefaultAdminApplication implements BeanFactoryAware

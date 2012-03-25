@@ -1,6 +1,12 @@
 package org.duguo.xdir.jcr.utils;
 
 
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jcr.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,17 +14,9 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.jcr.Binary;
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class JcrNodeUtils {
@@ -32,11 +30,9 @@ public class JcrNodeUtils {
     public static final String JCR_NODE_SEARCH = "_search";
     public static final String JCR_PREFIX = "jcr:";
 
-    public static final SimpleDateFormat JCR_TIMESTAMP1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-    public static final SimpleDateFormat JCR_TIMESTAMP2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public static final SimpleDateFormat JCR_TIMESTAMP = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
     public static final String JCR_VERSIONING_NAME = "jcr:versioning";
     public static final Set<String> PROTECTED_PROPERTIES = new HashSet<String>();
-
 
     static {
         PROTECTED_PROPERTIES.add("jcr:primaryType");
@@ -163,7 +159,11 @@ public class JcrNodeUtils {
     public static String getPropertyStringValue(Property property) {
         try {
             try {
-                return property.getString();
+                if(property.getType()==PropertyType.DATE){
+                    return JCR_TIMESTAMP.format(property.getDate().getTime());
+                } else{
+                    return property.getString();
+                }
             } catch (ValueFormatException ex) {
                 String textProperty = null;
                 for (Value value : property.getValues()) {
@@ -241,7 +241,6 @@ public class JcrNodeUtils {
         return currentPath;
     }
 
-
     public static void setNodeProperty(Node node, String path, String value) throws Exception {
         if (path.indexOf("/") > 0) {
             String tempPath = path.substring(0, path.lastIndexOf("/"));
@@ -255,14 +254,10 @@ public class JcrNodeUtils {
                 if (logger.isDebugEnabled())  logger.debug("created binary property [{}]", path);
             } else {
                 int valueLength=value.length();
-                if (valueLength==24 && valueLength==29 && value.charAt(10)=='T' && value.charAt(4)=='-') {
+                if ((valueLength==28) && value.charAt(10)=='T' && value.charAt(4)=='-') {
                     Calendar targetTime = Calendar.getInstance();
                     try {
-                        if(value.length()==24){
-                            targetTime.setTime(JCR_TIMESTAMP2.parse(value));
-                        }else{
-                            targetTime.setTime(JCR_TIMESTAMP1.parse(value));
-                        }
+                        targetTime.setTime(JCR_TIMESTAMP.parse(value));
                         node.setProperty(path, targetTime);
                         if(logger.isTraceEnabled())logger.trace("set date property success:"+value);
                     } catch (ParseException notAValidDate) {
