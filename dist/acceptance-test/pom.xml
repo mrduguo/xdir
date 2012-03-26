@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.dist</groupId>
         <artifactId>xdir-dist</artifactId>
-        <version>0.9.3-SNAPSHOT</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.dist</groupId>
     <artifactId>xdir-dist-acceptance-test</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.2-SNAPSHOT</version>
     <name>XDir Platform Dist (Acceptance Test)</name>
 
     <build>
@@ -91,7 +91,9 @@
                                                 break
                                             }else if(serverStatus.equals("FAILED")){
                                                 fail("server start failed")
-                                            }else if(timeout<0){ fail("server start timeout") }else{
+                                            }else if(timeout<0){
+                                                fail("server start timeout")
+                                            }else{
                                                 Thread.sleep(1000)
                                                 timeout=timeout-1000
                                             }

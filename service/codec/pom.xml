@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir.service</groupId>
         <artifactId>xdir-service</artifactId>
-        <version>0.9.3-SNAPSHOT</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.codec</groupId>
     <artifactId>xdir-service-codec</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform Service Codec (Parent)</name>
     <description>Modules to provide string codec service</description>

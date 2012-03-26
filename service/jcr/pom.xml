@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir.service</groupId>
         <artifactId>xdir-service</artifactId>
-        <version>0.9.3-SNAPSHOT</version>
+        <version>0.9.2-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.jcr</groupId>
     <artifactId>xdir-service-jcr</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform Service JCR (Parent)</name>
     <description>Modules to provide jcr service</description>
