@@ -19,7 +19,7 @@ limitations under the License.
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.duguo.xdir</groupId>
     <artifactId>xdir</artifactId>
-    <version>0.9.2-SNAPSHOT</version>
+    <version>0.9.2</version>
     <packaging>pom</packaging>
     <name>XDir Platform (Parent)</name>
     <!-- TODO: add project description tag -->
