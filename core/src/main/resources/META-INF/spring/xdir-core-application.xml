@@ -70,18 +70,7 @@
   <bean id="osgiSpringManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiSpringManagerApplication" parent="defaultAdminApplicationPrototype">
   </bean>
   
-  <bean id="osgiConfManagerApplication" class="org.duguo.xdir.core.internal.server.OsgiConfManagerApplication" parent="defaultAdminApplicationPrototype">
-    <property name="additionalConfigurations">
-      <list>
-        <value>${xdir.home}/data/jcr/template/repository.xml</value>
-        <value>${xdir.home}/data/jcr/template/repository/nodetypes/custom_nodetypes.xml</value>
-      </list>
-    </property>
-    <property name="ignoredFiles" value=".*log"/>
-    <property name="hashOnlyFiles" value=".*jar|.*zip"/>
-    <property name="initDelay" value="-1"/>
-  </bean>    
-  
+
   <bean id="jvmGroovyConsoleApplication" class="org.duguo.xdir.core.internal.server.JvmGroovyConsoleApplication" parent="defaultAdminApplicationPrototype"/>
 
   

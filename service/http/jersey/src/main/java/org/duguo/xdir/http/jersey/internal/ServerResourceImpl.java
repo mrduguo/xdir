@@ -12,7 +12,7 @@ public class ServerResourceImpl implements ServerResource {
     
 
     @Override
-    public ServerInfo info() {
+    public ServerInfo info(String client) {
         ServerInfo serverInfo=new ServerInfo();
         serverInfo.setVersion(System.getProperty("xdir.server.version"));
 

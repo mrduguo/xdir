@@ -1,11 +1,9 @@
 package org.duguo.xdir.http.jersey.api.resource;
 
 import org.duguo.xdir.http.jersey.api.model.ServerInfo;
+import org.duguo.xdir.spi.security.Secure;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 
 /**
@@ -21,7 +19,8 @@ public interface ServerResource {
     @Path("info")
     @GET
     @Produces({"application/json","application/xml","text/plain"})
-    public ServerInfo info() ;
+    @Secure
+    public ServerInfo info(@QueryParam("client") String client) ;
 
     /**
      *
