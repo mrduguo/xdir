@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.dist</groupId>
         <artifactId>xdir-dist</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.dist</groupId>
     <artifactId>xdir-dist-deployer</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3-SNAPSHOT</version>
     <name>XDir Platform Distribution (deployer)</name>
     <packaging>pom</packaging>
 

@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.duguo.xdir.service.codec</groupId>
         <artifactId>xdir-service-codec</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.service.codec</groupId>
     <artifactId>xdir-service-codec-freemarker</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>XDir Platform Service Codec (Freemarker support)</name>
 
