@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="HTTP:jettyServer" class="org.eclipse.jetty.server.Server" init-method="start" destroy-method="stop">
+        <property name="connectors" ref="HTTP:jettyConnectors"/>
+        <property name="handler" ref="HTTP:jettyHandler"/>
+    </bean>
+
+    <bean id="HTTP:jettyConnectors" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="HTTP:jettyHttpConnector"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="HTTP:jettyHttpConnector" class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+        <property name="port" value="${xdir.port.http}"/>
+    </bean>
+
+    <bean id="HTTP:jettyHandler" class="org.eclipse.jetty.server.handler.HandlerCollection">
+        <property name="handlers" ref="HTTP:jettyHandlerCollection"/>
+    </bean>
+
+    <bean id="HTTP:jettyHandlerCollection" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="HTTP:jettyHandlerListHandler"/>
+                <ref bean="HTTP:jettyRequestLogHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="HTTP:jettySessionHandler" class="org.eclipse.jetty.server.session.SessionHandler">
+    </bean>
+
+    <bean id="HTTP:jettyHandlerListHandler" class="org.eclipse.jetty.server.handler.HandlerList">
+        <property name="handlers" ref="HTTP:jettyHandlerList"/>
+    </bean>
+
+    <bean id="HTTP:jettyServletContextHandlerPrototype" class="org.eclipse.jetty.servlet.ServletContextHandler" scope="prototype">
+        <property name="sessionHandler" ref="HTTP:jettySessionHandler"/>
+    </bean>
+
+    <bean id="HTTP:jettyRequestLogHandler" class="org.eclipse.jetty.server.handler.RequestLogHandler">
+        <property name="requestLog">
+            <bean class="org.eclipse.jetty.server.NCSARequestLog">
+                <property name="filename" value="${xdir.web.log.file}"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="HTTP:restServletContextHandler" parent="HTTP:jettyServletContextHandlerPrototype">
+        <property name="servletHandler">
+            <bean class="org.eclipse.jetty.servlet.ServletHandler">
+                <property name="servlets">
+                    <list>
+                        <bean class="org.eclipse.jetty.servlet.ServletHolder">
+                            <property name="name" value="jersey"/>
+                            <property name="servlet" ref="HTTP:jerseyServlet"/>
+                            <property name="initOrder" value="1"/>
+                        </bean>
+                    </list>
+                </property>
+                <property name="servletMappings">
+                    <list>
+                        <bean class="org.eclipse.jetty.servlet.ServletMapping">
+                            <property name="servletName" value="jersey"/>
+                            <property name="pathSpecs">
+                                <list>
+                                    <value>/rest/*</value>
+                                </list>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="HTTP:jettyStaticResourceHandler" class="org.eclipse.jetty.server.handler.ResourceHandler">
+        <property name="directoriesListed" value="true"/>
+        <property name="welcomeFiles">
+            <list>
+                <value>index.html</value>
+            </list>
+        </property>
+        <property name="resourceBase" value="${xdir.web.webroot}"/>
+    </bean>
+
+    <bean id="HTTP:jettyResourceNotFoundHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"/>
+
+
+</beans>

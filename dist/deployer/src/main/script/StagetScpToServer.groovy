@@ -49,7 +49,7 @@ if (previousDeployment != null) {
     println "previousDeployment is:"+previousDeployment
     deployScript("previousDeployment='$previousDeployment'")
     deployScript('cp -r overlay/* \$tempDeployment/')
-    deployScript('cp \$previousDeployment/data/conf/osgi.properties \$tempDeployment/data/conf/osgi.properties')
+    deployScript('cp \$previousDeployment/data/conf/spring-override.properties \$tempDeployment/data/conf/spring-override.properties')
     deployScript('wget -O \$previousDeployment/backup-apps.zip http://127.0.0.1/admin/resources/jcr/apps.jcr')
     deployScript('jar -xf \$previousDeployment/backup-apps.zip')
 //    deployScript('cp -r apps/duguo.org \$tempDeployment/data/jcr/init/import/apps')

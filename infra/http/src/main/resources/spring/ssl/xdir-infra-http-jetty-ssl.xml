@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+    <bean id="HTTP:defaultSslProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <value>
+                xdir.port.https=8443
+                xdir.web.https.keystorefile=${xdir.home}/classes/xdir-service-web/xdirplatform.org.selfcert.keystore
+                xdir.web.https.keystorepassword=nGT5i0epmZZulvrYytKH8y062izCjGa3
+                xdir.web.https.truststorefile=${xdir.web.https.keystorefile}
+                xdir.web.https.truststorepassword=${xdir.web.https.keystorepassword}
+            </value>
+        </property>
+    </bean>
+
+    <bean id="HTTP:jettyConnectors" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="HTTP:jettyHttpConnector"/>
+                <ref bean="HTTP:jettyHttpsConnector"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="HTTP:jettyHttpsConnector" class="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+        <property name="port" value="${xdir.port.https}"/>
+        <property name="password" value="${xdir.web.https.keystorepassword}"/>
+        <property name="keystore" value="${xdir.web.https.keystorefile}"/>
+        <property name="keyPassword" value="${xdir.web.https.keystorepassword}"/>
+        <property name="truststore" value="${xdir.web.https.truststorefile}"/>
+        <property name="trustPassword" value="${xdir.web.https.truststorepassword}"/>
+
+        <!--
+         http://wiki.eclipse.org/Jetty/Howto/Spring
+         http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty#File_Server_with_spring
+         http://docs.codehaus.org/display/JETTY/How+to+configure+SSL
+         http://seguide.blogspot.com/2009/12/use-keytool-to-generate-keys-in-java.html
+
+         keytool -genkey -alias xdirplatform.org.selfcert -validity 36500 -keyalg RSA -dname "cn=xdirplatform.org,ou=xdirplatform test site self cert,o=XDir Platform,l=Dublin,st=Ireland,c=IE"  -storepass nGT5i0epmZZulvrYytKH8y062izCjGa3  -keypass nGT5i0epmZZulvrYytKH8y062izCjGa3  -keystore xdirplatform.org.selfcert.keystore
+         keytool -selfcert -export -alias xdirplatform.org.selfcert -storepass nGT5i0epmZZulvrYytKH8y062izCjGa3 -file xdirplatform.org.self.cer -keystore xdirplatform.org.selfcert.keystore
+
+        -->
+    </bean>
+
+</beans>

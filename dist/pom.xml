@@ -20,11 +20,11 @@ limitations under the License.
     <parent>
         <groupId>org.duguo.xdir</groupId>
         <artifactId>xdir</artifactId>
-        <version>0.9.2-SNAPSHOT</version>
+        <version>0.9.3-SNAPSHOT</version>
     </parent>
     <groupId>org.duguo.xdir.dist</groupId>
     <artifactId>xdir-dist</artifactId>
-    <version>0.9.2-SNAPSHOT</version>
+    <version>0.9.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XDir Platform Distribution (Parent)</name>
     <description>Modules to assembly XDir final distribution</description>
@@ -33,10 +33,10 @@ limitations under the License.
     <!-- SUB MODULES                             -->
     <!-- ======================================= -->
     <modules>
-        <module>plugin</module>
+        <!--<module>plugin</module>-->
         <module>bin</module>
-        <module>acceptance-test</module>
-        <module>deployer</module>
+        <!--<module>acceptance-test</module>-->
+        <!--<module>deployer</module>-->
     </modules>
 
 </project>

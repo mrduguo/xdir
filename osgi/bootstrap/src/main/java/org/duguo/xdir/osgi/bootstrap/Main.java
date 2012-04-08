@@ -92,7 +92,7 @@ public class Main {
                 PropertiesUtils.logSystemProperties();
             }
         });
-        bootstrap.setName("bootstrap");
+        bootstrap.setName("infra");
         bootstrap.start();
     }
 

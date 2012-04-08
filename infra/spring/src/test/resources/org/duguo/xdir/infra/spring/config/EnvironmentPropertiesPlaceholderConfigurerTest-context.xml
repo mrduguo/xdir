@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <import resource="classpath:/spring/xdir-infra-spring.xml"/>
+
+    <bean id="shouldResolvePlaceHolderFromEnvironmentProperty" class="java.lang.String">
+        <constructor-arg>
+            <value>value from environment property ${USER}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="shouldResolvePlaceHolderFromSystemProperty" class="java.lang.String">
+        <constructor-arg>
+            <value>value from system property ${user.name}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="shouldResolvePlaceHolderFromPropertiesFile" class="java.lang.String">
+        <constructor-arg>
+            <value>${test.property.from.spring.override}</value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="INFRA:customConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/spring-override.properties"/>
+        <property name="properties">
+            <value>
+                test.property.inline.key=value from inline property with place holder key with user name: ${test.property.inline.placeholder}
+                test.property.inline.placeholder=${user.name}
+            </value>
+        </property>
+    </bean>
+
+    <context:property-placeholder location="classpath:/spring-override.properties"/>
+    <context:property-placeholder location="classpath:/spring-override.properties"/>
+
+</beans>

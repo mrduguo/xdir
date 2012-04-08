@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+    <bean id="HTTP:jerseyServlet" class="org.duguo.xdir.infra.http.jersey.ApplicationContextAwareSpringServlet">
+        <property name="defaultResourceConfig" ref="HTTP:defaultResourceConfig"/>
+        <property name="mediaExtentions" ref="HTTP:mediaExtentions"/>
+    </bean>
+    <bean id="HTTP:defaultResourceConfig" class="com.sun.jersey.api.core.DefaultResourceConfig"/>
+    <bean id="HTTP:mediaExtentions" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="json" value="#{T(javax.ws.rs.core.MediaType).APPLICATION_JSON_TYPE}"/>
+                <entry key="xml" value="#{T(javax.ws.rs.core.MediaType).APPLICATION_XML_TYPE}"/>
+                <entry key="txt" value="#{T(javax.ws.rs.core.MediaType).TEXT_PLAIN_TYPE}"/>
+                <entry key="html" value="#{T(javax.ws.rs.core.MediaType).TEXT_HTML_TYPE}"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="HTTP:runtimeExceptionMapper" class="org.duguo.xdir.infra.http.rest.impl.provider.RuntimeExceptionMapper" scope="singleton"/>
+    <bean id="HTTP:textMessageBodyWriter" class="org.duguo.xdir.infra.http.rest.impl.provider.TextMessageBodyWriter" scope="singleton"/>
+    <bean id="HTTP:pingOkTextMessageBodyWriter" class="org.duguo.xdir.infra.http.rest.impl.provider.PingOkTextMessageBodyWriter" scope="singleton"/>
+    <bean id="HTTP:componentsTextMessageBodyWriter" class="org.duguo.xdir.infra.http.rest.impl.provider.ComponentsTextMessageBodyWriter" scope="singleton"/>
+
+    <bean id="REST:serverResource" class="org.duguo.xdir.infra.http.rest.impl.resource.ServerResourceImpl" scope="singleton"/>
+
+
+
+</beans>

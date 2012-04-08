@@ -113,7 +113,7 @@ public class DefaultOsgiServer extends AbstractOsgiServer implements Server
         if(!frameworkConfig.containsKey(KEY_EXTRA_SYSTEM_PACKAGES)){
         	StringBuilder extraSystemPackages=new StringBuilder();
         	
-            if("true".equals(System.getProperty("xdir.osgi.export.bootstrap.jars.as.system.packages", "true"))){
+            if("true".equals(System.getProperty("xdir.osgi.export.infra.jars.as.system.packages", "true"))){
         	    setupExtraSystemPackagesScanBootJars(extraSystemPackages);
             }
         	setupExtraSystemPackagesScanExtendedKeys(extraSystemPackages);
